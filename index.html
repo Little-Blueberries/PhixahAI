@@ -149,12 +149,12 @@
         .code-blocks {
             background-color: rgba(196, 196, 196, 0.342);
             border-radius: 4px;
-            padding: 4px 8px;
+            padding: 1px 8px;
             font-family: 'Courier New', Courier, monospace;
         }
         
         .big-code-blocks {
-            background-color: #c45b16;
+            background-color: #000000;
             padding: 10px;
             border-radius: 6px;
             font-family: 'Courier New', Courier, monospace;
@@ -177,6 +177,8 @@
         </div>
     </div>
     <script>
+        codeb
+
         function format(text) {
             // First replace <br> tags with newlines for proper line-based processing
             text = text.replace(/<br>/g, '\n');
@@ -192,7 +194,8 @@
             text = text.replace(/\_(.*?)\_/g, '<em>$1</em>');
             
             // Process code blocks
-            text = text.replace(/\$\$(.*?)\$\$/g, '<pre><code>$1</code></pre>');
+            text = text.replace(/\$\$(.*?)\$\$/g, '<pre class="big-code-blocks"><code>$1</code></pre>');
+            text = text.replace(/\$(.*?)\$/g, '<code class="code-blocks">$1</code>')
             
             // Process lists
             text = text.replace(/^-\s+(.*$)/gm, '<li>$1</li>');
@@ -289,7 +292,7 @@
                 "<br>- **Cross-platform: ** It runs on Windows, macOS, Linux, even Raspberry Pi." +
                 "<br>- **Huge library support: **From math ($numpy$) to machine learning ($scikit-learn$, $TensorFlow$) to making games ($pygame$), there's a library for _almost everything_." +
                 "<br># What does Python code look like?" +
-                "<br>Here's a basic syntax of Python:" +
+                "<br>Here's a tiny program in Python that says Hello World:" +
                 "<br>$$print(\"Hello World\")$$"
         };
         for (var question in dataTesting) {
