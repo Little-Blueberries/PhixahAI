@@ -177,8 +177,6 @@
         </div>
     </div>
     <script>
-        codeb
-
         function format(text) {
             // First replace <br> tags with newlines for proper line-based processing
             text = text.replace(/<br>/g, '\n');
@@ -323,9 +321,12 @@
         }
         
         clearButton.addEventListener("click", handleClearMessage);
-        userInput.addEventListener("keypress", function(e) {
-            if (e.key === "Enter") handleUserMessage();
-        })
+        userInput.addEventListener("keydown", function(e) {
+            if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleUserMessage();
+            }
+        });
     </script>
 </body>
 </html>
