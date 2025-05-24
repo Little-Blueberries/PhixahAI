@@ -189,6 +189,8 @@
             margin-left: 1em;
         }
 
+        .keyword-type-1 {color: #4E71FF;}
+
     </style>
 </head>
 <body>
@@ -201,6 +203,11 @@
         </div>
     </div>
     <script>
+        var rawCode = [
+            'print("Hello World!")'
+        ]
+        var codeIndex = 0;
+
         var copyButton = document.getElementsByClassName("copy-button")
         function format(text) {
             // First replace <br> tags with newlines for proper line-based processing
@@ -217,7 +224,10 @@
             text = text.replace(/\_(.*?)\_/g, '<em>$1</em>');
             
             // Process code blocks
-            text = text.replace(/\$\$(.*?)\$\$/g, '<pre><div><button class="copy-button">Copy</button></div><code class="big-code-blocks">$1</code></pre>');
+            text = text.replace(/\$\$(.*?)\$\$/g, function(match, p1) {
+                var idx = codeIndex++;
+                return `<pre><div><button class="copy-button" data-index="${idx}">Copy</button></div><code class="big-code-blocks" data-index="${idx}">${p1}</code></pre>`;
+            });
             text = text.replace(/\$(.*?)\$/g, '<code class="code-blocks">$1</code>')
             
             // Process lists
@@ -229,7 +239,9 @@
             
             return text;
         }
-        
+        function pythonSyntaxHighlighting(code) {
+            
+        }
 
 
         function manageChatbotSystem() {
@@ -348,34 +360,32 @@
         // Copy button function
         document.addEventListener('click', function (e) {
             if (e.target.classList.contains('copy-button')) {
-            var preElement = e.target.closest('pre');
-            if (!preElement) return;
+                var index = e.target.getAttribute('data-index');
+                if (index !== null && rawCode[index]) {
+                    var textToCopy = rawCode[index];
 
-            var codeBlock = preElement.querySelector('code');
-            if (!codeBlock) return;
-
-            var range = document.createRange();
-            range.selectNodeContents(codeBlock);
-            var selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-
-            try {
-                var success = document.execCommand('copy');
-                if (success) {
-                    e.target.textContent = "Copied!";
-                    setTimeout(() => e.target.textContent = "Copy", 1000);
-                } else {
-                    e.target.textContent = "Failed";
+                    var textarea = document.createElement('textarea');
+                    textarea.value = textToCopy;
+                    textarea.style.position = 'fixed';
+                    textarea.style.left = '-9999px';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        var success = document.execCommand('copy');
+                        if(success){
+                            e.target.textContent = "Copied!";
+                            setTimeout(() => e.target.textContent = "Copy", 1000);
+                        } else {
+                            e.target.textContent = "Failed";
+                        }
+                    } catch(err) {
+                        console.error("Copy failed:", err);
+                    }
+                    document.body.removeChild(textarea);
                 }
-            } catch (err) {
-                console.error("Copy failed:", err);
             }
-
-            selection.removeAllRanges();
-        }
-
         });
+
 
         clearButton.addEventListener("click", handleClearMessage);
         userInput.addEventListener("keydown", function(e) {
