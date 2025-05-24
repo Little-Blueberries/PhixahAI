@@ -156,8 +156,24 @@
         .big-code-blocks {
             background-color: #000000;
             padding: 10px;
-            border-radius: 6px;
+            border-radius: 0 0 5px 5px;
             font-family: 'Courier New', Courier, monospace;
+        }
+        
+        pre {
+            display: flex;
+            flex-direction: column;
+        }
+
+        pre div {
+            display: flex;
+            flex-direction: row;
+            background-color: #292929;
+            border-radius: 5px 5px 0 0;
+            height: 25px;
+            justify-content: flex-end;
+            align-items: center;
+            padding-right: 10px;
         }
         
         li {
@@ -177,6 +193,7 @@
         </div>
     </div>
     <script>
+        var copyButton = document.getElementsByClassName("copy-button")
         function format(text) {
             // First replace <br> tags with newlines for proper line-based processing
             text = text.replace(/<br>/g, '\n');
@@ -192,7 +209,7 @@
             text = text.replace(/\_(.*?)\_/g, '<em>$1</em>');
             
             // Process code blocks
-            text = text.replace(/\$\$(.*?)\$\$/g, '<pre class="big-code-blocks"><code>$1</code></pre>');
+            text = text.replace(/\$\$(.*?)\$\$/g, '<pre><div><button class="copy-button">Copy</button></div><code class="big-code-blocks">$1</code></pre>');
             text = text.replace(/\$(.*?)\$/g, '<code class="code-blocks">$1</code>')
             
             // Process lists
@@ -204,6 +221,8 @@
             
             return text;
         }
+        
+
         
         function manageChatbotSystem() {
             this.documents = [];
