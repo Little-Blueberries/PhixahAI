@@ -197,8 +197,8 @@
             font-family: 'Fira Code', 'Courier New', Courier, monospace;
         }
 
-        .keywords { color: lightblue; }
-        .strings { color: lightgreen; }
+        .keywords { color: #3289ef; }
+        .strings { color: #67b876; }
         
     </style>
 </head>
@@ -324,7 +324,7 @@
         var chatbot = new manageChatbotSystem();
         var dataTesting = {
             "What is Python?": 
-                "Python is a **high-level programming language** that's designed to be **easy to read, easy to write**, and **powerful**. " +
+                "**Python** is a high-level, interpreted **programming language** that’s known for being:" +
                 "It was created by **Guido van Rossum** and released in **1991**. " +
                 "Since then, it's become one of the most popular languages in the world—used everywhere from Google to NASA, and even by AI developers." +
                 "<br># Why Python is special?" +
@@ -335,7 +335,7 @@
                 "<br>- **Huge library support: **From math ($numpy$) to machine learning ($scikit-learn$, $TensorFlow$) to making games ($pygame$), there's a library for _almost everything_." +
                 "<br># What does Python code look like?" +
                 "<br>Here's a tiny program in Python that says Hello World:" +
-                "<br>$$print(\"Hello World\")$$"
+                "<br>$$print(\"Hello print\")$$"
         };
         for (var question in dataTesting) {
             chatbot.addData(question, dataTesting[question]);
