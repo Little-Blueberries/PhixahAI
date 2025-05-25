@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Phixah Chatbot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
     <style>
         * {
             transition: all 0.5s ease;
@@ -158,6 +161,7 @@
             padding: 10px;
             border-radius: 0 0 5px 5px;
             font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
         }
         
         pre {
@@ -189,8 +193,13 @@
             margin-left: 1em;
         }
 
-        .keyword-type-1 {color: #4E71FF;}
+        code {
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+        }
 
+        .keywords { color: lightblue; }
+        .strings { color: lightgreen; }
+        
     </style>
 </head>
 <body>
@@ -200,14 +209,10 @@
             <textarea type="text" id="user-input" placeholder="Enter your question..."></textarea>
             <div class="function">
                 <button id="clear-button" style="vertical-align: middle;">×<span>Clear</span></button>
+            </div>
         </div>
     </div>
     <script>
-        var rawCode = [
-            'print("Hello World!")'
-        ]
-        var codeIndex = 0;
-
         var copyButton = document.getElementsByClassName("copy-button")
         function format(text) {
             // First replace <br> tags with newlines for proper line-based processing
@@ -215,7 +220,7 @@
             
             // Process headings (must come first)
             text = text.replace(/^#\s+(.*$)/gm, '<h2 style="margin-bottom: -0.65em;">$1</h2>');
-            text = text.replace(/^##\s+(.*$)/gm, '<h3>$2</h3>');
+            text = text.replace(/^##\s+(.*$)/gm, '<h3>$1</h3>');
             
             // Process bold/italic
             text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -225,8 +230,10 @@
             
             // Process code blocks
             text = text.replace(/\$\$(.*?)\$\$/g, function(match, p1) {
-                var idx = codeIndex++;
-                return `<pre><div><button class="copy-button" data-index="${idx}">Copy</button></div><code class="big-code-blocks" data-index="${idx}">${p1}</code></pre>`;
+                console.log("Big code block content:", p1);
+                p1 = p1.replace(/\"(.*?)\"/g, '<span class="strings">"$1"</span>')
+                p1 = p1.replace(/\b(print|if|def|for|while)\b/g, '<span class="keywords">$1</span>')
+                return '<pre><div><button class="copy-button">Copy</button></div><code class="big-code-blocks">' + p1 + '</code></pre>';
             });
             text = text.replace(/\$(.*?)\$/g, '<code class="code-blocks">$1</code>')
             
@@ -239,9 +246,7 @@
             
             return text;
         }
-        function pythonSyntaxHighlighting(code) {
-            
-        }
+        
 
 
         function manageChatbotSystem() {
@@ -360,32 +365,34 @@
         // Copy button function
         document.addEventListener('click', function (e) {
             if (e.target.classList.contains('copy-button')) {
-                var index = e.target.getAttribute('data-index');
-                if (index !== null && rawCode[index]) {
-                    var textToCopy = rawCode[index];
+            var preElement = e.target.closest('pre');
+            if (!preElement) return;
 
-                    var textarea = document.createElement('textarea');
-                    textarea.value = textToCopy;
-                    textarea.style.position = 'fixed';
-                    textarea.style.left = '-9999px';
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    try {
-                        var success = document.execCommand('copy');
-                        if(success){
-                            e.target.textContent = "Copied!";
-                            setTimeout(() => e.target.textContent = "Copy", 1000);
-                        } else {
-                            e.target.textContent = "Failed";
-                        }
-                    } catch(err) {
-                        console.error("Copy failed:", err);
-                    }
-                    document.body.removeChild(textarea);
+            var codeBlock = preElement.querySelector('code');
+            if (!codeBlock) return;
+
+            var range = document.createRange();
+            range.selectNodeContents(codeBlock);
+            var selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            try {
+                var success = document.execCommand('copy');
+                if (success) {
+                    e.target.textContent = "Copied!";
+                    setTimeout(() => e.target.textContent = "Copy", 1000);
+                } else {
+                    e.target.textContent = "Failed";
                 }
+            } catch (err) {
+                console.error("Copy failed:", err);
             }
-        });
 
+            selection.removeAllRanges();
+        }
+
+        });
 
         clearButton.addEventListener("click", handleClearMessage);
         userInput.addEventListener("keydown", function(e) {
