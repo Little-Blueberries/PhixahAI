@@ -297,14 +297,19 @@
     </div>
     
     <script>
+        // Get HTML Elements
         var copyButton = document.getElementsByClassName("copy-button")
+        var chatContainer = document.getElementById("chat-container");
+        var userInput = document.getElementById("user-input");
+        var clearButton = document.getElementById("clear-button");
+
+        // Format the answer from the chatbot
         function format(text) {
-            // First replace <br> tags with newlines for proper line-based processing
             text = text.replace(/<br>/g, '\n');
             
-            // Process headings (must come first)
-            text = text.replace(/^#\s+(.*$)/gm, '<h2 style="margin-bottom: -0.65em;">$1</h2>');
+            text = text.replace(/^###\s+(.*$)/gm, '<h4 style="margin-bottom: -0.8em;">$1</h4>');
             text = text.replace(/^##\s+(.*$)/gm, '<h3 style="margin-bottom: -0.75em;">$1</h3>');
+            text = text.replace(/^#\s+(.*$)/gm, '<h2 style="margin-bottom: -0.65em;">$1</h2>');
             
             // Process bold/italic
             text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -312,21 +317,18 @@
             text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
             text = text.replace(/\_(.*?)\_/g, '<em>$1</em>');
             
-            // Process code blocks
             text = text.replace(/\$\$(.*?)\$\$/g, function(match, p1) {
                 p1 = p1.replace(/\`(.*?)\`/g, '<p>$1</p>')
                 return '<pre><div><button class="copy-button">Copy</button></div><code class="big-code-blocks">' + p1 + '</code></pre>';
             });
             text = text.replace(/\$(.*?)\$/g, '<code class="code-blocks">$1</code>')
             
-            // Convert newlines back to <br> tags for HTML display
             text = text.replace(/\n/g, '<br>');
             
             return text;
         }
-        
 
-
+        // The chatbot system object
         function manageChatbotSystem() {
             this.documents = [];
             this.responses = [];
@@ -334,7 +336,7 @@
         }
         manageChatbotSystem.prototype.addData = function(question, response) {
             this.documents.push(question);
-            this.responses.push(response);
+            this.responses.push(decodeURIComponent(escape(atob(response))));
         };
         manageChatbotSystem.prototype.calculateTF = function(word, document) {
             var words = document.split(/\s+/);
@@ -395,69 +397,12 @@
             return answer;
         }
         
-        var chatContainer = document.getElementById("chat-container");
-        var userInput = document.getElementById("user-input");
-        var clearButton = document.getElementById("clear-button");
         
         var chatbot = new manageChatbotSystem();
         var dataTesting = {
-            "What is Python?": 
-                "# ✅ What is Python? <br>" +
-                "## ➕ Introduce about Python" +
-                "<br>Python is a **high-level, general-purpose programming language.**" +
-                "<br>It is designed to be **easy to read**, **simple to write**, and **very powerful**." +
-                "<br>People use Python to create:" + 
-                "<br>&emsp;- Games 🎮" +
-                "<br>&emsp;- Websites 🌐" +
-                "<br>&emsp;- Artificial Intelligence 🧠" +
-                "<br>&emsp;- Data analysis tools 📊" +
-                "<br>&emsp;- And even robots 🤖" +
-                "<br>Python is popular among both **beginners** and **professionals**. <br>" +
-                "## ➕ Python history" +
-                "<br>&emsp;- Python was created by **Guido van Rossum** in the **late 1980s** and officially released in **1991**." +
-                "<br>&emsp;- The name **\"Python\"** is inspired by the British comedy group **Monty Python**, not the snake." +
-                "<br>&emsp;- Over the years, Python has evolved:" +
-                "<br>&emsp;&emsp;- **Python 2.x** – older version (now outdated)" +
-                "<br>&emsp;&emsp;- **Python 3.x** – current and modern version, recommended for everyone <br>" +
-                "## ➕ What it does?" +
-                "<br>Python is used in **many fields**, including:" +
-                "<br>&emsp;- **AI & Machine Learning**: build smart systems that can learn and predict" +
-                "<br>&emsp;- **Web Development**: build powerful websites and apps" +
-                "<br>&emsp;- **Automation**: write scripts to do boring work automatically" +
-                "<br>&emsp;- **Game Development**: create games using 2D or even 3D libraries" +
-                "<br>&emsp;- **Data Science**: analyze, visualize, and understand data <br>" +
-                "# 🔍 Go deeper about performance of Python" +
-                "<br>Python is not the **fastest** programming language, but it’s **fast enough** for most tasks. <br>" +
-                "## ➕ Advantages" +
-                "<br>&emsp;- **✅ Fast to write** – Code is shorter and easier than C++ or Java" +
-                "<br>&emsp;- **✅ Quick development** – Good for rapid prototyping and testing ideas" +
-                "<br>&emsp;- **✅ Big ecosystem** – Thousands of libraries like NumPy, TensorFlow, Flask... <br>" +
-                "## ➖ Disadvantages" +
-                "<br>&emsp;- **❌ Slower execution speed** than C++, Rust, or Java" +
-                "<br>&emsp;- **❌ Not ideal for heavy real-time systems** (like AAA 3D games or OS kernels)" +
-                "<br>&emsp;- **❌ Single-threaded by default** – Not the best for parallel performance <br>" +
-                "## ⚙️ Why people still use Python despite slower speed?" +
-                "<br>Because most of the time, **developer time** is more important than **machine time**." +
-                "<br>Python is **fast to build**, **easy to test**, and has **tons of tools** to speed up development." +
-                "<br>Plus, performance can be improved by:" +
-                "<br>&emsp; - Using libr;aries written in C/C++ (like NumPy)" +
-                "<br>&emsp; - Combining with other languages (e.g., use Python + C++)" +
-                "<br>&emsp; - Running on faster machines (Cloud, GPU...) <br>" +
-                "# 💡 Some examples <br>" +
-                "## 📘 Example 1: Hello World" +
-                "<br>$$print(\"Hello, world!\")$$ <br>" +
-                "## 📘 Example 2: Simple Calculator" +
-                "<br>$$`a = int(input(\"Enter first number: \"))``b = int(input(\"Enter second number: \"))``print(\"Sum is:\", a + b)`$$ <br>" +
-                "## 📘 Example 3: If-else logic" +
-                "<br>$$`age = int(input(\"Your age? \"))``if age >= 18:``&emsp;print(\"You are an adult.\")``else:``&emsp;print(\"You are still young!\")`$$<br>" +
-                "## 📘 Example 4: Loop" +
-                "$$`for i in range(5):``&emsp;printf(\"Step {i}\")`$$ <br>" +
-                "# 🎯 Conclusion" +
-                "<br>&emsp;- ✅ Python is a powerful, easy-to-learn language used in many industries." +
-                "<br>&emsp;- ✅ It’s perfect for **students**, **developers**, and even **scientists**." +
-                "<br>&emsp;- ✅ Though it’s not the fastest in terms of performance, its **simplicity, tools, and flexibility** make it a top choice." +
-                "<br>&emsp;- 💡 If you want to **build apps**, **learn AI**, or **automate tasks**, Python is one of the best tools you can start with."
-        };
+            "What is Python?": 'IyDinIUgV2hhdCBpcyBQeXRob24/IDxicj4jIyDinpUgSW50cm9kdWNlIGFib3V0IFB5dGhvbjxicj5QeXRob24gaXMgYSAqKmhpZ2gtbGV2ZWwsIGdlbmVyYWwtcHVycG9zZSBwcm9ncmFtbWluZyBsYW5ndWFnZS4qKjxicj5JdCBpcyBkZXNpZ25lZCB0byBiZSAqKmVhc3kgdG8gcmVhZCoqLCAqKnNpbXBsZSB0byB3cml0ZSoqLCBhbmQgKip2ZXJ5IHBvd2VyZnVsKiouPGJyPlBlb3BsZSB1c2UgUHl0aG9uIHRvIGNyZWF0ZTo8YnI+JmVtc3A7LSBHYW1lcyDwn46uPGJyPiZlbXNwOy0gV2Vic2l0ZXMg8J+MkDxicj4mZW1zcDstIEFydGlmaWNpYWwgSW50ZWxsaWdlbmNlIPCfp6A8YnI+JmVtc3A7LSBEYXRhIGFuYWx5c2lzIHRvb2xzIPCfk4o8YnI+JmVtc3A7LSBBbmQgZXZlbiByb2JvdHMg8J+kliMjIOKelSBQeXRob24gaGlzdG9yeTxicj4mZW1zcDstIFB5dGhvbiB3YXMgY3JlYXRlZCBieSAqKkd1aWRvIHZhbiBSb3NzdW0qKiBpbiB0aGUgKipsYXRlIDE5ODBzKiogYW5kIG9mZmljaWFsbHkgcmVsZWFzZWQgaW4gKioxOTkxKiouPGJyPiZlbXNwOy0gVGhlIG5hbWUgKioiUHl0aG9uIioqIGlzIGluc3BpcmVkIGJ5IHRoZSBCcml0aXNoIGNvbWVkeSBncm91cCAqKk1vbnR5IFB5dGhvbioqLCBub3QgdGhlIHNuYWtlLjxicj4mZW1zcDstIE92ZXIgdGhlIHllYXJzLCBQeXRob24gaGFzIGV2b2x2ZWQ6PGJyPiZlbXNwOyZlbXNwOy0gKipQeXRob24gMi54Kiog4oCTIG9sZGVyIHZlcnNpb24gKG5vdyBvdXRkYXRlZCk8YnI+JmVtc3A7JmVtc3A7LSAqKlB5dGhvbiAzLngqKiDigJMgY3VycmVudCBhbmQgbW9kZXJuIHZlcnNpb24sIHJlY29tbWVuZGVkIGZvciBldmVyeW9uZSA8YnI+IyMg4p6VIFdoYXQgaXQgZG9lcz88YnI+UHl0aG9uIGlzIHVzZWQgaW4gKiptYW55IGZpZWxkcyoqLCBpbmNsdWRpbmc6PGJyPiZlbXNwOy0gKipBSSAmIE1hY2hpbmUgTGVhcm5pbmcqKjogYnVpbGQgc21hcnQgc3lzdGVtcyB0aGF0IGNhbiBsZWFybiBhbmQgcHJlZGljdDxicj4mZW1zcDstICoqV2ViIERldmVsb3BtZW50Kio6IGJ1aWxkIHBvd2VyZnVsIHdlYnNpdGVzIGFuZCBhcHBzPGJyPiZlbXNwOy0gKipBdXRvbWF0aW9uKio6IHdyaXRlIHNjcmlwdHMgdG8gZG8gYm9yaW5nIHdvcmsgYXV0b21hdGljYWxseTxicj4mZW1zcDstICoqR2FtZSBEZXZlbG9wbWVudCoqOiBjcmVhdGUgZ2FtZXMgdXNpbmcgMkQgb3IgZXZlbiAzRCBsaWJyYXJpZXM8YnI+JmVtc3A7LSAqKkRhdGEgU2NpZW5jZSoqOiBhbmFseXplLCB2aXN1YWxpemUsIGFuZCB1bmRlcnN0YW5kIGRhdGEgPGJyPiMg8J+UjSBHbyBkZWVwZXIgYWJvdXQgcGVyZm9ybWFuY2Ugb2YgUHl0aG9uPGJyPlB5dGhvbiBpcyBub3QgdGhlICoqZmFzdGVzdCoqIHByb2dyYW1taW5nIGxhbmd1YWdlLCBidXQgaXTigJlzICoqZmFzdCBlbm91Z2gqKiBmb3IgbW9zdCB0YXNrcy4gPGJyPiMjIOKelSBBZHZhbnRhZ2VzPGJyPiZlbXNwOy0gKirinIUgRmFzdCB0byB3cml0ZSoqIOKAkyBDb2RlIGlzIHNob3J0ZXIgYW5kIGVhc2llciB0aGFuIEMrKyBvciBKYXZhPGJyPiZlbXNwOy0gKirinIUgUXVpY2sgZGV2ZWxvcG1lbnQqKiDigJMgR29vZCBmb3IgcmFwaWQgcHJvdG90eXBpbmcgYW5kIHRlc3RpbmcgaWRlYXM8YnI+JmVtc3A7LSAqKuKchSBCaWcgZWNvc3lzdGVtKiog4oCTIFRob3VzYW5kcyBvZiBsaWJyYXJpZXMgbGlrZSBOdW1QeSwgVGVuc29yRmxvdywgRmxhc2suLi4gPGJyPiMjIOKeliBEaXNhZHZhbnRhZ2VzPGJyPiZlbXNwOy0gKirinYwgU2xvd2VyIGV4ZWN1dGlvbiBzcGVlZCoqIHRoYW4gQysrLCBSdXN0LCBvciBKYXZhPGJyPiZlbXNwOy0gKirinYwgTm90IGlkZWFsIGZvciBoZWF2eSByZWFsLXRpbWUgc3lzdGVtcyoqIChsaWtlIEFBQSAzRCBnYW1lcyBvciBPUyBrZXJuZWxzKTxicj4mZW1zcDstICoq4p2MIFNpbmdsZS10aHJlYWRlZCBieSBkZWZhdWx0Kiog4oCTIE5vdCB0aGUgYmVzdCBmb3IgcGFyYWxsZWwgcGVyZm9ybWFuY2UgPGJyPiMjIOKame+4jyBXaHkgcGVvcGxlIHN0aWxsIHVzZSBQeXRob24gZGVzcGl0ZSBzbG93ZXIgc3BlZWQ/PGJyPkJlY2F1c2UgbW9zdCBvZiB0aGUgdGltZSwgKipkZXZlbG9wZXIgdGltZSoqIGlzIG1vcmUgaW1wb3J0YW50IHRoYW4gKiptYWNoaW5lIHRpbWUqKi48YnI+UHl0aG9uIGlzICoqZmFzdCB0byBidWlsZCoqLCAqKmVhc3kgdG8gdGVzdCoqLCBhbmQgaGFzICoqdG9ucyBvZiB0b29scyoqIHRvIHNwZWVkIHVwIGRldmVsb3BtZW50Ljxicj5QbHVzLCBwZXJmb3JtYW5jZSBjYW4gYmUgaW1wcm92ZWQgYnk6PGJyPiZlbXNwOyAtIFVzaW5nIGxpYnI7YXJpZXMgd3JpdHRlbiBpbiBDL0MrKyAobGlrZSBOdW1QeSk8YnI+JmVtc3A7IC0gQ29tYmluaW5nIHdpdGggb3RoZXIgbGFuZ3VhZ2VzIChlLmcuLCB1c2UgUHl0aG9uICsgQysrKTxicj4mZW1zcDsgLSBSdW5uaW5nIG9uIGZhc3RlciBtYWNoaW5lcyAoQ2xvdWQsIEdQVS4uLikgPGJyPiMg8J+SoSBTb21lIGV4YW1wbGVzIDxicj4jIyDwn5OYIEV4YW1wbGUgMTogSGVsbG8gV29ybGQ8YnI+JCRwcmludCgiSGVsbG8sIHdvcmxkISIpJCQgPGJyPiMjIPCfk5ggRXhhbXBsZSAyOiBTaW1wbGUgQ2FsY3VsYXRvcjxicj4kJGBhID0gaW50KGlucHV0KCJFbnRlciBmaXJzdCBudW1iZXI6ICIpKWBgYiA9IGludChpbnB1dCgiRW50ZXIgc2Vjb25kIG51bWJlcjogIikpYGBwcmludCgiU3VtIGlzOiIsIGEgKyBiKWAkJCA8YnI+IyMg8J+TmCBFeGFtcGxlIDM6IElmLWVsc2UgbG9naWM8YnI+JCRgYWdlID0gaW50KGlucHV0KCJZb3VyIGFnZT8gIikpYGBpZiBhZ2UgPj0gMTg6YGAmZW1zcDtwcmludCgiWW91IGFyZSBhbiBhZHVsdC4iKWBgZWxzZTpgYCZlbXNwO3ByaW50KCJZb3UgYXJlIHN0aWxsIHlvdW5nISIpYCQkPGJyPiMjIPCfk5ggRXhhbXBsZSA0OiBMb29wPGJyPiQkYGZvciBpIGluIHJhbmdlKDUpOmBgJmVtc3A7cHJpbnRmKCJTdGVwIHtpfSIpYCQkIDxicj4jIPCfjq8gQ29uY2x1c2lvbjxicj4mZW1zcDstIOKchSBQeXRob24gaXMgYSBwb3dlcmZ1bCwgZWFzeS10by1sZWFybiBsYW5ndWFnZSB1c2VkIGluIG1hbnkgaW5kdXN0cmllcy48YnI+JmVtc3A7LSDinIUgSXTigJlzIHBlcmZlY3QgZm9yICoqc3R1ZGVudHMqKiwgKipkZXZlbG9wZXJzKiosIGFuZCBldmVuICoqc2NpZW50aXN0cyoqLjxicj4mZW1zcDstIOKchSBUaG91Z2ggaXTigJlzIG5vdCB0aGUgZmFzdGVzdCBpbiB0ZXJtcyBvZiBwZXJmb3JtYW5jZSwgaXRzICoqc2ltcGxpY2l0eSwgdG9vbHMsIGFuZCBmbGV4aWJpbGl0eSoqIG1ha2UgaXQgYSB0b3AgY2hvaWNlLjxicj4mZW1zcDstIPCfkqEgSWYgeW91IHdhbnQgdG8gKipidWlsZCBhcHBzKiosICoqbGVhcm4gQUkqKiwgb3IgKiphdXRvbWF0ZSB0YXNrcyoqLCBQeXRob24gaXMgb25lIG9mIHRoZSBiZXN0IHRvb2xzIHlvdSBjYW4gc3RhcnQgd2l0aC4='
+        }
+
         for (var question in dataTesting) {
             chatbot.addData(question, dataTesting[question]);
         }
