@@ -1,8 +1,44 @@
 <!DOCTYPE html>
+<!--
+                    Contest: AI
+                
+         I have completed 100% of Khan Academy's 
+        'Intro to HTML/CSS' and have been programming 
+                    for 17 months.
+    
+          I would prefer to be placed in the
+                    [Intermediate]
+                       bracket
+                       
+        In creating this entry, I focused on make an AI chatbot that can answer every user's questions about Python programming.
+                                
+  One aspect I found challenging was to make the chatbot can understand the user question in case right syntax or wrong syntax, also the .md format for the chatbot content.
+                                
+                   I would like to highlight
+        This chatbot use a TF-IDF and Consine Similarity to
+        understand the user question if it is not at true
+        grammer or it's at the same meaning but different way 
+        to express, so it's use for the check the best match.
+        In this challenge, I learned about how to use make
+        user can copy everything in a big code blocks without
+        externals API, Markdown syntax for the chatbot, and 
+        advanced styling.
+                        for the judges.
+                       
+    
+    TODO:
+     - Fill out statements above (Done)
+     - Save your entry as a spin-off of this program (Done)
+     - Have fun! (Not yet :))
+-->
+<!--
+    This chatbot still don't have enough, I only add one data for it to answer only one question: What is Python?
+    Sorry for inconvenience, i will add more data, and allow user to train it also in a user-friendly way, not to change the code!.
+-->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Phixah Chatbot</title>
+    <title>PhixahAI (demo)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -162,6 +198,7 @@
             border-radius: 0 0 5px 5px;
             font-family: 'Courier New', Courier, monospace;
             font-weight: 700;
+            white-space: pre-wrap;
         }
         
         pre {
@@ -189,29 +226,76 @@
         }
 
         li {
-            line-height: 1.4em;
-            margin-left: 1em;
+            line-height: 1.25em;
+            margin-left: 0.5em;
+            margin-bottom: -0.5em;
+        }
+
+        ul, ol {
+            margin-top: 0;
         }
 
         code {
             font-family: 'Fira Code', 'Courier New', Courier, monospace;
         }
 
-        .keywords { color: #3289ef; }
-        .strings { color: #67b876; }
+        p {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .dot-typing {
+            display: inline-block;
+            position: relative;
+            width: 24px;
+            height: 8px;
+        }
+
+        .dot-typing div {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: #ccc;
+            border-radius: 50%;
+            animation: dotTypingAnim 1s infinite ease-in-out;
+        }
+
+        .dot-typing div:nth-child(1) {
+            left: 0;
+            animation-delay: 0s;
+        }
+        .dot-typing div:nth-child(2) {
+            left: 8px;
+            animation-delay: 0.2s;
+        }
+        .dot-typing div:nth-child(3) {
+            left: 16px;
+            animation-delay: 0.4s;
+        }
+
+        @keyframes dotTypingAnim {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
         
     </style>
 </head>
 <body>
-        <h1 id="chatbot-title">PHIXAH</h1>
-        <div id="chat-container"></div>
-        <div class="input-group">
-            <textarea type="text" id="user-input" placeholder="Enter your question..."></textarea>
-            <div class="function">
-                <button id="clear-button" style="vertical-align: middle;">×<span>Clear</span></button>
-            </div>
+    <h1 id="chatbot-title">PHIXAH</h1>
+    <div id="chat-container"></div>
+    <div class="input-group">
+        <textarea type="text" id="user-input" placeholder="Enter your question..."></textarea>
+        <div class="function">
+            <button id="clear-button" style="vertical-align: middle;">×<span>Clear</span></button>
         </div>
     </div>
+    
     <script>
         var copyButton = document.getElementsByClassName("copy-button")
         function format(text) {
@@ -220,7 +304,7 @@
             
             // Process headings (must come first)
             text = text.replace(/^#\s+(.*$)/gm, '<h2 style="margin-bottom: -0.65em;">$1</h2>');
-            text = text.replace(/^##\s+(.*$)/gm, '<h3>$1</h3>');
+            text = text.replace(/^##\s+(.*$)/gm, '<h3 style="margin-bottom: -0.75em;">$1</h3>');
             
             // Process bold/italic
             text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -230,16 +314,10 @@
             
             // Process code blocks
             text = text.replace(/\$\$(.*?)\$\$/g, function(match, p1) {
-                console.log("Big code block content:", p1);
-                p1 = p1.replace(/\"(.*?)\"/g, '<span class="strings">"$1"</span>')
-                p1 = p1.replace(/\b(print|if|def|for|while)\b/g, '<span class="keywords">$1</span>')
+                p1 = p1.replace(/\`(.*?)\`/g, '<p>$1</p>')
                 return '<pre><div><button class="copy-button">Copy</button></div><code class="big-code-blocks">' + p1 + '</code></pre>';
             });
             text = text.replace(/\$(.*?)\$/g, '<code class="code-blocks">$1</code>')
-            
-            // Process lists
-            text = text.replace(/^-\s+(.*$)/gm, '<li>$1</li>');
-            text = text.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
             
             // Convert newlines back to <br> tags for HTML display
             text = text.replace(/\n/g, '<br>');
@@ -324,23 +402,74 @@
         var chatbot = new manageChatbotSystem();
         var dataTesting = {
             "What is Python?": 
-                "**Python** is a high-level, interpreted **programming language** that’s known for being:" +
-                "It was created by **Guido van Rossum** and released in **1991**. " +
-                "Since then, it's become one of the most popular languages in the world—used everywhere from Google to NASA, and even by AI developers." +
-                "<br># Why Python is special?" +
-                "<br>Here's a quick, real-world-style breakdown:" + 
-                "<br>- **Simple Syntax: **Python code reads almost like English, so it's great for beginners." +
-                "<br>- **Versatile: **You can use Python to build websites, automate boring tasks, analyze data, create games, train AI, control robots, and more." +
-                "<br>- **Cross-platform: ** It runs on Windows, macOS, Linux, even Raspberry Pi." +
-                "<br>- **Huge library support: **From math ($numpy$) to machine learning ($scikit-learn$, $TensorFlow$) to making games ($pygame$), there's a library for _almost everything_." +
-                "<br># What does Python code look like?" +
-                "<br>Here's a tiny program in Python that says Hello World:" +
-                "<br>$$print(\"Hello print\")$$"
+                "# ✅ What is Python? <br>" +
+                "## ➕ Introduce about Python" +
+                "<br>Python is a **high-level, general-purpose programming language.**" +
+                "<br>It is designed to be **easy to read**, **simple to write**, and **very powerful**." +
+                "<br>People use Python to create:" + 
+                "<br>&emsp;- Games 🎮" +
+                "<br>&emsp;- Websites 🌐" +
+                "<br>&emsp;- Artificial Intelligence 🧠" +
+                "<br>&emsp;- Data analysis tools 📊" +
+                "<br>&emsp;- And even robots 🤖" +
+                "<br>Python is popular among both **beginners** and **professionals**. <br>" +
+                "## ➕ Python history" +
+                "<br>&emsp;- Python was created by **Guido van Rossum** in the **late 1980s** and officially released in **1991**." +
+                "<br>&emsp;- The name **\"Python\"** is inspired by the British comedy group **Monty Python**, not the snake." +
+                "<br>&emsp;- Over the years, Python has evolved:" +
+                "<br>&emsp;&emsp;- **Python 2.x** – older version (now outdated)" +
+                "<br>&emsp;&emsp;- **Python 3.x** – current and modern version, recommended for everyone <br>" +
+                "## ➕ What it does?" +
+                "<br>Python is used in **many fields**, including:" +
+                "<br>&emsp;- **AI & Machine Learning**: build smart systems that can learn and predict" +
+                "<br>&emsp;- **Web Development**: build powerful websites and apps" +
+                "<br>&emsp;- **Automation**: write scripts to do boring work automatically" +
+                "<br>&emsp;- **Game Development**: create games using 2D or even 3D libraries" +
+                "<br>&emsp;- **Data Science**: analyze, visualize, and understand data <br>" +
+                "# 🔍 Go deeper about performance of Python" +
+                "<br>Python is not the **fastest** programming language, but it’s **fast enough** for most tasks. <br>" +
+                "## ➕ Advantages" +
+                "<br>&emsp;- **✅ Fast to write** – Code is shorter and easier than C++ or Java" +
+                "<br>&emsp;- **✅ Quick development** – Good for rapid prototyping and testing ideas" +
+                "<br>&emsp;- **✅ Big ecosystem** – Thousands of libraries like NumPy, TensorFlow, Flask... <br>" +
+                "## ➖ Disadvantages" +
+                "<br>&emsp;- **❌ Slower execution speed** than C++, Rust, or Java" +
+                "<br>&emsp;- **❌ Not ideal for heavy real-time systems** (like AAA 3D games or OS kernels)" +
+                "<br>&emsp;- **❌ Single-threaded by default** – Not the best for parallel performance <br>" +
+                "## ⚙️ Why people still use Python despite slower speed?" +
+                "<br>Because most of the time, **developer time** is more important than **machine time**." +
+                "<br>Python is **fast to build**, **easy to test**, and has **tons of tools** to speed up development." +
+                "<br>Plus, performance can be improved by:" +
+                "<br>&emsp; - Using libr;aries written in C/C++ (like NumPy)" +
+                "<br>&emsp; - Combining with other languages (e.g., use Python + C++)" +
+                "<br>&emsp; - Running on faster machines (Cloud, GPU...) <br>" +
+                "# 💡 Some examples <br>" +
+                "## 📘 Example 1: Hello World" +
+                "<br>$$print(\"Hello, world!\")$$ <br>" +
+                "## 📘 Example 2: Simple Calculator" +
+                "<br>$$`a = int(input(\"Enter first number: \"))``b = int(input(\"Enter second number: \"))``print(\"Sum is:\", a + b)`$$ <br>" +
+                "## 📘 Example 3: If-else logic" +
+                "<br>$$`age = int(input(\"Your age? \"))``if age >= 18:``&emsp;print(\"You are an adult.\")``else:``&emsp;print(\"You are still young!\")`$$<br>" +
+                "## 📘 Example 4: Loop" +
+                "$$`for i in range(5):``&emsp;printf(\"Step {i}\")`$$ <br>" +
+                "# 🎯 Conclusion" +
+                "<br>&emsp;- ✅ Python is a powerful, easy-to-learn language used in many industries." +
+                "<br>&emsp;- ✅ It’s perfect for **students**, **developers**, and even **scientists**." +
+                "<br>&emsp;- ✅ Though it’s not the fastest in terms of performance, its **simplicity, tools, and flexibility** make it a top choice." +
+                "<br>&emsp;- 💡 If you want to **build apps**, **learn AI**, or **automate tasks**, Python is one of the best tools you can start with."
         };
         for (var question in dataTesting) {
             chatbot.addData(question, dataTesting[question]);
         }
         
+        function showLoading() {
+            document.getElementById("loading-message").style.display = "block";
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        function hideLoading() {
+            document.getElementById("loading-message").style.display = "none";
+        }
+
         function addMessage(message, isUser) {
             var msg = document.createElement("div");
             msg.className = isUser ? "user-message" : "bot-message";
@@ -352,11 +481,26 @@
             var message = userInput.value.trim();
             if (message) {
                 addMessage(message, true);
-                var response = chatbot.findAnswer(message);
-                addMessage(response, false);
+
+                // Thêm block loading
+                const loadingMsg = document.createElement("div");
+                loadingMsg.className = "bot-message loading";
+                loadingMsg.innerHTML = '<div class="dot-typing"><div></div><div></div><div></div></div>';
+                chatContainer.appendChild(loadingMsg);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+
                 userInput.value = "";
+
+                setTimeout(function() {
+                    var response = chatbot.findAnswer(message);
+
+                    chatContainer.removeChild(loadingMsg);
+
+                    addMessage(response, false);
+                }, 2000);
             }
-        }  
+        }
+         
         function handleClearMessage() {
             chatContainer.innerHTML = '';
             alert("Chat history cleared successfully");
@@ -381,7 +525,7 @@
                 var success = document.execCommand('copy');
                 if (success) {
                     e.target.textContent = "Copied!";
-                    setTimeout(() => e.target.textContent = "Copy", 1000);
+                    setTimeout(function() {e.target.textContent="Copy"}, 1000);
                 } else {
                     e.target.textContent = "Failed";
                 }
