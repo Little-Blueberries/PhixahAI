@@ -284,6 +284,20 @@
             }
         }
         
+        .style-hr {
+            border: none;
+            border-top: 1px solid;
+            height: 1px;
+        }
+        .hrHeader1 {
+            color: white;
+        }
+        .hrHeader2 {
+            color: #979797;
+        }
+        .hrHeader3 {
+            color: #646464;
+        }
     </style>
 </head>
 <body>
@@ -307,9 +321,9 @@
         function format(text) {
             text = text.replace(/<br>/g, '\n');
             
-            text = text.replace(/^###\s+(.*$)/gm, '<h4 style="margin-bottom: -0.8em;">$1</h4>');
-            text = text.replace(/^##\s+(.*$)/gm, '<h3 style="margin-bottom: -0.75em;">$1</h3>');
-            text = text.replace(/^#\s+(.*$)/gm, '<h2 style="margin-bottom: -0.65em;">$1</h2>');
+            text = text.replace(/^###\s+(.*$)/gm, '<hr class="style-hr hrHeader3"><h4 style="margin-bottom: -0.8em;">$1</h4>');
+            text = text.replace(/^##\s+(.*$)/gm, '<hr class="style-hr hrHeader2"><h3 style="margin-bottom: -0.75em;">$1</h3>');
+            text = text.replace(/^#\s+(.*$)/gm, '<hr class="style-hr hrHeader1"><h2 style="margin-bottom: -0.65em;">$1</h2>');
             
             // Process bold/italic
             text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -324,6 +338,7 @@
             text = text.replace(/\$(.*?)\$/g, '<code class="code-blocks">$1</code>')
             
             text = text.replace(/\n/g, '<br>');
+            text = text.replace(/^\/pr\s+(.*$)/gm, '<hr><br class="small-br">');
             
             return text;
         }
@@ -401,10 +416,7 @@
         var chatbot = new manageChatbotSystem();
         var dataTesting = {
             "What is Python?": '# ✅ What is Python? <br>## ➕ Introduce about Python<br>Python is a **high-level, general-purpose programming language.**<br>It is designed to be **easy to read**, **simple to write**, and **very powerful**.<br>People use Python to create:<br>&emsp;- Games 🎮<br>&emsp;- Websites 🌐<br>&emsp;- Artificial Intelligence 🧠<br>&emsp;- Data analysis tools 📊<br>&emsp;- And even robots 🤖## ➕ Python history<br>&emsp;- Python was created by **Guido van Rossum** in the **late 1980s** and officially released in **1991**.<br>&emsp;- The name **\"Python\"** is inspired by the British comedy group **Monty Python**, not the snake.<br>&emsp;- Over the years, Python has evolved:<br>&emsp;&emsp;- **Python 2.x** – older version (now outdated)<br>&emsp;&emsp;- **Python 3.x** – current and modern version, recommended for everyone <br>## ➕ What it does?<br>Python is used in **many fields**, including:<br>&emsp;- **AI & Machine Learning**: build smart systems that can learn and predict<br>&emsp;- **Web Development**: build powerful websites and apps<br>&emsp;- **Automation**: write scripts to do boring work automatically<br>&emsp;- **Game Development**: create games using 2D or even 3D libraries<br>&emsp;- **Data Science**: analyze, visualize, and understand data <br># 🔍 Go deeper about performance of Python<br>Python is not the **fastest** programming language, but it’s **fast enough** for most tasks. <br>## ➕ Advantages<br>&emsp;- **✅ Fast to write** – Code is shorter and easier than C++ or Java<br>&emsp;- **✅ Quick development** – Good for rapid prototyping and testing ideas<br>&emsp;- **✅ Big ecosystem** – Thousands of libraries like NumPy, TensorFlow, Flask... <br>## ➖ Disadvantages<br>&emsp;- **❌ Slower execution speed** than C++, Rust, or Java<br>&emsp;- **❌ Not ideal for heavy real-time systems** (like AAA 3D games or OS kernels)<br>&emsp;- **❌ Single-threaded by default** – Not the best for parallel performance <br>## ⚙️ Why people still use Python despite slower speed?<br>Because most of the time, **developer time** is more important than **machine time**.<br>Python is **fast to build**, **easy to test**, and has **tons of tools** to speed up development.<br>Plus, performance can be improved by:<br>&emsp; - Using libr;aries written in C/C++ (like NumPy)<br>&emsp; - Combining with other languages (e.g., use Python + C++)<br>&emsp; - Running on faster machines (Cloud, GPU...) <br># 💡 Some examples <br>## 📘 Example 1: Hello World<br>$$print(\"Hello, world!\")$$ <br>## 📘 Example 2: Simple Calculator<br>$$`a = int(input(\"Enter first number: \"))``b = int(input(\"Enter second number: \"))``print(\"Sum is:\", a + b)`$$ <br>## 📘 Example 3: If-else logic<br>$$`age = int(input(\"Your age? \"))``if age >= 18:``&emsp;print(\"You are an adult.\")``else:``&emsp;print(\"You are still young!\")`$$<br>## 📘 Example 4: Loop<br>$$`for i in range(5):``&emsp;printf(\"Step {i}\")`$$ <br># 🎯 Conclusion<br>&emsp;- ✅ Python is a powerful, easy-to-learn language used in many industries.<br>&emsp;- ✅ It’s perfect for **students**, **developers**, and even **scientists**.<br>&emsp;- ✅ Though it’s not the fastest in terms of performance, its **simplicity, tools, and flexibility** make it a top choice.<br>&emsp;- 💡 If you want to **build apps**, **learn AI**, or **automate tasks**, Python is one of the best tools you can start with.',
-            "What are the main benefits of Python?": "Here are the **main advantages of Python**, especially from a practical, real-world perspective:" +
-                                                     "# 🧠 1. Easy to Learn and Use" +
-                                                     "<br>&emsp;- **Simple syntax similar** to English." +
-                                                     "<br>&emsp;- Ideal for **beginners** and powerful enough for **experts**."
+            "What are the main benefits of Python?": "Here are the **main advantages of Python**, especially from a practical, real-world perspective:<br># 🧠 1. Easy to Learn and Use<br>&emsp;- **Simple syntax similar** to English.<br>&emsp;- Ideal for **beginners** and powerful enough for **experts**.<br>&emsp;- You can write more code with fewer lines — \"**Do more with less!**\"<br># 🚀 2. Versatile & Cross-platform<br>&emsp;- Works on **Windows, macOS, Linux**, and even mobile!<br>&emsp;- Can be used in:<br>&emsp;&emsp;- **Web development** (Django, Flask)<br>&emsp;&emsp;- **Data Science & AI** (Pandas, NumPy, TensorFlow)<br>&emsp;&emsp;- **Game development** (Pygame)<br>&emsp;&emsp;- **Scripting, automation, APIs, IoT**, etc.<br># 🤖 3. Powerful Libraries & Frameworks<br>&emsp;- Thousands of libraries ready to go: $numpy$, $matplotlib$, $scikit-learn$, $fastapi$, $pytorch$...<br>&emsp;Perfect for **AI, machine learning, and deep learning**.# 🌐 4. Massive Community Support<br>&emsp;- Tons of tutorials, Stack Overflow threads, GitHub repos.<br>&emsp;- If you get stuck, **someone has probably solved it already**.<br>&emsp;- Actively maintained with **frequent updates**.<br># 🔧 5. Great for Prototyping<br>&emsp;- Build a quick prototype in hours, not days.<br>&emsp;- Makes testing and experimenting fast and fun.<br># 🧩 6. Integration-Friendly<br>&emsp;- Can connect easily with other languages (C/C++, Java, etc.).<br>&emsp;- Useful in **web APIs, databases, GUIs**, and even hardware projects like **Raspberry Pi**.<br># 🏆 Bonus: Popular and In-Demand<br>&emsp;- Used by giants like **Google, Netflix, NASA, Meta, and OpenAI**.<br>&emsp;- Lots of jobs and career paths in **software development, data analysis, and AI**.<br># TL;DR (Too Long; Didn't Read):<br>*Python is simple, powerful, flexible, and fun. Whether you’re building a website, training an AI model, or just automating homework, Python’s got your back. 🐍💻*"
         }
 
         for (var question in dataTesting) {
