@@ -1,511 +1,511 @@
 <!DOCTYPE html>
 <!--
-                    Contest: AI
-                
-         I have completed 100% of Khan Academy's 
-        'Intro to HTML/CSS' and have been programming 
-                    for 17 months.
-    
-          I would prefer to be placed in the
-                    [Intermediate]
-                       bracket
-                       
-        In creating this entry, I focused on make an AI chatbot that can answer every user's questions about Python programming.
-                                
+					Contest: AI
+				
+		 I have completed 100% of Khan Academy's 
+		'Intro to HTML/CSS' and have been programming 
+					for 17 months.
+	
+		  I would prefer to be placed in the
+					[Intermediate]
+					   bracket
+					   
+		In creating this entry, I focused on make an AI chatbot that can answer every user's questions about Python programming.
+								
   One aspect I found challenging was to make the chatbot can understand the user question in case right syntax or wrong syntax, also the .md format for the chatbot content.
-                                
-                   I would like to highlight
-        This chatbot use a TF-IDF and Consine Similarity to
-        understand the user question if it is not at true
-        grammer or it's at the same meaning but different way 
-        to express, so it's use for the check the best match.
-        In this challenge, I learned about how to use make
-        user can copy everything in a big code blocks without
-        externals API, Markdown syntax for the chatbot, and 
-        advanced styling.
-                        for the judges.
-                       
-    
-    TODO:
-     - Fill out statements above (Done)
-     - Save your entry as a spin-off of this program (Done)
-     - Have fun! (Not yet :))
+								
+				   I would like to highlight
+		This chatbot use a TF-IDF and Consine Similarity to
+		understand the user question if it is not at true
+		grammer or it's at the same meaning but different way 
+		to express, so it's use for the check the best match.
+		In this challenge, I learned about how to use make
+		user can copy everything in a big code blocks without
+		externals API, Markdown syntax for the chatbot, and 
+		advanced styling.
+						for the judges.
+					   
+	
+	TODO:
+	 - Fill out statements above (Done)
+	 - Save your entry as a spin-off of this program (Done)
+	 - Have fun! (Not yet :))
 -->
 <!--
-    This chatbot still don't have enough, I only add one data for it to answer only one question: What is Python?
-    Sorry for inconvenience, i will add more data, and allow user to train it also in a user-friendly way, not to change the code!.
+	This chatbot still don't have enough, I only add one data for it to answer only one question: What is Python?
+	Sorry for inconvenience, i will add more data, and allow user to train it also in a user-friendly way, not to change the code!.
 -->
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>PhixahAI (demo)</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            transition: all 0.5s ease;
-            box-sizing: border-box;
-        }
-        
-        body {
-            margin: 0;
-            padding: 20px;
-            background-color: #1b1b1b;
-            font-family: 'Montserrat', sans-serif;
-            color: white;
-        }
-        body::-webkit-scrollbar {
-            display: none;
-        }
-        
-        #chat-container {
-            height: 390px;
-            overflow-y: auto;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            border: 1px solid #333;
-            border-radius: 8px;
-            background-color: #121212;
-        }
-        #chat-container::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .user-message, .bot-message {
-            padding: 10px 20px;
-            border-radius: 10px;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            font-family: 'Segoe UI', Ubuntu, sans-serif;
-        }
-        
-        .user-message {
-            align-self: flex-end;
-            background-color: #292929;
-            text-align: right;
-            max-width: 70%;
-        }
-        
-        .bot-message {
-            align-self: flex-start;
-            text-align: left;
-            line-height: 1.5em;
-        }
-        
-        .input-group {
-            margin-top: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5em;
-            background-color: #292929;
-        }
-        
-        #user-input {
-            padding: 0.75em 1em;
-            border: none;
-            border-radius: 0.25em;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1em;
-            background-color: #292929;
-            color: white;
-            resize: none;
-            height: 2em;
-            width: 100%;
-            line-height: 1.4em;
-            overflow: auto;
-        }
-        
-        #user-input::placeholder {
-            color: rgb(160, 160, 160);
-        }
-        
-        #user-input:focus {
-            outline: none;
-        }
-        
-        #user-input::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .function {
-            display: flex;
-            justify-content: flex-end;
-            padding: 0.5em;
-        }
-        
-        #clear-button {
-            font-size: 1.25em;
-            background-color: #292929;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 0.25em;
-            cursor: pointer;
-            width: 2.2em;
-            height: 2.2em;
-            overflow: hidden;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: width 0.4s ease, background-color 0.3s ease;
-        }
-        
-        #clear-button span {
-            display: inline-block;
-            max-width: 0;
-            overflow: hidden;
-            white-space: nowrap;
-            transition: max-width 0.4s ease, margin-left 0.4s ease;
-            margin-left: 0;
-        }
-        
-        #clear-button:hover {
-            width: 110px;
-            background-color: #3b3b3b;
-        }
-        
-        #clear-button:hover span {
-            max-width: 100px;
-            margin-left: 8px;
-        }
-        
-        #chatbot-title {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 300;
-            font-size: 2.5em;
-            color: white;
-            text-align: center;
-            margin: 0 0 10px;
-        }
-        
-        .code-blocks {
-            background-color: rgba(196, 196, 196, 0.342);
-            border-radius: 4px;
-            padding: 1px 8px;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        
-        .big-code-blocks {
-            background-color: #000000;
-            padding: 10px;
-            border-radius: 0 0 5px 5px;
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: 700;
-            white-space: pre-wrap;
-        }
-        
-        pre {
-            display: flex;
-            flex-direction: column;
-        }
+	<meta charset="UTF-8">
+	<title>PhixahAI (demo)</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
+	<style>
+		* {
+			transition: all 0.5s ease;
+			box-sizing: border-box;
+		}
+		
+		body {
+			margin: 0;
+			padding: 20px;
+			background-color: #1b1b1b;
+			font-family: 'Montserrat', sans-serif;
+			color: white;
+		}
+		body::-webkit-scrollbar {
+			display: none;
+		}
+		
+		#chat-container {
+			height: 390px;
+			overflow-y: auto;
+			padding: 10px;
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			border: 1px solid #333;
+			border-radius: 8px;
+			background-color: #121212;
+		}
+		#chat-container::-webkit-scrollbar {
+			display: none;
+		}
+		
+		.user-message, .bot-message {
+			padding: 10px 20px;
+			border-radius: 10px;
+			word-wrap: break-word;
+			white-space: pre-wrap;
+			overflow-wrap: break-word;
+			font-family: 'Segoe UI', Ubuntu, sans-serif;
+		}
+		
+		.user-message {
+			align-self: flex-end;
+			background-color: #292929;
+			text-align: right;
+			max-width: 70%;
+		}
+		
+		.bot-message {
+			align-self: flex-start;
+			text-align: left;
+			line-height: 1.5em;
+		}
+		
+		.input-group {
+			margin-top: 10px;
+			display: flex;
+			flex-direction: column;
+			gap: 0.5em;
+			background-color: #292929;
+		}
+		
+		#user-input {
+			padding: 0.75em 1em;
+			border: none;
+			border-radius: 0.25em;
+			font-family: 'Montserrat', sans-serif;
+			font-size: 1em;
+			background-color: #292929;
+			color: white;
+			resize: none;
+			height: 2em;
+			width: 100%;
+			line-height: 1.4em;
+			overflow: auto;
+		}
+		
+		#user-input::placeholder {
+			color: rgb(160, 160, 160);
+		}
+		
+		#user-input:focus {
+			outline: none;
+		}
+		
+		#user-input::-webkit-scrollbar {
+			display: none;
+		}
+		
+		.function {
+			display: flex;
+			justify-content: flex-end;
+			padding: 0.5em;
+		}
+		
+		#clear-button {
+			font-size: 1.25em;
+			background-color: #292929;
+			color: white;
+			border: none;
+			padding: 6px 12px;
+			border-radius: 0.25em;
+			cursor: pointer;
+			width: 2.2em;
+			height: 2.2em;
+			overflow: hidden;
+			white-space: nowrap;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			transition: width 0.4s ease, background-color 0.3s ease;
+		}
+		
+		#clear-button span {
+			display: inline-block;
+			max-width: 0;
+			overflow: hidden;
+			white-space: nowrap;
+			transition: max-width 0.4s ease, margin-left 0.4s ease;
+			margin-left: 0;
+		}
+		
+		#clear-button:hover {
+			width: 110px;
+			background-color: #3b3b3b;
+		}
+		
+		#clear-button:hover span {
+			max-width: 100px;
+			margin-left: 8px;
+		}
+		
+		#chatbot-title {
+			font-family: 'Montserrat', sans-serif;
+			font-weight: 300;
+			font-size: 2.5em;
+			color: white;
+			text-align: center;
+			margin: 0 0 10px;
+		}
+		
+		.code-blocks {
+			background-color: rgba(196, 196, 196, 0.342);
+			border-radius: 4px;
+			padding: 1px 8px;
+			font-family: 'Courier New', Courier, monospace;
+		}
+		
+		.big-code-blocks {
+			background-color: #000000;
+			padding: 10px;
+			border-radius: 0 0 5px 5px;
+			font-family: 'Courier New', Courier, monospace;
+			font-weight: 700;
+			white-space: pre-wrap;
+		}
+		
+		pre {
+			display: flex;
+			flex-direction: column;
+		}
 
-        pre div {
-            display: flex;
-            flex-direction: row;
-            background-color: #292929;
-            border-radius: 5px 5px 0 0;
-            height: 25px;
-            justify-content: flex-end;
-            align-items: center;
-            padding-right: 10px;
-        }
-        
-        pre div button {
-            background-color: #292929;
-            color: white;
-            font-family: 'Segoe UI', Ubuntu, Tahoma, Geneva, Verdana, sans-serif;
-            border: none;
-            outline: none;
-        }
+		pre div {
+			display: flex;
+			flex-direction: row;
+			background-color: #292929;
+			border-radius: 5px 5px 0 0;
+			height: 25px;
+			justify-content: flex-end;
+			align-items: center;
+			padding-right: 10px;
+		}
+		
+		pre div button {
+			background-color: #292929;
+			color: white;
+			font-family: 'Segoe UI', Ubuntu, Tahoma, Geneva, Verdana, sans-serif;
+			border: none;
+			outline: none;
+		}
 
-        li {
-            line-height: 1.25em;
-            margin-left: 0.5em;
-            margin-bottom: -0.5em;
-        }
+		li {
+			line-height: 1.25em;
+			margin-left: 0.5em;
+			margin-bottom: -0.5em;
+		}
 
-        ul, ol {
-            margin-top: 0;
-        }
+		ul, ol {
+			margin-top: 0;
+		}
 
-        code {
-            font-family: 'Fira Code', 'Courier New', Courier, monospace;
-        }
+		code {
+			font-family: 'Fira Code', 'Courier New', Courier, monospace;
+		}
 
-        p {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
+		p {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
 
-        .dot-typing {
-            display: inline-block;
-            position: relative;
-            width: 24px;
-            height: 8px;
-        }
+		.dot-typing {
+			display: inline-block;
+			position: relative;
+			width: 24px;
+			height: 8px;
+		}
 
-        .dot-typing div {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background-color: #ccc;
-            border-radius: 50%;
-            animation: dotTypingAnim 1s infinite ease-in-out;
-        }
+		.dot-typing div {
+			position: absolute;
+			width: 5px;
+			height: 5px;
+			background-color: #ccc;
+			border-radius: 50%;
+			animation: dotTypingAnim 1s infinite ease-in-out;
+		}
 
-        .dot-typing div:nth-child(1) {
-            left: 0;
-            animation-delay: 0s;
-        }
-        .dot-typing div:nth-child(2) {
-            left: 8px;
-            animation-delay: 0.2s;
-        }
-        .dot-typing div:nth-child(3) {
-            left: 16px;
-            animation-delay: 0.4s;
-        }
+		.dot-typing div:nth-child(1) {
+			left: 0;
+			animation-delay: 0s;
+		}
+		.dot-typing div:nth-child(2) {
+			left: 8px;
+			animation-delay: 0.2s;
+		}
+		.dot-typing div:nth-child(3) {
+			left: 16px;
+			animation-delay: 0.4s;
+		}
 
-        @keyframes dotTypingAnim {
-            0%, 80%, 100% {
-                transform: scale(0.8);
-                opacity: 0.5;
-            }
-            40% {
-                transform: scale(1.2);
-                opacity: 1;
-            }
-        }
-        
-        .style-hr {
-            border: none;
-            border-top: 1px solid;
-            height: 1px;
-        }
-        .hrHeader1 {
-            color: white;
-        }
-        .hrHeader2 {
-            color: #979797;
-        }
-        .hrHeader3 {
-            color: #646464;
-        }
-    </style>
+		@keyframes dotTypingAnim {
+			0%, 80%, 100% {
+				transform: scale(0.8);
+				opacity: 0.5;
+			}
+			40% {
+				transform: scale(1.2);
+				opacity: 1;
+			}
+		}
+		
+		.style-hr {
+			border: none;
+			border-top: 1px solid;
+			height: 1px;
+		}
+		.hrHeader1 {
+			color: white;
+		}
+		.hrHeader2 {
+			color: #979797;
+		}
+		.hrHeader3 {
+			color: #646464;
+		}
+	</style>
 </head>
 <body>
-    <h1 id="chatbot-title">PHIXAH</h1>
-    <div id="chat-container"></div>
-    <div class="input-group">
-        <textarea type="text" id="user-input" placeholder="Enter your question..."></textarea>
-        <div class="function">
-            <button id="clear-button" style="vertical-align: middle;">×<span>Clear</span></button>
-        </div>
-    </div>
-    
-    <script>
-        // Get HTML Elements
-        var copyButton = document.getElementsByClassName("copy-button")
-        var chatContainer = document.getElementById("chat-container");
-        var userInput = document.getElementById("user-input");
-        var clearButton = document.getElementById("clear-button");
+	<h1 id="chatbot-title">PHIXAH</h1>
+	<div id="chat-container"></div>
+	<div class="input-group">
+		<textarea type="text" id="user-input" placeholder="Enter your question..."></textarea>
+		<div class="function">
+			<button id="clear-button" style="vertical-align: middle;">×<span>Clear</span></button>
+		</div>
+	</div>
+	
+	<script>
+		// Get HTML Elements
+		var copyButton = document.getElementsByClassName("copy-button")
+		var chatContainer = document.getElementById("chat-container");
+		var userInput = document.getElementById("user-input");
+		var clearButton = document.getElementById("clear-button");
 
-        // Format the answer from the chatbot
-        function format(text) {
-            text = text.replace(/<br>/g, '\n');
-            
-            text = text.replace(/^###\s+(.*$)/gm, '<hr class="style-hr hrHeader3"><h4 style="margin-bottom: -0.8em;">$1</h4>');
-            text = text.replace(/^##\s+(.*$)/gm, '<hr class="style-hr hrHeader2"><h3 style="margin-bottom: -0.75em;">$1</h3>');
-            text = text.replace(/^#\s+(.*$)/gm, '<hr class="style-hr hrHeader1"><h2 style="margin-bottom: -0.65em;">$1</h2>');
-            
-            // Process bold/italic
-            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            text = text.replace(/\_\_(.*?)\_\_/g, '<strong>$1</strong>');
-            text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
-            text = text.replace(/\_(.*?)\_/g, '<em>$1</em>');
-            
-            text = text.replace(/\$\$(.*?)\$\$/g, function(match, p1) {
-                p1 = p1.replace(/\`(.*?)\`/g, '<p>$1</p>')
-                return '<pre><div><button class="copy-button">Copy</button></div><code class="big-code-blocks">' + p1 + '</code></pre>';
-            });
-            text = text.replace(/\$(.*?)\$/g, '<code class="code-blocks">$1</code>')
-            
-            text = text.replace(/\n/g, '<br>');
-            text = text.replace(/^\/pr\s+(.*$)/gm, '<hr><br class="small-br">');
-            
-            return text;
-        }
+		// Format the answer from the chatbot
+		function format(text) {
+			text = text.replace(/<br>/g, '\n');
+			
+			text = text.replace(/^###\s+(.*$)/gm, '<hr class="style-hr hrHeader3"><h4 style="margin-bottom: -0.8em;">$1</h4>');
+			text = text.replace(/^##\s+(.*$)/gm, '<hr class="style-hr hrHeader2"><h3 style="margin-bottom: -0.75em;">$1</h3>');
+			text = text.replace(/^#\s+(.*$)/gm, '<hr class="style-hr hrHeader1"><h2 style="margin-bottom: -0.65em;">$1</h2>');
+			
+			// Process bold/italic
+			text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+			text = text.replace(/\_\_(.*?)\_\_/g, '<strong>$1</strong>');
+			text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+			text = text.replace(/\_(.*?)\_/g, '<em>$1</em>');
+			
+			text = text.replace(/\$\$(.*?)\$\$/g, function(match, p1) {
+				p1 = p1.replace(/\`(.*?)\`/g, '<p>$1</p>')
+				return '<pre><div><button class="copy-button">Copy</button></div><code class="big-code-blocks">' + p1 + '</code></pre>';
+			});
+			text = text.replace(/\$(.*?)\$/g, '<code class="code-blocks">$1</code>')
+			
+			text = text.replace(/\n/g, '<br>');
+			text = text.replace(/^\/pr\s+(.*$)/gm, '<hr><br class="small-br">');
+			
+			return text;
+		}
 
-        // The chatbot system object
-        function manageChatbotSystem() {
-            this.documents = [];
-            this.responses = [];
-            this.wordIDF = {};
-        }
-        manageChatbotSystem.prototype.addData = function(question, response) {
-            this.documents.push(question);
-            this.responses.push(response);
-        };
-        manageChatbotSystem.prototype.calculateTF = function(word, document) {
-            var words = document.split(/\s+/);
-            var count = 0;
-            for (var i = 0; i < words.length; i++) {
-                if (words[i] === word) count++;
-            }
-            return count / words.length;
-        };
-        manageChatbotSystem.prototype.calculateIDF = function(word) {
-            if (this.wordIDF[word] !== undefined) return this.wordIDF[word];
-            var count = 0;
-            for (var i = 0; i < this.documents.length; i++) {
-                if (this.documents[i].split(/\s+/).indexOf(word) !== -1) count++;
-            }
-            var idf = Math.log(this.documents.length / (1 + count)) + 1;
-            this.wordIDF[word] = idf;
-            return idf;
-        };
-        manageChatbotSystem.prototype.computeVector = function(doc) {
-            var words = doc.split(/\s+/);
-            var tfidf = {};
-            for (var i = 0; i < words.length; i++) {
-                var word = words[i];
-                if (!tfidf[word]) {
-                    tfidf[word] = this.calculateTF(word, doc) * this.calculateIDF(word);
-                }
-            }
-            return tfidf;
-        };
-        manageChatbotSystem.prototype.cosineSimilarity = function(v1, v2) {
-            var sum = 0, mag1 = 0, mag2 = 0;
-            var keys = {};
-            for (var key in v1) keys[key] = true;
-            for (var key in v2) keys[key] = true;
-            for (var key in keys) {
-                var a = v1[key] || 0;
-                var b = v2[key] || 0;
-                sum += a * b;
-                mag1 += a * a;
-                mag2 += b * b;
-            }
-            if (mag1 === 0 || mag2 === 0) return 0;
-            return sum / (Math.sqrt(mag1) * Math.sqrt(mag2));
-        };
-        manageChatbotSystem.prototype.findAnswer = function(userInput) {
-            var inputVector = this.computeVector(userInput);
-            var maxScore = 0;
-            var answer = "Sorry, I don't understand."
-            for (var i = 0; i < this.documents.length; i++) {
-                var docVector = this.computeVector(this.documents[i]);
-                var score = this.cosineSimilarity(inputVector, docVector);
-                if (score > maxScore) {
-                    maxScore = score;
-                    answer = this.responses[i];
-                }
-            }
-            return answer;
-        }
-        
-        
-        var chatbot = new manageChatbotSystem();
-        var dataTesting = {
-            "What is Python?": '# ✅ What is Python? <br>## ➕ Introduce about Python<br>Python is a **high-level, general-purpose programming language.**<br>It is designed to be **easy to read**, **simple to write**, and **very powerful**.<br>People use Python to create:<br>&emsp;- Games 🎮<br>&emsp;- Websites 🌐<br>&emsp;- Artificial Intelligence 🧠<br>&emsp;- Data analysis tools 📊<br>&emsp;- And even robots 🤖## ➕ Python history<br>&emsp;- Python was created by **Guido van Rossum** in the **late 1980s** and officially released in **1991**.<br>&emsp;- The name **\"Python\"** is inspired by the British comedy group **Monty Python**, not the snake.<br>&emsp;- Over the years, Python has evolved:<br>&emsp;&emsp;- **Python 2.x** – older version (now outdated)<br>&emsp;&emsp;- **Python 3.x** – current and modern version, recommended for everyone <br>## ➕ What it does?<br>Python is used in **many fields**, including:<br>&emsp;- **AI & Machine Learning**: build smart systems that can learn and predict<br>&emsp;- **Web Development**: build powerful websites and apps<br>&emsp;- **Automation**: write scripts to do boring work automatically<br>&emsp;- **Game Development**: create games using 2D or even 3D libraries<br>&emsp;- **Data Science**: analyze, visualize, and understand data <br># 🔍 Go deeper about performance of Python<br>Python is not the **fastest** programming language, but it’s **fast enough** for most tasks. <br>## ➕ Advantages<br>&emsp;- **✅ Fast to write** – Code is shorter and easier than C++ or Java<br>&emsp;- **✅ Quick development** – Good for rapid prototyping and testing ideas<br>&emsp;- **✅ Big ecosystem** – Thousands of libraries like NumPy, TensorFlow, Flask... <br>## ➖ Disadvantages<br>&emsp;- **❌ Slower execution speed** than C++, Rust, or Java<br>&emsp;- **❌ Not ideal for heavy real-time systems** (like AAA 3D games or OS kernels)<br>&emsp;- **❌ Single-threaded by default** – Not the best for parallel performance <br>## ⚙️ Why people still use Python despite slower speed?<br>Because most of the time, **developer time** is more important than **machine time**.<br>Python is **fast to build**, **easy to test**, and has **tons of tools** to speed up development.<br>Plus, performance can be improved by:<br>&emsp; - Using libr;aries written in C/C++ (like NumPy)<br>&emsp; - Combining with other languages (e.g., use Python + C++)<br>&emsp; - Running on faster machines (Cloud, GPU...) <br># 💡 Some examples <br>## 📘 Example 1: Hello World<br>$$print(\"Hello, world!\")$$ <br>## 📘 Example 2: Simple Calculator<br>$$`a = int(input(\"Enter first number: \"))``b = int(input(\"Enter second number: \"))``print(\"Sum is:\", a + b)`$$ <br>## 📘 Example 3: If-else logic<br>$$`age = int(input(\"Your age? \"))``if age >= 18:``&emsp;print(\"You are an adult.\")``else:``&emsp;print(\"You are still young!\")`$$<br>## 📘 Example 4: Loop<br>$$`for i in range(5):``&emsp;printf(\"Step {i}\")`$$ <br># 🎯 Conclusion<br>&emsp;- ✅ Python is a powerful, easy-to-learn language used in many industries.<br>&emsp;- ✅ It’s perfect for **students**, **developers**, and even **scientists**.<br>&emsp;- ✅ Though it’s not the fastest in terms of performance, its **simplicity, tools, and flexibility** make it a top choice.<br>&emsp;- 💡 If you want to **build apps**, **learn AI**, or **automate tasks**, Python is one of the best tools you can start with.',
-            "What are the main benefits of Python?": "Here are the **main advantages of Python**, especially from a practical, real-world perspective:<br># 🧠 1. Easy to Learn and Use<br>&emsp;- **Simple syntax similar** to English.<br>&emsp;- Ideal for **beginners** and powerful enough for **experts**.<br>&emsp;- You can write more code with fewer lines — \"**Do more with less!**\"<br># 🚀 2. Versatile & Cross-platform<br>&emsp;- Works on **Windows, macOS, Linux**, and even mobile!<br>&emsp;- Can be used in:<br>&emsp;&emsp;- **Web development** (Django, Flask)<br>&emsp;&emsp;- **Data Science & AI** (Pandas, NumPy, TensorFlow)<br>&emsp;&emsp;- **Game development** (Pygame)<br>&emsp;&emsp;- **Scripting, automation, APIs, IoT**, etc.<br># 🤖 3. Powerful Libraries & Frameworks<br>&emsp;- Thousands of libraries ready to go: $numpy$, $matplotlib$, $scikit-learn$, $fastapi$, $pytorch$...<br>&emsp;Perfect for **AI, machine learning, and deep learning**.# 🌐 4. Massive Community Support<br>&emsp;- Tons of tutorials, Stack Overflow threads, GitHub repos.<br>&emsp;- If you get stuck, **someone has probably solved it already**.<br>&emsp;- Actively maintained with **frequent updates**.<br># 🔧 5. Great for Prototyping<br>&emsp;- Build a quick prototype in hours, not days.<br>&emsp;- Makes testing and experimenting fast and fun.<br># 🧩 6. Integration-Friendly<br>&emsp;- Can connect easily with other languages (C/C++, Java, etc.).<br>&emsp;- Useful in **web APIs, databases, GUIs**, and even hardware projects like **Raspberry Pi**.<br># 🏆 Bonus: Popular and In-Demand<br>&emsp;- Used by giants like **Google, Netflix, NASA, Meta, and OpenAI**.<br>&emsp;- Lots of jobs and career paths in **software development, data analysis, and AI**.<br># TL;DR (Too Long; Didn't Read):<br>*Python is simple, powerful, flexible, and fun. Whether you’re building a website, training an AI model, or just automating homework, Python’s got your back. 🐍💻*"
-        }
+		// The chatbot system object
+		function manageChatbotSystem() {
+			this.documents = [];
+			this.responses = [];
+			this.wordIDF = {};
+		}
+		manageChatbotSystem.prototype.addData = function(question, response) {
+			this.documents.push(question);
+			this.responses.push(response);
+		};
+		manageChatbotSystem.prototype.calculateTF = function(word, document) {
+			var words = document.split(/\s+/);
+			var count = 0;
+			for (var i = 0; i < words.length; i++) {
+				if (words[i] === word) count++;
+			}
+			return count / words.length;
+		};
+		manageChatbotSystem.prototype.calculateIDF = function(word) {
+			if (this.wordIDF[word] !== undefined) return this.wordIDF[word];
+			var count = 0;
+			for (var i = 0; i < this.documents.length; i++) {
+				if (this.documents[i].split(/\s+/).indexOf(word) !== -1) count++;
+			}
+			var idf = Math.log(this.documents.length / (1 + count)) + 1;
+			this.wordIDF[word] = idf;
+			return idf;
+		};
+		manageChatbotSystem.prototype.computeVector = function(doc) {
+			var words = doc.split(/\s+/);
+			var tfidf = {};
+			for (var i = 0; i < words.length; i++) {
+				var word = words[i];
+				if (!tfidf[word]) {
+					tfidf[word] = this.calculateTF(word, doc) * this.calculateIDF(word);
+				}
+			}
+			return tfidf;
+		};
+		manageChatbotSystem.prototype.cosineSimilarity = function(v1, v2) {
+			var sum = 0, mag1 = 0, mag2 = 0;
+			var keys = {};
+			for (var key in v1) keys[key] = true;
+			for (var key in v2) keys[key] = true;
+			for (var key in keys) {
+				var a = v1[key] || 0;
+				var b = v2[key] || 0;
+				sum += a * b;
+				mag1 += a * a;
+				mag2 += b * b;
+			}
+			if (mag1 === 0 || mag2 === 0) return 0;
+			return sum / (Math.sqrt(mag1) * Math.sqrt(mag2));
+		};
+		manageChatbotSystem.prototype.findAnswer = function(userInput) {
+			var inputVector = this.computeVector(userInput);
+			var maxScore = 0;
+			var answer = "Sorry, I don't understand."
+			for (var i = 0; i < this.documents.length; i++) {
+				var docVector = this.computeVector(this.documents[i]);
+				var score = this.cosineSimilarity(inputVector, docVector);
+				if (score > maxScore) {
+					maxScore = score;
+					answer = this.responses[i];
+				}
+			}
+			return answer;
+		}
+		
+		
+		var chatbot = new manageChatbotSystem();
+		var dataTesting = {
+			"What is Python?": '# ✅ What is Python? <br>## ➕ Introduce about Python<br>Python is a **high-level, general-purpose programming language.**<br>It is designed to be **easy to read**, **simple to write**, and **very powerful**.<br>People use Python to create:<br>&emsp;- Games 🎮<br>&emsp;- Websites 🌐<br>&emsp;- Artificial Intelligence 🧠<br>&emsp;- Data analysis tools 📊<br>&emsp;- And even robots 🤖## ➕ Python history<br>&emsp;- Python was created by **Guido van Rossum** in the **late 1980s** and officially released in **1991**.<br>&emsp;- The name **\"Python\"** is inspired by the British comedy group **Monty Python**, not the snake.<br>&emsp;- Over the years, Python has evolved:<br>&emsp;&emsp;- **Python 2.x** – older version (now outdated)<br>&emsp;&emsp;- **Python 3.x** – current and modern version, recommended for everyone <br>## ➕ What it does?<br>Python is used in **many fields**, including:<br>&emsp;- **AI & Machine Learning**: build smart systems that can learn and predict<br>&emsp;- **Web Development**: build powerful websites and apps<br>&emsp;- **Automation**: write scripts to do boring work automatically<br>&emsp;- **Game Development**: create games using 2D or even 3D libraries<br>&emsp;- **Data Science**: analyze, visualize, and understand data <br># 🔍 Go deeper about performance of Python<br>Python is not the **fastest** programming language, but it’s **fast enough** for most tasks. <br>## ➕ Advantages<br>&emsp;- **✅ Fast to write** – Code is shorter and easier than C++ or Java<br>&emsp;- **✅ Quick development** – Good for rapid prototyping and testing ideas<br>&emsp;- **✅ Big ecosystem** – Thousands of libraries like NumPy, TensorFlow, Flask... <br>## ➖ Disadvantages<br>&emsp;- **❌ Slower execution speed** than C++, Rust, or Java<br>&emsp;- **❌ Not ideal for heavy real-time systems** (like AAA 3D games or OS kernels)<br>&emsp;- **❌ Single-threaded by default** – Not the best for parallel performance <br>## ⚙️ Why people still use Python despite slower speed?<br>Because most of the time, **developer time** is more important than **machine time**.<br>Python is **fast to build**, **easy to test**, and has **tons of tools** to speed up development.<br>Plus, performance can be improved by:<br>&emsp; - Using libr;aries written in C/C++ (like NumPy)<br>&emsp; - Combining with other languages (e.g., use Python + C++)<br>&emsp; - Running on faster machines (Cloud, GPU...) <br># 💡 Some examples <br>## 📘 Example 1: Hello World<br>$$print(\"Hello, world!\")$$ <br>## 📘 Example 2: Simple Calculator<br>$$`a = int(input(\"Enter first number: \"))``b = int(input(\"Enter second number: \"))``print(\"Sum is:\", a + b)`$$ <br>## 📘 Example 3: If-else logic<br>$$`age = int(input(\"Your age? \"))``if age >= 18:``&emsp;print(\"You are an adult.\")``else:``&emsp;print(\"You are still young!\")`$$<br>## 📘 Example 4: Loop<br>$$`for i in range(5):``&emsp;printf(\"Step {i}\")`$$ <br># 🎯 Conclusion<br>&emsp;- ✅ Python is a powerful, easy-to-learn language used in many industries.<br>&emsp;- ✅ It’s perfect for **students**, **developers**, and even **scientists**.<br>&emsp;- ✅ Though it’s not the fastest in terms of performance, its **simplicity, tools, and flexibility** make it a top choice.<br>&emsp;- 💡 If you want to **build apps**, **learn AI**, or **automate tasks**, Python is one of the best tools you can start with.',
+			"What are the main benefits of Python?": "Here are the **main advantages of Python**, especially from a practical, real-world perspective:<br># 🧠 1. Easy to Learn and Use<br>&emsp;- **Simple syntax similar** to English.<br>&emsp;- Ideal for **beginners** and powerful enough for **experts**.<br>&emsp;- You can write more code with fewer lines — \"**Do more with less!**\"<br># 🚀 2. Versatile & Cross-platform<br>&emsp;- Works on **Windows, macOS, Linux**, and even mobile!<br>&emsp;- Can be used in:<br>&emsp;&emsp;- **Web development** (Django, Flask)<br>&emsp;&emsp;- **Data Science & AI** (Pandas, NumPy, TensorFlow)<br>&emsp;&emsp;- **Game development** (Pygame)<br>&emsp;&emsp;- **Scripting, automation, APIs, IoT**, etc.<br># 🤖 3. Powerful Libraries & Frameworks<br>&emsp;- Thousands of libraries ready to go: $numpy$, $matplotlib$, $scikit-learn$, $fastapi$, $pytorch$...<br>&emsp;Perfect for **AI, machine learning, and deep learning**.# 🌐 4. Massive Community Support<br>&emsp;- Tons of tutorials, Stack Overflow threads, GitHub repos.<br>&emsp;- If you get stuck, **someone has probably solved it already**.<br>&emsp;- Actively maintained with **frequent updates**.<br># 🔧 5. Great for Prototyping<br>&emsp;- Build a quick prototype in hours, not days.<br>&emsp;- Makes testing and experimenting fast and fun.<br># 🧩 6. Integration-Friendly<br>&emsp;- Can connect easily with other languages (C/C++, Java, etc.).<br>&emsp;- Useful in **web APIs, databases, GUIs**, and even hardware projects like **Raspberry Pi**.<br># 🏆 Bonus: Popular and In-Demand<br>&emsp;- Used by giants like **Google, Netflix, NASA, Meta, and OpenAI**.<br>&emsp;- Lots of jobs and career paths in **software development, data analysis, and AI**.<br># TL;DR (Too Long; Didn't Read):<br>*Python is simple, powerful, flexible, and fun. Whether you’re building a website, training an AI model, or just automating homework, Python’s got your back. 🐍💻*"
+		}
 
-        for (var question in dataTesting) {
-            chatbot.addData(question, dataTesting[question]);
-        }
-        
-        function showLoading() {
-            document.getElementById("loading-message").style.display = "block";
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-        function hideLoading() {
-            document.getElementById("loading-message").style.display = "none";
-        }
+		for (var question in dataTesting) {
+			chatbot.addData(question, dataTesting[question]);
+		}
+		
+		function showLoading() {
+			document.getElementById("loading-message").style.display = "block";
+			chatContainer.scrollTop = chatContainer.scrollHeight;
+		}
+		function hideLoading() {
+			document.getElementById("loading-message").style.display = "none";
+		}
 
-        function addMessage(message, isUser) {
-            var msg = document.createElement("div");
-            msg.className = isUser ? "user-message" : "bot-message";
-            msg.innerHTML = isUser? message : format(message);
-            chatContainer.appendChild(msg);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-        function handleUserMessage() {
-            var message = userInput.value.trim();
-            if (message) {
-                addMessage(message, true);
+		function addMessage(message, isUser) {
+			var msg = document.createElement("div");
+			msg.className = isUser ? "user-message" : "bot-message";
+			msg.innerHTML = isUser? message : format(message);
+			chatContainer.appendChild(msg);
+			chatContainer.scrollTop = chatContainer.scrollHeight;
+		}
+		function handleUserMessage() {
+			var message = userInput.value.trim();
+			if (message) {
+				addMessage(message, true);
 
-                // Thêm block loading
-                const loadingMsg = document.createElement("div");
-                loadingMsg.className = "bot-message loading";
-                loadingMsg.innerHTML = '<div class="dot-typing"><div></div><div></div><div></div></div>';
-                chatContainer.appendChild(loadingMsg);
-                chatContainer.scrollTop = chatContainer.scrollHeight;
+				// Thêm block loading
+				const loadingMsg = document.createElement("div");
+				loadingMsg.className = "bot-message loading";
+				loadingMsg.innerHTML = '<div class="dot-typing"><div></div><div></div><div></div></div>';
+				chatContainer.appendChild(loadingMsg);
+				chatContainer.scrollTop = chatContainer.scrollHeight;
 
-                userInput.value = "";
+				userInput.value = "";
 
-                setTimeout(function() {
-                    var response = chatbot.findAnswer(message);
+				setTimeout(function() {
+					var response = chatbot.findAnswer(message);
 
-                    chatContainer.removeChild(loadingMsg);
+					chatContainer.removeChild(loadingMsg);
 
-                    addMessage(response, false);
-                }, 2000);
-            }
-        }
-         
-        function handleClearMessage() {
-            chatContainer.innerHTML = '';
-            alert("Chat history cleared successfully");
-        }
-        
-        // Copy button function
-        document.addEventListener('click', function (e) {
-            if (e.target.classList.contains('copy-button')) {
-            var preElement = e.target.closest('pre');
-            if (!preElement) return;
+					addMessage(response, false);
+				}, 2000);
+			}
+		}
+		 
+		function handleClearMessage() {
+			chatContainer.innerHTML = '';
+			alert("Chat history cleared successfully");
+		}
+		
+		// Copy button function
+		document.addEventListener('click', function (e) {
+			if (e.target.classList.contains('copy-button')) {
+			var preElement = e.target.closest('pre');
+			if (!preElement) return;
 
-            var codeBlock = preElement.querySelector('code');
-            if (!codeBlock) return;
+			var codeBlock = preElement.querySelector('code');
+			if (!codeBlock) return;
 
-            var range = document.createRange();
-            range.selectNodeContents(codeBlock);
-            var selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
+			var range = document.createRange();
+			range.selectNodeContents(codeBlock);
+			var selection = window.getSelection();
+			selection.removeAllRanges();
+			selection.addRange(range);
 
-            try {
-                var success = document.execCommand('copy');
-                if (success) {
-                    e.target.textContent = "Copied!";
-                    setTimeout(function() {e.target.textContent="Copy"}, 1000);
-                } else {
-                    e.target.textContent = "Failed";
-                }
-            } catch (err) {
-                console.error("Copy failed:", err);
-            }
+			try {
+				var success = document.execCommand('copy');
+				if (success) {
+					e.target.textContent = "Copied!";
+					setTimeout(function() {e.target.textContent="Copy"}, 1000);
+				} else {
+					e.target.textContent = "Failed";
+				}
+			} catch (err) {
+				console.error("Copy failed:", err);
+			}
 
-            selection.removeAllRanges();
-        }
+			selection.removeAllRanges();
+		}
 
-        });
-
-        clearButton.addEventListener("click", handleClearMessage);
-        userInput.addEventListener("keydown", function(e) {
-            if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleUserMessage();
-            }
-        });
-    </script>
+		});
+	
+		clearButton.addEventListener("click", handleClearMessage);
+		userInput.addEventListener("keydown", function(e) {
+			if (e.key === "Enter" && !e.shiftKey) {
+				e.preventDefault();
+				handleUserMessage();
+			}
+		});
+	</script>
 </body>
 </html>
