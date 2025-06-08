@@ -138,7 +138,7 @@
 			padding: 0.5em;
 		}
 		
-		#clear-button {
+		#clear-button, #add_data-button, #remove_data-button {
 			font-size: 1.25em;
 			background-color: #292929;
 			color: white;
@@ -157,7 +157,7 @@
 			transition: width 0.4s ease, background-color 0.3s ease;
 		}
 		
-		#clear-button span {
+		#clear-button span, #add_data-button span, #remove_data-button span {
 			display: inline-block;
 			max-width: 0;
 			overflow: hidden;
@@ -170,9 +170,17 @@
 			width: 110px;
 			background-color: #3b3b3b;
 		}
+		#add_data-button:hover {
+			width: 8em;
+			background-color: #3b3b3b;
+		}
+		#remove_data-button:hover {
+			width: 13em;
+			background-color: #3b3b3b;
+		}
 		
-		#clear-button:hover span {
-			max-width: 100px;
+		#clear-button:hover span, #add_data-button:hover span, #remove_data-button:hover span {
+			max-width: 200px;
 			margin-left: 8px;
 		}
 		
@@ -195,10 +203,9 @@
 		.big-code-blocks {
 			background-color: #000000;
 			padding: 10px;
+			font-size: 0.85em;
 			border-radius: 0 0 5px 5px;
 			font-family: 'Courier New', Courier, monospace;
-			font-weight: 700;
-			white-space: pre-wrap;
 		}
 		
 		pre {
@@ -306,41 +313,45 @@
 	<div class="input-group">
 		<textarea type="text" id="user-input" placeholder="Enter your question..."></textarea>
 		<div class="function">
-			<button id="clear-button" style="vertical-align: middle;">×<span>Clear</span></button>
+			<button id="clear-button" style="vertical-align: middle;">🧹<span>Clear</span></button>
+			<button id="add_data-button" style="vertical-align: middle;">📑+<span>Add data</span></button>
+			<button id="remove_data-button" style="vertical-align: middle;">📑X<span>Remove all data</span></button>
 		</div>
 	</div>
 	
 	<script>
 		// Get HTML Elements
 		var copyButton = document.getElementsByClassName("copy-button")
-		var chatContainer = document.getElementById("chat-container");
-		var userInput = document.getElementById("user-input");
-		var clearButton = document.getElementById("clear-button");
-
+		var chatContainer = document.getElementById("chat-container")
+		var userInput = document.getElementById("user-input")
+		var clearButton = document.getElementById("clear-button")
+		var addDataButton = document.getElementById("add_data-button")
+		var removeAllDataButton = document.getElementById("remove_data-button")
+		
 		// Format the answer from the chatbot
 		function format(text) {
-			text = text.replace(/<br>/g, '\n');
+			text = text.replace(/<br>/g, '\n')
 			
-			text = text.replace(/^###\s+(.*$)/gm, '<hr class="style-hr hrHeader3"><h4 style="margin-bottom: -0.8em;">$1</h4>');
-			text = text.replace(/^##\s+(.*$)/gm, '<hr class="style-hr hrHeader2"><h3 style="margin-bottom: -0.75em;">$1</h3>');
-			text = text.replace(/^#\s+(.*$)/gm, '<hr class="style-hr hrHeader1"><h2 style="margin-bottom: -0.65em;">$1</h2>');
+			text = text.replace(/^###\s+(.*$)/gm, '<hr class="style-hr hrHeader3"><h4 style="margin-bottom: -0.8em;">$1</h4>')
+			text = text.replace(/^##\s+(.*$)/gm, '<hr class="style-hr hrHeader2"><h3 style="margin-bottom: -0.75em;">$1</h3>')
+			text = text.replace(/^#\s+(.*$)/gm, '<hr class="style-hr hrHeader1"><h2 style="margin-bottom: -0.65em;">$1</h2>')
 			
 			// Process bold/italic
-			text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-			text = text.replace(/\_\_(.*?)\_\_/g, '<strong>$1</strong>');
-			text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
-			text = text.replace(/\_(.*?)\_/g, '<em>$1</em>');
+			text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+			text = text.replace(/\_\_(.*?)\_\_/g, '<strong>$1</strong>')
+			text = text.replace(/\*(.*?)\*/g, '<em>$1</em>')
+			text = text.replace(/\_(.*?)\_/g, '<em>$1</em>')
 			
 			text = text.replace(/\$\$(.*?)\$\$/g, function(match, p1) {
 				p1 = p1.replace(/\`(.*?)\`/g, '<p>$1</p>')
-				return '<pre><div><button class="copy-button">Copy</button></div><code class="big-code-blocks">' + p1 + '</code></pre>';
+				return '<pre><div><button class="copy-button">Copy</button></div><code class="big-code-blocks">' + p1 + '</code></pre>'
 			});
 			text = text.replace(/\$(.*?)\$/g, '<code class="code-blocks">$1</code>')
 			
 			text = text.replace(/\n/g, '<br>');
-			text = text.replace(/^\/pr\s+(.*$)/gm, '<hr><br class="small-br">');
+			text = text.replace(/^\/pr\s+(.*$)/gm, '<hr><br class="small-br">')
 			
-			return text;
+			return text
 		}
 
 		// The chatbot system object
@@ -350,70 +361,69 @@
 			this.wordIDF = {};
 		}
 		manageChatbotSystem.prototype.addData = function(question, response) {
-			this.documents.push(question);
-			this.responses.push(response);
-		};
+			this.documents.push(question.toLowerCase())
+			this.responses.push(response)
+		}
 		manageChatbotSystem.prototype.calculateTF = function(word, document) {
-			var words = document.split(/\s+/);
-			var count = 0;
+			var words = document.split(/\s+/)
+			var count = 0
 			for (var i = 0; i < words.length; i++) {
-				if (words[i] === word) count++;
+			if (words[i] === word) count++
 			}
-			return count / words.length;
-		};
+			return count / words.length
+		}
 		manageChatbotSystem.prototype.calculateIDF = function(word) {
-			if (this.wordIDF[word] !== undefined) return this.wordIDF[word];
-			var count = 0;
+			if (this.wordIDF[word] !== undefined) return this.wordIDF[word]
+			var count = 0
 			for (var i = 0; i < this.documents.length; i++) {
-				if (this.documents[i].split(/\s+/).indexOf(word) !== -1) count++;
+			if (this.documents[i].split(/\s+/).indexOf(word) !== -1) count++
 			}
-			var idf = Math.log(this.documents.length / (1 + count)) + 1;
-			this.wordIDF[word] = idf;
-			return idf;
-		};
+			var idf = Math.log(this.documents.length / (1 + count)) + 1
+			this.wordIDF[word] = idf
+			return idf
+		}
 		manageChatbotSystem.prototype.computeVector = function(doc) {
-			var words = doc.split(/\s+/);
-			var tfidf = {};
+			var words = doc.split(/\s+/)
+			var tfidf = {}
 			for (var i = 0; i < words.length; i++) {
-				var word = words[i];
+				var word = words[i]
 				if (!tfidf[word]) {
-					tfidf[word] = this.calculateTF(word, doc) * this.calculateIDF(word);
+					tfidf[word] = this.calculateTF(word, doc) * this.calculateIDF(word)
 				}
 			}
-			return tfidf;
-		};
+			return tfidf
+		}
 		manageChatbotSystem.prototype.cosineSimilarity = function(v1, v2) {
-			var sum = 0, mag1 = 0, mag2 = 0;
-			var keys = {};
-			for (var key in v1) keys[key] = true;
-			for (var key in v2) keys[key] = true;
+			var sum = 0, mag1 = 0, mag2 = 0
+			var keys = {}
+			for (var key in v1) keys[key] = true
+			for (var key in v2) keys[key] = true
 			for (var key in keys) {
-				var a = v1[key] || 0;
-				var b = v2[key] || 0;
-				sum += a * b;
-				mag1 += a * a;
-				mag2 += b * b;
+				var a = v1[key] || 0
+				var b = v2[key] || 0
+				sum += a * b
+				mag1 += a * a
+				mag2 += b * b
 			}
-			if (mag1 === 0 || mag2 === 0) return 0;
-			return sum / (Math.sqrt(mag1) * Math.sqrt(mag2));
-		};
+			if (mag1 === 0 || mag2 === 0) return 0
+			return sum / (Math.sqrt(mag1) * Math.sqrt(mag2))
+		}
 		manageChatbotSystem.prototype.findAnswer = function(userInput) {
-			var inputVector = this.computeVector(userInput);
-			var maxScore = 0;
-			var answer = "Sorry, I don't understand."
+			var inputVector = this.computeVector(userInput.toLowerCase())
+			var maxScore = 0
+			var answer = "Sorry, I can't understand"
 			for (var i = 0; i < this.documents.length; i++) {
-				var docVector = this.computeVector(this.documents[i]);
-				var score = this.cosineSimilarity(inputVector, docVector);
+				var docVector = this.computeVector(this.documents[i])
+				var score = this.cosineSimilarity(inputVector, docVector)
 				if (score > maxScore) {
-					maxScore = score;
-					answer = this.responses[i];
+					maxScore = score
+					answer = this.responses[i]
 				}
 			}
-			return answer;
+			return answer
 		}
 		
-		
-		var chatbot = new manageChatbotSystem();
+		var chatbot = new manageChatbotSystem()
 		var dataTesting = {
 			"What is Python?": '# ✅ What is Python? <br>## ➕ Introduce about Python<br>Python is a **high-level, general-purpose programming language.<br>**It is designed to be **easy to read**, **simple to write**, and **very powerful**.<br>People use Python to create:<br>&emsp;- Games 🎮<br>&emsp;- Websites 🌐<br>&emsp;- Artificial Intelligence 🧠<br>&emsp;- Data analysis tools 📊<br>&emsp;- And even robots 🤖<br>## ➕ Python history<br>&emsp;- Python was created by **Guido van Rossum** in the **late 1980s** and officially released in **1991**.<br>&emsp;- The name **\"Python\"** is inspired by the British comedy group **Monty Python**, not the snake.<br>&emsp;- Over the years, Python has evolved:<br>&emsp;&emsp;- **Python 2.x** – older version (now outdated)<br>&emsp;&emsp;- **Python 3.x** – current and modern version, recommended for everyone <br>## ➕ What it does?<br>Python is used in **many fields**, including:<br>&emsp;- **AI & Machine Learning**: build smart systems that can learn and predict<br>&emsp;- **Web Development**: build powerful websites and apps<br>&emsp;- **Automation**: write scripts to do boring work automatically<br>&emsp;- **Game Development**: create games using 2D or even 3D libraries<br>&emsp;- **Data Science**: analyze, visualize, and understand data <br># 🔍 Go deeper about performance of Python<br>Python is not the **fastest** programming language, but it’s **fast enough** for most tasks. <br>## ➕ Advantages<br>&emsp;- **✅ Fast to write** – Code is shorter and easier than C++ or Java<br>&emsp;- **✅ Quick development** – Good for rapid prototyping and testing ideas<br>&emsp;- **✅ Big ecosystem** – Thousands of libraries like NumPy, TensorFlow, Flask... <br>## ➖ Disadvantages<br>&emsp;- **❌ Slower execution speed** than C++, Rust, or Java<br>&emsp;- **❌ Not ideal for heavy real-time systems** (like AAA 3D games or OS kernels)<br>&emsp;- **❌ Single-threaded by default** – Not the best for parallel performance <br>## ⚙️ Why people still use Python despite slower speed?<br>Because most of the time, **developer time** is more important than **machine time**.<br>Python is **fast to build**, **easy to test**, and has **tons of tools** to speed up development.<br>Plus, performance can be improved by:<br>&emsp; - Using libr;aries written in C/C++ (like NumPy)<br>&emsp; - Combining with other languages (e.g., use Python + C++)<br>&emsp; - Running on faster machines (Cloud, GPU...) <br># 💡 Some examples <br>## 📘 Example 1: Hello World<br>$$print(\"Hello, world!\")$$ <br>## 📘 Example 2: Simple Calculator<br>$$`a = int(input(\"Enter first number: \"))``b = int(input(\"Enter second number: \"))``print(\"Sum is:\", a + b)`$$ <br>## 📘 Example 3: If-else logic<br>$$`age = int(input(\"Your age? \"))``if age >= 18:``&emsp;print(\"You are an adult.\")``else:``&emsp;print(\"You are still young!\")`$$<br>## 📘 Example 4: Loop<br>$$`for i in range(5):``&emsp;printf(\"Step {i}\")`$$ <br># 🎯 Conclusion<br>&emsp;- ✅ Python is a powerful, easy-to-learn language used in many industries.<br>&emsp;- ✅ It’s perfect for **students**, **developers**, and even **scientists**.<br>&emsp;- ✅ Though it’s not the fastest in terms of performance, its **simplicity, tools, and flexibility** make it a top choice.<br>&emsp;- 💡 If you want to **build apps**, **learn AI**, or **automate tasks**, Python is one of the best tools you can start with.',
 			"What are the main advantages of Python?": "Here are the **main advantages of Python**, especially from a practical, real-world perspective:<br># 🧠 1. Easy to Learn and Use<br>&emsp;- **Simple syntax similar** to English.<br>&emsp;- Ideal for **beginners** and powerful enough for **experts**.<br>&emsp;- You can write more code with fewer lines — \"**Do more with less!**\"<br># 🚀 2. Versatile & Cross-platform<br>&emsp;- Works on **Windows, macOS, Linux**, and even mobile!<br>&emsp;- Can be used in:<br>&emsp;&emsp;- **Web development** (Django, Flask)<br>&emsp;&emsp;- **Data Science & AI** (Pandas, NumPy, TensorFlow)<br>&emsp;&emsp;- **Game development** (Pygame)<br>&emsp;&emsp;- **Scripting, automation, APIs, IoT**, etc.<br># 🤖 3. Powerful Libraries & Frameworks<br>&emsp;- Thousands of libraries ready to go: $numpy$, $matplotlib$, $scikit-learn$, $fastapi$, $pytorch$...<br>&emsp;Perfect for **AI, machine learning, and deep learning**.# 🌐 4. Massive Community Support<br>&emsp;- Tons of tutorials, Stack Overflow threads, GitHub repos.<br>&emsp;- If you get stuck, **someone has probably solved it already**.<br>&emsp;- Actively maintained with **frequent updates**.<br># 🔧 5. Great for Prototyping<br>&emsp;- Build a quick prototype in hours, not days.<br>&emsp;- Makes testing and experimenting fast and fun.<br># 🧩 6. Integration-Friendly<br>&emsp;- Can connect easily with other languages (C/C++, Java, etc.).<br>&emsp;- Useful in **web APIs, databases, GUIs**, and even hardware projects like **Raspberry Pi**.<br># 🏆 Bonus: Popular and In-Demand<br>&emsp;- Used by giants like **Google, Netflix, NASA, Meta, and OpenAI**.<br>&emsp;- Lots of jobs and career paths in **software development, data analysis, and AI**.<br># TL;DR (Too Long; Didn't Read):<br>*Python is simple, powerful, flexible, and fun. Whether you’re building a website, training an AI model, or just automating homework, Python’s got your back. 🐍💻*",
@@ -421,99 +431,206 @@
 			"In what areas is Python used?": "Python is used in **many areas** because it's simple, powerful, and flexible. Here are the main areas where Python shines:<br># 🔬 1. Data Science & Machine Learning<br>&emsp;- Libraries: $pandas$, $numpy$, $scikit-learn$, $matplotlib$, $seaborn$, $tensorflow$, $pytorch$<br>&emsp;- Use: Analyzing data, building predictive models, training AI systems<br># 💻 2. Web Development<br>&emsp;- Frameworks: $Django$, $Flask$, $FastAPI$<br>&emsp;- Use: Building websites, APIs, web apps<br># 🤖 3. Artificial Intelligence & Deep Learning<br>&emsp;- Libraries: $TensorFlow$, $PyTorch$, $Keras$, $OpenCV$<br>&emsp;- Use: Image recognition, NLP, robotics, game AI<br># 🐍 4. Automation & Scripting<br>&emsp;- Use: Writing small scripts to automate boring tasks (file renaming, data scraping, sending emails...)<br># 🎮 5. Game Development<br>&emsp;- Libraries: $pygame$, $Godot$ (Python-compatible scripting)<br>&emsp;- Use: Creating 2D games, prototypes<br># 🌐 6. Web Scraping<br>&emsp;- Libraries: $BeautifulSoup$, $Selenium$, $Scrapy$<br>&emsp;- Use: Extracting data from websites<br># 🧪 7. Scientific Computing & Research<br>&emsp;- Libraries: $SciPy$, $SymPy$, $Jupyter$<br>&emsp;- Use: Simulations, research tools, math modeling<br># 💾 8. Cybersecurity & Hacking<br>&emsp;- Use: Writing exploits, automating scans, pen-testing tools<br># 📱 9. App Development<br>&emsp;- Frameworks: $Kivy$, $BeeWare$<br>&emsp;- Use: Creating cross-platform desktop or mobile apps<br># 🧰 10. DevOps & System Admin<br>&emsp;- Use: Server automation, writing CLI tools, managing cloud resources (like with AWS)<hr><br>Python is basically the **Swiss Army knife** for programmers—whether you're building a website, teaching a robot to see, or just trying to save time on repetitive tasks.",
 			"What is the most popular version of Python today?": "As of June 2025, the most widely used Python versions are **3.10**, **3.11**, and **3.12**, collectively accounting for over 70% of usage among developers. The latest stable release is Python **3.13.3**, which became available on April 8, 2025.<br>While Python 3.13.3 introduces new features and improvements, many developers continue to use versions 3.10 through 3.12 due to their stability and extensive support in existing projects. These versions are particularly popular in fields like data science, machine learning, and web development.<br>If you're starting a new project or looking to upgrade, adopting Python 3.13.3 is advisable to take advantage of the latest enhancements. However, for ongoing projects, versions 3.10 to 3.12 remain robust and well-supported choices.",
 			"How to check installed Python version?": "To check the installed Python version, open your command prompt, or your device console and type:<br>$$python --version$$<br>or<br>$$python -V$$<br>If that doesn’t work (some systems such like Linux use $python3$), try:<br>$$python3 --version$$<br>### 🎯 Example output:<br>$$Python 3.11.2$$<br>✅ That’s your currently installed Python version.",
-			"What is the difference between Python 2 and Python 3?": "Here’s a clear and simple breakdown of the main differences between **Python 2** and **Python 3**:<br># 🐍 1. Print Statement vs Print Function<br>&emsp;- **Python 2**: Uses **print** as a statement.<br>$$print \"Hello World!\"$$<br>&emsp;- **Python 3**: Uses **print()** as a function.<br>$$print(\"Hello World!\")$$<br># 🔤 2. Unicode Handling<br>&emsp;- **Python 2**: Strings are **ASCII** by default. Unicode must be specified with a $u$ prefix.<br>$$u\"Việt Nam\"  # Unicode$$<br>**Python 3**: All strings are **Unicode** by default. Easy and modern.<br># ➗ 3. Integer Division<br>&emsp;- **Python 2**: Division of integers gives an **integer result**.<br>$$print 3 / 2  # Output: 1$$<br>**Python 3**: Division gives a **float result**.<br>$$print(3 / 2)  # Output: 1.5$$<br># 📦 4. xrange() vs range()<br>&emsp;- **Python 2**:<br>&emsp;&emsp;+ $range()$ returns a **list**.<br>&emsp;&emsp;+ $xrange()$ returns a **generator** (faster for loops).<br>&emsp;- **Python 3:**<br>&emsp;&emsp;- $range()$ behaves like $xrange()$ (efficient, lazy).<br># 🧠 5. Libraries and Support<br>&emsp;- **Python 2**: **No longer supported** since January 1, 2020.<br>&emsp;- **Python 3**: Actively maintained, **future-proof**, modern features.<br># TL;DR:<br>_**Use Python 3** for all modern development. Python 2 is like an old flip phone — nostalgic, but not practical anymore 😄📱._"
+			"What is the difference between Python 2 and Python 3?": "Here’s a clear and simple breakdown of the main differences between **Python 2** and **Python 3**:<br># 🐍 1. Print Statement vs Print Function<br>&emsp;- **Python 2**: Uses **print** as a statement.<br>$$print \"Hello World!\"$$<br>&emsp;- **Python 3**: Uses **print()** as a function.<br>$$print(\"Hello World!\")$$<br># 🔤 2. Unicode Handling<br>&emsp;- **Python 2**: Strings are **ASCII** by default. Unicode must be specified with a $u$ prefix.<br>$$u\"Việt Nam\"  # Unicode$$<br>**Python 3**: All strings are **Unicode** by default. Easy and modern.<br># ➗ 3. Integer Division<br>&emsp;- **Python 2**: Division of integers gives an **integer result**.<br>$$print 3 / 2  # Output: 1$$<br>**Python 3**: Division gives a **float result**.<br>$$print(3 / 2)  # Output: 1.5$$<br># 📦 4. xrange() vs range()<br>&emsp;- **Python 2**:<br>&emsp;&emsp;+ $range()$ returns a **list**.<br>&emsp;&emsp;+ $xrange()$ returns a **generator** (faster for loops).<br>&emsp;- **Python 3:**<br>&emsp;&emsp;- $range()$ behaves like $xrange()$ (efficient, lazy).<br># 🧠 5. Libraries and Support<br>&emsp;- **Python 2**: **No longer supported** since January 1, 2020.<br>&emsp;- **Python 3**: Actively maintained, **future-proof**, modern features.<br># TL;DR:<br>_**Use Python 3** for all modern development. Python 2 is like an old flip phone — nostalgic, but not practical anymore 😄📱._",
+			"What is the Python interpreter?": "Alright, here’s the deal with the **Python interpreter** — think of it as the **magician behind the curtain** that makes your Python code actually _do_ something.<br>In simple terms:<br>The **Python interpreter** is a program that reads your Python code, line by line, and **executes** it. It translates the human-readable Python commands into machine instructions your computer understands, so your code can run.<br>No interpreter = no action. It’s like writing a script for a play but never having actors to perform it!<br># Quick highlights:<br>&emsp;- It **reads** your $.py$ files.<br>&emsp;- It **translates** your Python instructions to something the computer can execute.<br>&emsp;- It **runs** your code immediately (in interactive mode) or runs the whole script (in script mode).<br>Without the interpreter, Python code would just be words on a screen — pretty, but useless.",
+			"What is IDLE?": "**IDLE** stands for **Integrated Development and Learning Environment**. It is the **default IDE (Integrated Development Environment)** that comes with **Python**.<br># Key Features of IDLE:<br><br>&emsp;- **🧠 Simple and beginner-friendly** – Perfect for learning Python.<br>&emsp;- **🖥️ Python shell** – You can write and run Python code interactively.<br>&emsp;- **📝 Code editor** – With syntax highlighting and auto-indentation.<br>&emsp;- **🐞 Debugger** – Basic tools for debugging your code.<br>&emsp;- **⚙️ Cross-platform** – Works on Windows, macOS, and Linux.<br># When should you use IDLE?<br>&emsp;- ✔️ When you're **new to Python** and want a lightweight tool.<br>&emsp;- ✔️ For **small scripts** or quick testing.<br>&emsp;- ❌ Not ideal for large or professional projects — for that, tools like **VS Code** or **PyCharm** are better.<hr><br>So IDLE is like your little Python playground — simple, clean, and just right for starting out",
+			"What is PIP?": "**PIP** stands for **\"Pip Installs Packages\"**. It's the **default package manager** for **Python**<br># Here's what PIP does:<br>&emsp;- **📦 Installs Python libraries** from PyPI (Python Package Index)<br>&emsp;- **🔄 Manages versions** of packages (install, upgrade, uninstall)<br>&emsp;- 🛠️ Makes your Python projects easier to set up and share<br># Example commands:<br>$$`pip install numpy		# Install a package``pip uninstall numpy		# Remove it``pip list			# See all installed packages``pip freeze > reqs.txt		# Save packages to a file``pip install -r reqs.txt		# Install from that file`$$<br># Fun Fact 🎉<br>PIP is so important that **Python 3.4+ comes with it pre-installed!**<br>So if you're using Python, you're probably using PIP without even realizing it 😎",
+			"How to install a package using PIP?": "To install a package using **PIP** (Python's package installer), you just need to open your terminal (Command Prompt, PowerShell, or Terminal on MacOS/Linux) and run: $$pip install package_name$$<br># Example:<br>If you want to install the popular package $requests$, run: $$pip install requests$$<br># ⚠️ Bonus Tips:<br>&emsp;- If you're using **Python 3** and $pip$ doesn't work, try: $$pip3 install package_name$$<br>&emsp;- If you're in a **virtual environment**, $pip$ will install the package just for that environment.<br>&emsp;- To **upgrade** an existing package: $$pip install --upgrade package_name$$<br>&emsp;- To **check all installed packages**: $$pip list$$",
+			"What is a virtual environment and why is it important?": "A **virtual environment** is an isolated workspace on your computer where you can install and manage specific version of Python and Python packages **without affecting the global Python setup**.<br># 🔍 Why is it important?<br>### 1. Avoid Conflicts:<br>&emsp;Different projects might need different versions of libraries (e.g., Project A needs $Django 3.2$, Project B needs $Django 4.0$). A virtual environment keeps these seperate so they don't break each other.<br>### 2. Cleaner Devleopment:<br>&emsp;Keeps your global Python environment clean — no more clutter with hundreds of packages you only use in one project.<br>### 3. Easy Deployment:<br>&emsp;You can easily recreate your environment using $requirements.txt$, making deployment to servers or sharing with teammates much easier.<br>### 4. Security:<br>&emsp;Reduces the risk of messing up system-wide Python or critical packages.<br># ⚙️ In short:<br>_A virtual environment is like giving each Python project its **own little sandbox** to play in — safe, neat, and conflict-free._",
+			"How to create a virtual environment?": "Creating a **virtual environment** in Python helps isolate dependencies for different projects. Here's how you can do it — clean, professional, and efficient:<br># Step-by-step to Create a Virtual Environment:<br>## 1. Make sure Python is installed<br>&emsp;- Run this in your terminal or command prompt: $$python --version$$ or $$python3 --version$$ You should see something like: $Python 3.13.3$<br>## 2. Create a virtual environment<br>Navigate to yoour project folder first: $$cd your_project_folder$$ Then run: $$python -m venv venv$$ or (if using $python3$): $$python3 -m venv venv$$ This creates a folder named $venv$ with all the virtual environment files.<br>## 3. Activate the virtual environment<br>&emsp;- **Windows:** $$venv\\Scripts\\activate$$<br>&emsp;- **macOS/Linux:** $$source venv/bin/activate$$<br>## 4. Confirm it's working<br>You'll see the environment name in your terminal like: $$(venv) \$ $$Also, check Python version and pip environemnt: $$`which python``which pip`$$<br>## Install packages inside the virtual environment<br>$$pip install requests flask numpy$$<br>## 6. To deactivate it<br>Just type: $$deactive$$<br># 💡 Bonus Tips:<br>&emsp;- Want to keep track of your installed packages? $$pip freeze > requierments$$&emsp;- Want to install them later in another environment?$$pip install -r requirements.txt$$",
+			"How to activate a virtual environment?": "To **activate a virtual environment**, the exact command depends on your operating system and the tool you used to create it. Here’s a quick cheat sheet:<br># 💻 If you’re using $venv$ (built-in Python tool):<br>**🔸 On Windows (Command Prompt):**$$.\\venv\\Scripts\\active$$**🔸 On Windows (PowerShell):**$$.\\venv\\Scripts\\Activate.ps1$$**On macOS/Linux:**$$source venv/bin/activate$$_🧠 Tip: Replace $venv$ with your environment folder name if it's different._<br># If you’re using $virtualenv$:<br>Same activation commands as above, depending on your OS. Just make sure you've installed virtualenv and created the environment like this: $$virtualenv venv$$<br># ✅ How to check if it's activated?<br>You’ll see the environment name at the beginning of your terminal prompt, like: $$(venv) C:\\Users\\YourName\\project>$$",
+			"How to exit a virtual environment?": "To exit a virtual environment in your terminal, simply type: $$deactivate$$This command works in most shells (like Bash, Zsh, or Command Prompt). Once you run it, your environment will be deactivated, and you’ll be back in the global Python environment. 🐍✨<br>Quick tip:<br>If you're still seeing the environment name in your prompt after typing $deactivate$, double-check that you're not inside a nested shell or script!",
+			"Is Python a compiled or interpreted language?": "Python is an **interpreted language**.<br>That means Python code is **not compiled into machine code directly** like C or C++. Instead, it's run by a program called the **Python interpreter**, which reads your code **line by line** and executes it.<br>👉 However, technically, Python does something a bit in-between:<br>&emsp;**1.** It **first compiles** your $.py$ code into **bytecode** (a low-level, platform-independent code).<br>&emsp;**2.** Then, the **Python Virtual Machine (PVM)** interprets that bytecode and runs it.<br>So, while it does a bit of compiling in the background, Python is still considered an **interpreted language** because it doesn’t produce a standalone executable like C does.<br>💡 In short:<br>🔹 **Python = Interpreted** (with a touch of bytecode magic).<br>🔹 You don’t need to compile it manually — just run it with $python script.py$.",
+			"Explain the concept of \"cross-platform\" in Python": "The concept of **\"cross-platform\"** in Python refers to the ability of a Python program to run on **multiple operating systems** (like Windows, macOS, and Linux) **without modification** or with minimal changes.<br># 🧠 Why Python is cross-platform:<br>&emsp;**1. Interpreted Language:** Python code runs through an interpreter (like CPython), which handles differences between operating systems.<br>&emsp;**2. Standard Libraries:** Python’s built-in libraries are designed to work across platforms.<br>&emsp;**3. Abstraction:** Python provides functions (like **os.path**) that abstract away OS-specific details (like file path separators).<br># ✅ Real-Life Example:<br>Imagine you write a script to rename files in a folder: $$`import os````for filename in os.listdir(\"my_folder\"):``&emsp;new_name = filename.lower()``&emsp;os.rename(f\"my_folder/{filename}\", f\"my_folder/{new_name}\")`$$This code works on:<br>&emsp;- Windows ✅<br>&emsp;- macOS ✅<br>&emsp;- Linux ✅<br>As long as you don’t use OS-specific features (like Windows-only COM objects or macOS-only APIs), Python lets your code be **portable**.<br># 💡 Bonus:<br>To write _truly_ corss-platform code:<br>&emsp;- Use libraries like $os$, $pathlib$, or $shutil$<br>&emsp;- Avoid hardcoding file paths (use $os.path.join$)<br>&emsp;- Be careful with things like permissions or case sensitivity (Linux is case-sensitive, Windows isn’t)<br># 🛠️ Tools that help:<br>&emsp;- $pyinstaller$: Packages your script into an executable for different OSes<br>&emsp;- $virtualenv$: Helps manage dependencies across systems.<br><br>In short, **cross-platform** in Python means \"write once, run anywhere\" — and that's one of the reasons Python is so popular! 😎🐍",
+			"Is Python open source?": "# ✅ Yes, Python is Open Source<br>## 🔍 What this means:<br>- **Free to use** - no licensing fees<br>- **Source code is public** - anyone can view or modify it<br>- **Community-driven** - developers worldwide contribute<br>## 💡 Key Benefits:<br>1. **Transparency** - you can see exactly how it works<br>2. **Security** - bugs get found and fixed quickly<br>3. **Innovation** - anyone can suggest improvements<br>4. **Learning** - great for studying how Python works<br>## 🌐 License Details:<br>Python uses the **PSF License** (Python Software Foundation License):<br>- Similar to BSD license<br>- Very permissive<br>- Allows commercial use<br>- Allows modifications",
+			"Who created Python?": "# 👨‍💻 Python's Creator<br>**Guido van Rossum** created Python. Here's the key information:<br>## 🎯 Quick Facts:<br>- Born in **Netherlands** in 1956<br>- Created Python in **December 1989**<br>- Released Python **1.0 in 1991**<br>## 💡 Interesting Details:<br>- Nicknamed **\"BDFL\"** (Benevolent Dictator For Life) until July 2018<br>- Worked at:<br>&emsp;- Google (2005-2012)<br>&emsp;- Dropbox (2013-2019)<br>&emsp;- Microsoft (2020-present)<br>## 🎨 Fun Fact:<br>He named Python after the TV show **\"Monty Python's Flying Circus\"**, not the snake! 🐍",
+			"When was Python created?": "# 📅 Python's Birth and Evolution<br>## 🎯 Key Dates:<br>- **December 1989**: Python's creation began<br>- **February 1991**: First Python release (version 0.9.0)<br>- **January 1994**: Python 1.0 released<br>## 💫 Major Versions:<br>- **Python 2.0**: October 2000<br>- **Python 3.0**: December 2008<br>## 🌟 Fun Facts:<br>- Took Guido van Rossum about **6 years** to develop Python 1.0<br>- Created during Christmas holidays as a **hobby project**<br>- Originally designed as a successor to the **ABC language**",
+			"How to print a string in Python?": "# 🖨️ Printing Strings in Python<br>## 📝 Basic Syntax:<br>Use the $print()$ function:<br>$$print(\"Hello, World!\")$$<br>## 🎯 Different Ways to Print:<br>**1. Simple string:**<br>$$print(\"Hello\")$$**2. With variables:**<br>$$`name = \"Alice\"``print(\"Hello,\", name)`$$**3. Using f-strings (Python 3.6+):**<br>$$`name = \"Bob\"``print(f\"Hello, {name}!\")`$$**4. Using .format():**<br>$$`name = \"Charlie\"``print(\"Hello, {}!\".format(name))`$$<br>## 💡 Tips:<br>- Use **double quotes** or **single quotes** for strings<br>- F-strings are the **modern, preferred way**<br>- Print multiple items with commas:<br>$$print(\"Hello\", \"World\", \"!\")$$",
+			"What is variable in Python?": "# 🎯 Variables in Python<br>## 📝 Definition:<br>A variable is a **named location in memory** that stores data. Think of it as a labeled container for values.<br>## ⚡ Key Features:<br>- **Dynamic typing** - type can change<br>- **No declaration needed**<br>- **Case sensitive**<br>## 💻 Examples:<br>$$`# Number variables``age = 25``price = 19.99````# String variables``name = \"John\"````# Boolean variables``is_student = True````# Multiple assignment``x, y = 10, 20`$$<br>## ✅ Valid Variable Names:<br>$$`student_name``age1``_private``myVariable`$$<br>## ❌ Invalid Variable Names:<br>$$`123name``for``@email``my-name`$$<br>## 💡 Best Practices:<br>- Use **descriptive names**<br>- Use **snake_case** for variables<br>- Avoid reserved keywords<br>- Keep names meaningful but concise",
+			"What are the rules for naming variables in Python?": "# 📚 Python Variable Naming Rules<br>## ✅ Must Follow These Rules:<br>1. **Start with**:<br>&emsp;- Letter (a-z, A-Z) or<br>&emsp;- Underscore (_)<br>2. **Can contain**:<br>&emsp;- Letters (a-z, A-Z)<br>&emsp;- Numbers (0-9)<br>&emsp;- Underscores (_)<br>3. **Case-sensitive** ($name$ ≠ $Name$ ≠ $NAME$)<br>## ❌ Cannot:<br>- Start with a number<br>- Use special characters (@, #, $, etc.)<br>- Use Python keywords<br>## 💻 Examples:<br>**Valid Names:**<br>$$`student_name``_private``age1``firstName``CONSTANT_VALUE`$$**Invalid Names:**<br>$$`123_name``my-name``class``@email`$$<br>## 🎯 Best Practices:<br>- Use **descriptive** names<br>- Follow **snake_case** for variables<br>- Use **UPPERCASE** for constants<br>- Keep names **meaningful** but **concise**",
+			"What are the basic data types in Python? Name 5 types.": "# 🔢 Basic Data Types in Python<br>## 1. Numbers<br>### Integer (int)<br>$$x = 42  # Whole numbers$$<br>### Float (float)<br>$$price = 19.99  # Decimal numbers$$<br>## 2. Strings (str)<br>$$name = \"Python\"  # Text$$<br>## 3. Boolean (bool)<br>$$is_active = True  # True or False$$<br>## 4. Lists (list)<br>$$numbers = [1, 2, 3, 4]  # Ordered collection$$<br>## 5. Dictionaries (dict)<br>$$person = {\"name\": \"John\", \"age\": 30}  # Key-value pairs$$<br>## 💡 Bonus Types:<br>- **Tuple**: $(1, 2, 3)$ - Immutable list<br>- **Set**: ${1, 2, 3}$ - Unique items<br>- **None**: Python's null value",
+			"How to declare an integer in Python?": "# 🔢 Declaring Integers in Python<br>## 📝 Basic Syntax:<br>$$x = 42$$<br>## 💻 Different Ways to Declare:<br>**1. Direct assignment:**<br>$$`age = 25``count = -10`$$<br>**2. Using type conversion:**<br>$$`number = int(\"42\")``decimal = int(3.14)  # Truncates to 3`$$**3. Using expressions:**<br>$$`sum = 10 + 20``product = 5 * 6`$$<br>## 🎯 Special Integer Features:<br>- No size limit (except memory)<br>- Can use underscores for readability:<br>$$million = 1_000_000$$<br>## ⚡ Examples with Binary, Octal, Hex:<br>$$`# Binary (base 2)``binary = 0b1010  # 10 in decimal````# Octal (base 8)``octal = 0o17  # 15 in decimal````# Hexadecimal (base 16)``hex = 0xFF  # 255 in decimal`$$",
+			"How to declare a float in Python?": "# 🔢 Declaring Floats in Python<br>## 📝 Basic Syntax:<br>$$price = 19.99$$<br>## 💻 Different Ways to Declare:<br>**1. Direct assignment:**<br>$$`x = 3.14``y = -0.001`$$**2. Scientific notation:**<br>$$`large = 1.23e5  # 123000.0``small = 1.23e-4  # 0.000123`$$**3. Type conversion:**<br>$$`a = float(\"3.14\")``b = float(42)  # 42.0`$$<br>## 🎯 Special Cases:<br>$$`inf = float('inf')  # Infinity``nan = float('nan')  # Not a Number`$$<br>## ⚠️ Precision Note:<br>Floats may have small rounding errors:<br>$$`x = 0.1 + 0.2``print(x)  # 0.30000000000000004`$$<br>## 💡 Best Practices:<br>- Use **decimal** module for precise calculations<br>- Round when displaying: $round(number, 2)$",
+			"How to declare a string in Python?": "# 📝 Declaring Strings in Python<br>## 📝 Basic Syntax:<br>**Single quotes:**<br>$$text = 'Hello'$$**Double quotes:**<br>$$message = \"World\"$$<br>## 💻 Different Ways to Declare:<br>**1. Single or double quotes:**<br>$$`name = 'John'``name = \"John\"`$$<br>**2. Triple quotes (multiline):**<br>$$`text = \"\"\"``This is a``multiline string``\"\"\"`$$<br>**3. Raw strings (ignore escapes):**<br>$$r = r\"Raw\\nString\"$$<br>## 🎯 String Features:<br>**Escape characters:**<br>$$`print(\"Hello\\nWorld\")  # Newline``print(\"Tab\\there\")    # Tab``print(\"Quote's\")      # Quote`$$**String concatenation:**<br>$$`first = \"Hello\"``second = \"World\"``message = first + \" \" + second`$$<br>## 💡 Best Practices:<br>- Be consistent with quote style<br>- Use f-strings for formatting<br>- Use triple quotes for docstrings",
+			"How to declare a boolean in Python?": "# ✅ Declaring Booleans in Python<br>## 📝 Basic Syntax:<br>$$`is_active = True``is_valid = False`$$<br>## 💻 Different Ways to Get Booleans:<br>**1. Direct assignment:**<br>$$`is_student = True``has_permission = False`$$**2. Comparisons:**<br>$$`is_adult = age >= 18``is_empty = len(list) == 0`$$**3. Boolean operations:**<br>$$`is_valid = True and False  # False``has_access = True or False  # True``is_blocked = not True     # False`$$<br>## 🎯 Truthy and Falsy Values:<br>**Falsy values:**<br>$$`False  # Boolean False``None   # None``0      # Zero``\"\"     # Empty string``[]     # Empty list``{}     # Empty dict`$$**Everything else is Truthy**<br>## 💡 Best Practices:<br>- Use descriptive names starting with 'is_', 'has_', 'can_'<br>- Be explicit in boolean operations<br>- Use parentheses for complex conditions",
+			"How are assignments performed in Python?": "# 🎯 Assignments in Python<br>## 📝 Basic Assignment:<br>$$x = 42$$<br>## 💻 Different Types of Assignment:<br>**1. Simple assignment:**<br>$$`name = \"John\"``age = 25``is_student = True`$$**2. Multiple assignment:**<br>$$`x, y = 10, 20``a = b = c = 0`$$**3. Augmented assignment:**<br>$$`x += 5      # x = x + 5``y -= 3      # y = y - 3``z *= 2      # z = z * 2``w /= 4      # w = w / 4`$$**4. Unpacking assignment:**<br>$$`# List unpacking``a, b, c = [1, 2, 3]````# Dictionary unpacking``name, age = {\"name\": \"John\", \"age\": 30}.values()`$$<br>## 💡 Best Practices:<br>- Keep assignments simple and clear<br>- Use meaningful variable names<br>- Use type hints for clarity (Python 3.6+):<br>$$name: str = \"John\"$$",
 		}
-
-		for (var question in dataTesting) {
-			chatbot.addData(question, dataTesting[question]);
+		var greetingInput = {
+			greetingSimple: ["Hi", "Hi!", "Hello", "Hello!"],
+			advancedGreeting: {
+				"Good morning!": "Good morning! Have a nice day!",
+				"Good afternoon!": "Good afternoon! How can i help you today?",
+				"Good night!": "Sweet dream, if you have any question about python, feel free to ask!",
+				"Good morning": "Good morning! Have a nice day!",
+				"Good afternoon": "Good afternoon! How can i help you today?",
+				"Good night": "Sweet dream, if you have any question about python, feel free to ask!"
+			}
 		}
 		
+		try {
+			var data = localStorage.getItem("chatbotData")
+			if (data) {
+				const parsed = JSON.parse(data)
+				if (typeof parsed === "object" && parsed !== null) {
+					for (var question in parsed) {
+						chatbot.addData(question, parsed[question])
+					}
+				}
+				else {
+					console.warn("LocalStorage chatbotData is not valid object:", parsed)
+					localStorage.removeItem("chatbotData")
+				}
+			}
+		}
+		catch (e) {
+			console.error("❌ Failed to parse chatbotData:", e.message);
+			localStorage.removeItem("chatbotData");
+			alert("🚫 Chatbot's data has been error and reset!");
+		}
+		
+		for (var question in dataTesting) {
+			chatbot.addData(question, dataTesting[question])
+		}
+		greetingInput.greetingSimple.forEach(function(q) {
+			chatbot.addData(q, "Hello!, how can i assist you today?")
+		})
+		for (var greeting in greetingInput.advancedGreeting) {
+			chatbot.addData(greeting, greetingInput.advancedGreeting[greeting])
+		}
+
 		function loading() {
 			this.loadingMessage = document.getElementById("loading-message")
 		}
 		loading.prototype.show = function() {
-			this.loadingMessage.style.display = "block";
-			chatContainer.scrollTop = chatContainer.scrollHeight;
+			this.loadingMessage.style.display = "block"
+			chatContainer.scrollTop = chatContainer.scrollHeight
 		}
 		loading.prototype.hide = function() {
-			this.loadingMessage.style.display = "none";
+			this.loadingMessage.style.display = "none"
 		}
 
 		function addMessage(message, isUser) {
-			var msg = document.createElement("div");
-			msg.className = isUser ? "user-message" : "bot-message";
-			msg.innerHTML = isUser? message : format(message);
-			chatContainer.appendChild(msg);
-			chatContainer.scrollTop = chatContainer.scrollHeight;
+			var msg = document.createElement("div")
+			msg.className = isUser ? "user-message" : "bot-message"
+			msg.innerHTML = isUser? message : format(message)
+			chatContainer.appendChild(msg)
+			chatContainer.scrollTop = chatContainer.scrollHeight
 		}
 		function handleUserMessage() {
-			var message = userInput.value.trim();
+			var message = userInput.value.trim()
 			if (message) {
-				addMessage(message, true);
+				addMessage(message, true)
 
 				// Thêm block loading
-				const loadingMsg = document.createElement("div");
-				loadingMsg.className = "bot-message loading";
-				loadingMsg.innerHTML = '<div class="dot-typing"><div></div><div></div><div></div></div>';
-				chatContainer.appendChild(loadingMsg);
-				chatContainer.scrollTop = chatContainer.scrollHeight;
+				const loadingMsg = document.createElement("div")
+				loadingMsg.className = "bot-message loading"
+				loadingMsg.innerHTML = '<div class="dot-typing"><div></div><div></div><div></div></div>'
+				chatContainer.appendChild(loadingMsg)
+				chatContainer.scrollTop = chatContainer.scrollHeight
 
-				userInput.value = "";
+				userInput.value = ""
 
 				setTimeout(function() {
-					var response = chatbot.findAnswer(message);
+					var response = chatbot.findAnswer(message)
 
-					chatContainer.removeChild(loadingMsg);
+					chatContainer.removeChild(loadingMsg)
 
-					addMessage(response, false);
-				}, 2000);
+					addMessage(response, false)
+				}, 2000)
 			}
 		}
 		 
+		// Make user can add data to chatbot
+		function handleAddData() {
+			var question = prompt("Enter the question:");
+			if (!question || typeof question !== "string") return;
+
+			var answer = prompt("Enter the answer:");
+			if (!answer || typeof answer !== "string") return;
+
+			try {
+				chatbot.addData(question, answer);
+				alert("✅ Data added successfully!");
+
+				let savedData = {};
+				for (let i = 0; i < chatbot.documents.length; i++) {
+					const q = chatbot.documents[i];
+					const a = chatbot.responses[i];
+
+					if (typeof q === "string" && typeof a === "string") {
+						savedData[q] = a;
+					}
+				}
+
+				const json = JSON.stringify(savedData);
+				localStorage.setItem("chatbotData", json);
+
+				console.log("✅ chatbotData saved:", json);
+
+				addMessage(`You added: ${question}`, true);
+				addMessage(`Bot will respond: ${answer}`, false);
+			} catch (err) {
+				alert("🚫 Dữ liệu bạn nhập có thể làm hỏng hệ thống.\nChi tiết: " + err.message);
+			}
+		}
+
+		// Handle clear chat history
 		function handleClearMessage() {
-			chatContainer.innerHTML = '';
-			alert("Chat history cleared successfully");
+			chatContainer.innerHTML = ''
+			alert("Chat history cleared successfully")
 		}
 		
+		// Handle clear all chatbot data
+		function handleClearData() {
+			if (confirm("Are you sure you want to clear all chatbot data? This cannot be undone.")) {
+				chatbot.documents = []
+				chatbot.responses = []
+				localStorage.removeItem("chatbotData")
+				alert("All chatbot data cleared successfully.")
+			}
+		}
+
 		// Copy button function
 		document.addEventListener('click', function (e) {
 			if (e.target.classList.contains('copy-button')) {
-			var preElement = e.target.closest('pre');
-			if (!preElement) return;
+			var preElement = e.target.closest('pre')
+			if (!preElement) return
 
-			var codeBlock = preElement.querySelector('code');
-			if (!codeBlock) return;
+			var codeBlock = preElement.querySelector('code')
+			if (!codeBlock) return
 
-			var range = document.createRange();
-			range.selectNodeContents(codeBlock);
-			var selection = window.getSelection();
-			selection.removeAllRanges();
-			selection.addRange(range);
+			var range = document.createRange()
+			range.selectNodeContents(codeBlock)
+			var selection = window.getSelection()
+			selection.removeAllRanges()
+			selection.addRange(range)
 
 			try {
-				var success = document.execCommand('copy');
+				var success = document.execCommand('copy')
 				if (success) {
-					e.target.textContent = "Copied!";
-					setTimeout(function() {e.target.textContent="Copy"}, 1000);
+					e.target.textContent = "Copied!"
+					setTimeout(function() {e.target.textContent="Copy"}, 1000)
 				} else {
-					e.target.textContent = "Failed";
+					e.target.textContent = "Failed"
 				}
 			} catch (err) {
-				console.error("Copy failed:", err);
+				console.error("Copy failed:", err)
 			}
 
-			selection.removeAllRanges();
+			selection.removeAllRanges()
 		}
 
-		});
+		})
 	
-		clearButton.addEventListener("click", handleClearMessage);
+		clearButton.addEventListener("click", handleClearMessage)
+		addDataButton.addEventListener("click", handleAddData)
+		removeAllDataButton.addEventListener("click", handleClearData)
 		userInput.addEventListener("keydown", function(e) {
 			if (e.key === "Enter" && !e.shiftKey) {
-				e.preventDefault();
-				handleUserMessage();
+				e.preventDefault()
+				handleUserMessage()
 			}
-		});
+		})
 	</script>
 </body>
 </html>

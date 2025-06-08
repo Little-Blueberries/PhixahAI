@@ -1,0 +1,533 @@
+Bộ 500 Câu Hỏi Về Python
+
+I. Cấp Độ Cơ Bản (150 câu)
+
+A. Tổng Quan & Cài Đặt (20 câu)
+
+1. Python là gì?
+2. Ưu điểm chính của Python là gì?
+3. Nhược điểm của Python là gì?
+4. Python được sử dụng trong những lĩnh vực nào?
+5. Phiên bản Python hiện tại phổ biến nhất là gì?
+6. Làm thế nào để kiểm tra phiên bản Python đã cài đặt?
+7. Sự khác biệt giữa Python 2 và Python 3 là gì?
+8. Trình thông dịch Python (Python interpreter) là gì?
+9. IDLE là gì?
+10. PIP là gì?
+11. Làm thế nào để cài đặt một gói (package) bằng PIP?
+12. Virtual environment (môi trường ảo) là gì và tại sao nó quan trọng?
+13. Làm thế nào để tạo một virtual environment?
+14. Làm thế nào để kích hoạt một virtual environment?
+15. Làm thế nào để thoát khỏi một virtual environment?
+16. Python là ngôn ngữ biên dịch hay thông dịch?
+17. Giải thích khái niệm "cross-platform" của Python.
+18. Python có mã nguồn mở không?
+19. Python được tạo ra bởi ai?
+20. Năm ra đời của Python là gì?
+B. Cú Pháp Cơ Bản (30 câu)
+21. Làm thế nào để in ra màn hình một chuỗi trong Python?
+22. Biến (variable) trong Python là gì?
+23. Quy tắc đặt tên biến trong Python là gì?
+24. Các kiểu dữ liệu cơ bản trong Python là gì? Kể tên 5 kiểu.
+25. Cách khai báo một số nguyên (integer) trong Python.
+26. Cách khai báo một số thực (float) trong Python.
+27. Cách khai báo một chuỗi (string) trong Python.
+28. Cách khai báo một giá trị boolean (True/False) trong Python.
+29. Phép gán trong Python được thực hiện như thế nào?
+30. Toán tử số học trong Python là gì? Kể tên 5 toán tử.
+31. Toán tử so sánh trong Python là gì? Kể tên 3 toán tử.
+32. Toán tử logic trong Python là gì? Kể tên 3 toán tử.
+33. Làm thế nào để thực hiện phép chia lấy phần nguyên trong Python?
+34. Làm thế nào để thực hiện phép chia lấy phần dư trong Python?
+35. Thứ tự ưu tiên của các toán tử trong Python là gì?
+36. Chú thích (comment) trong Python là gì? Làm thế nào để tạo comment?
+37. Phân biệt comment một dòng và comment nhiều dòng.
+38. Hàm input() trong Python dùng để làm gì?
+39. Làm thế nào để ép kiểu dữ liệu từ chuỗi sang số nguyên?
+40. Làm thế nào để ép kiểu dữ liệu từ số nguyên sang chuỗi?
+41. Điều kiện if, elif, else trong Python dùng để làm gì?
+42. Viết một ví dụ đơn giản sử dụng if-else.
+43. Vòng lặp for trong Python dùng để làm gì?
+44. Viết một ví dụ đơn giản sử dụng vòng lặp for để in các số từ 1 đến 5.
+45. Hàm range() trong Python dùng để làm gì?
+46. Vòng lặp while trong Python dùng để làm gì?
+47. Viết một ví dụ đơn giản sử dụng vòng lặp while để in các số từ 1 đến 3.
+48. Từ khóa break trong vòng lặp dùng để làm gì?
+49. Từ khóa continue trong vòng lặp dùng để làm gì?
+50. Câu lệnh pass trong Python dùng để làm gì?
+
+C. Cấu Trúc Dữ Liệu Cơ Bản (50 câu)
+51. List (danh sách) trong Python là gì?
+52. Đặc điểm của List (có thứ tự, có thể thay đổi, cho phép trùng lặp)?
+53. Cách khai báo một List rỗng.
+54. Cách khai báo một List chứa các số nguyên.
+55. Làm thế nào để truy cập một phần tử trong List?
+56. Phân biệt chỉ mục dương và chỉ mục âm trong List.
+57. Làm thế nào để thêm một phần tử vào cuối List? (Hàm append())
+58. Làm thế nào để chèn một phần tử vào vị trí cụ thể trong List? (Hàm insert())
+59. Làm thế nào để xóa một phần tử khỏi List theo giá trị? (Hàm remove())
+60. Làm thế nào để xóa một phần tử khỏi List theo chỉ mục? (Hàm pop())
+61. Làm thế nào để xóa tất cả các phần tử khỏi List? (Hàm clear())
+62. Làm thế nào để kiểm tra một phần tử có tồn tại trong List hay không?
+63. Tuple (bộ) trong Python là gì?
+64. Đặc điểm của Tuple (có thứ tự, bất biến, cho phép trùng lặp)?
+65. Cách khai báo một Tuple rỗng.
+66. Cách khai báo một Tuple chứa các chuỗi.
+67. Làm thế nào để truy cập một phần tử trong Tuple?
+68. Sự khác biệt chính giữa List và Tuple là gì?
+69. Khi nào nên sử dụng Tuple thay vì List?
+70. Set (tập hợp) trong Python là gì?
+71. Đặc điểm của Set (không có thứ tự, không cho phép trùng lặp, có thể thay đổi)?
+72. Cách khai báo một Set rỗng.
+73. Cách khai báo một Set chứa các số nguyên.
+74. Làm thế nào để thêm một phần tử vào Set? (Hàm add())
+75. Làm thế nào để xóa một phần tử khỏi Set? (Hàm remove() hoặc discard())
+76. Sự khác biệt giữa remove() và discard() khi xóa phần tử trong Set?
+77. Các phép toán tập hợp cơ bản là gì? Kể tên 3 phép toán.
+78. Làm thế nào để thực hiện phép hợp (union) giữa hai Set?
+79. Làm thế nào để thực hiện phép giao (intersection) giữa hai Set?
+80. Dictionary (từ điển) trong Python là gì?
+81. Đặc điểm của Dictionary (không có thứ tự, có thể thay đổi, lưu trữ cặp khóa-giá trị)?
+82. Cách khai báo một Dictionary rỗng.
+83. Cách khai báo một Dictionary với một vài cặp khóa-giá trị.
+84. Làm thế nào để truy cập giá trị bằng khóa trong Dictionary?
+85. Làm thế nào để thêm một cặp khóa-giá trị mới vào Dictionary?
+86. Làm thế nào để cập nhật giá trị của một khóa trong Dictionary?
+87. Làm thế nào để xóa một cặp khóa-giá trị khỏi Dictionary? (Từ khóa del hoặc hàm pop())
+88. Làm thế nào để lấy tất cả các khóa trong Dictionary? (Hàm keys())
+89. Làm thế nào để lấy tất cả các giá trị trong Dictionary? (Hàm values())
+90. Làm thế nào để lấy tất cả các cặp khóa-giá trị trong Dictionary? (Hàm items())
+91. Hàm len() trong Python dùng để làm gì?
+92. Làm thế nào để sao chép một List một cách nông (shallow copy)?
+93. Làm thế nào để sao chép một List một cách sâu (deep copy)?
+94. Slicing trong Python là gì?
+95. Ví dụ về slicing trên một chuỗi.
+96. Ví dụ về slicing trên một List.
+97. Làm thế nào để đảo ngược một List?
+98. Làm thế nào để sắp xếp một List theo thứ tự tăng dần? (Hàm sort())
+99. Làm thế nào để sắp xếp một List theo thứ tự giảm dần? (Hàm sort() với tham số reverse)
+100. Làm thế nào để sắp xếp một List mà không thay đổi List gốc? (Hàm sorted())
+
+D. Hàm (Function) Cơ Bản (30 câu)
+101. Hàm trong Python là gì?
+102. Tại sao nên sử dụng hàm? (Tái sử dụng mã, dễ bảo trì, cấu trúc rõ ràng)
+103. Cú pháp khai báo một hàm trong Python là gì?
+104. Làm thế nào để gọi một hàm?
+105. Tham số (parameter) và đối số (argument) trong hàm là gì?
+106. Giá trị trả về (return value) của hàm là gì?
+107. Từ khóa return trong hàm dùng để làm gì?
+108. Một hàm có thể trả về nhiều giá trị không? Nếu có, bằng cách nào?
+109. Tham số mặc định (default argument) trong hàm là gì?
+110. Ví dụ về hàm có tham số mặc định.
+111. Tham số từ khóa (keyword argument) trong hàm là gì?
+112. Ví dụ về gọi hàm sử dụng tham số từ khóa.
+113. Tham số vị trí (positional argument) trong hàm là gì?
+114. Phạm vi của biến (scope) trong hàm là gì?
+115. Phân biệt biến cục bộ (local variable) và biến toàn cục (global variable).
+116. Từ khóa global trong Python dùng để làm gì?
+117. Hàm lambda (anonymous function) trong Python là gì?
+118. Cú pháp của hàm lambda.
+119. Khi nào nên sử dụng hàm lambda?
+120. Hàm map() trong Python dùng để làm gì?
+121. Ví dụ về việc sử dụng map() với hàm lambda.
+122. Hàm filter() trong Python dùng để làm gì?
+123. Ví dụ về việc sử dụng filter() với hàm lambda.
+124. Hàm reduce() trong Python dùng để làm gì? (Cần import từ functools)
+125. Ví dụ về việc sử dụng reduce().
+126. Docstring trong Python là gì?
+127. Làm thế nào để thêm docstring vào một hàm?
+128. Lợi ích của việc sử dụng docstring là gì?
+129. Hàm tự gọi (recursive function) là gì?
+130. Ví dụ về hàm đệ quy để tính giai thừa.
+
+E. Xử Lý Chuỗi (String) Cơ Bản (20 câu)
+131. Chuỗi (string) trong Python là gì?
+132. Chuỗi có bất biến không?
+133. Cách tạo chuỗi nhiều dòng trong Python.
+134. Làm thế nào để nối (concatenate) hai chuỗi?
+135. Làm thế nào để lặp lại một chuỗi?
+136. Hàm len() dùng cho chuỗi là gì?
+137. Phương thức upper() của chuỗi dùng để làm gì?
+138. Phương thức lower() của chuỗi dùng để làm gì?
+139. Phương thức capitalize() của chuỗi dùng để làm gì?
+140. Phương thức strip() của chuỗi dùng để làm gì?
+141. Phương thức split() của chuỗi dùng để làm gì?
+142. Phương thức join() của chuỗi dùng để làm gì?
+143. Phương thức replace() của chuỗi dùng để làm gì?
+144. Làm thế nào để kiểm tra xem một chuỗi có bắt đầu bằng một tiền tố cụ thể không? (Hàm startswith())
+145. Làm thế nào để kiểm tra xem một chuỗi có kết thúc bằng một hậu tố cụ thể không? (Hàm endswith())
+146. Làm thế nào để tìm vị trí của một chuỗi con trong chuỗi lớn? (Hàm find() hoặc index())
+147. Sự khác biệt giữa find() và index() khi không tìm thấy chuỗi con?
+148. Định dạng chuỗi (string formatting) trong Python là gì? Kể tên 2 cách.
+149. Ví dụ về f-string (formatted string literal).
+150. Ví dụ về phương thức .format().
+
+II. Cấp Độ Trung Bình (200 câu)
+
+A. Xử Lý Lỗi và Ngoại Lệ (Exception Handling) (30 câu)
+151. Lỗi (Error) và Ngoại lệ (Exception) trong Python là gì?
+152. Sự khác biệt giữa lỗi cú pháp (SyntaxError) và ngoại lệ (Exception)?
+153. Khối try-except trong Python dùng để làm gì?
+154. Cú pháp cơ bản của try-except.
+155. Làm thế nào để xử lý nhiều loại ngoại lệ khác nhau?
+156. Ngoại lệ NameError xảy ra khi nào?
+157. Ngoại lệ TypeError xảy ra khi nào?
+158. Ngoại lệ ValueError xảy ra khi nào?
+159. Ngoại lệ IndexError xảy ra khi nào?
+160. Ngoại lệ KeyError xảy ra khi nào?
+161. Ngoại lệ ZeroDivisionError xảy ra khi nào?
+162. Ngoại lệ FileNotFoundError xảy ra khi nào?
+163. Khối else trong try-except-else dùng để làm gì?
+164. Khối finally trong try-except-finally dùng để làm gì?
+165. Khi nào thì khối finally luôn được thực thi?
+166. Làm thế nào để raise (tạo ra) một ngoại lệ tùy chỉnh?
+167. Từ khóa assert trong Python dùng để làm gì?
+168. Khi nào nên sử dụng assert thay vì try-except?
+169. Lớp cơ sở của tất cả các ngoại lệ trong Python là gì?
+170. Làm thế nào để truy cập thông tin chi tiết về một ngoại lệ?
+171. Stack trace (dấu vết ngăn xếp) là gì?
+172. Làm thế nào để ghi log (logging) các ngoại lệ?
+173. Mục đích của việc logging là gì?
+174. Module logging trong Python là gì?
+175. Các cấp độ logging cơ bản là gì?
+176. Làm thế nào để cấu hình logger để ghi vào file?
+177. Context manager là gì?
+178. Cú pháp with statement dùng để làm gì?
+179. Ví dụ về việc sử dụng with open(...) để xử lý file.
+180. Tại sao with statement lại hữu ích trong xử lý ngoại lệ và tài nguyên?
+
+B. Module và Package (30 câu)
+181. Module trong Python là gì?
+182. Tại sao nên sử dụng module?
+183. Làm thế nào để tạo một module Python?
+184. Làm thế nào để import một module? (Ví dụ: import math)
+185. Làm thế nào để import một đối tượng cụ thể từ một module? (Ví dụ: from math import pi)
+186. Sự khác biệt giữa import module_name và from module_name import function_name?
+187. Từ khóa as trong import dùng để làm gì? (Ví dụ: import numpy as np)
+188. Lệnh import * có nghĩa là gì và tại sao không nên dùng nó?
+189. Biến __name__ trong Python là gì?
+190. Đoạn mã if __name__ == "__main__": dùng để làm gì?
+191. Package trong Python là gì?
+192. Cấu trúc thư mục của một package trông như thế nào?
+193. File __init__.py trong một package có vai trò gì?
+194. Làm thế nào để import một module từ một sub-package?
+195. PYTHONPATH là gì?
+196. Làm thế nào để thêm một thư mục vào PYTHONPATH?
+197. Các module tích hợp (built-in modules) phổ biến trong Python là gì? Kể tên 3 module.
+198. Module os dùng để làm gì? Kể tên 2 hàm của nó.
+199. Module sys dùng để làm gì? Kể tên 2 hàm của nó.
+200. Module datetime dùng để làm gì? Kể tên 2 hàm của nó.
+201. Module json dùng để làm gì?
+202. Module collections dùng để làm gì?
+203. Module re dùng để làm gì?
+204. Làm thế nào để liệt kê tất cả các hàm và biến trong một module? (Hàm dir())
+205. Làm thế nào để xem tài liệu của một module hoặc hàm? (Hàm help())
+206. Khái niệm namespace trong Python là gì?
+207. Phân biệt module, package và thư viện (library).
+208. Cấu trúc thư mục của một dự án Python điển hình.
+209. Wheel files (.whl) trong Python là gì?
+210. Poetry là gì và tại sao nó được sử dụng?
+
+C. Lập Trình Hướng Đối Tượng (OOP) (50 câu)
+211. Lập trình hướng đối tượng (OOP) là gì?
+212. Các trụ cột chính của OOP là gì? Kể tên 4 trụ cột.
+213. Class (lớp) trong Python là gì?
+214. Object (đối tượng) trong Python là gì?
+215. Cú pháp khai báo một Class đơn giản.
+216. Thuộc tính (attribute) của một đối tượng là gì?
+217. Phương thức (method) của một đối tượng là gì?
+218. Hàm khởi tạo __init__ trong Python dùng để làm gì?
+219. Từ khóa self trong phương thức của lớp có ý nghĩa gì?
+220. Cách tạo một đối tượng từ một Class.
+221. Thuộc tính lớp (class attribute) là gì?
+222. Thuộc tính đối tượng (instance attribute) là gì?
+223. Phương thức lớp (class method) là gì? (Decorator @classmethod)
+224. Từ khóa cls trong phương thức lớp có ý nghĩa gì?
+225. Phương thức tĩnh (static method) là gì? (Decorator @staticmethod)
+226. Khi nào nên sử dụng phương thức lớp, khi nào nên sử dụng phương thức tĩnh?
+227. Kế thừa (Inheritance) trong OOP là gì?
+228. Lớp cha (Parent class) và lớp con (Child class) là gì?
+229. Cú pháp để một lớp kế thừa từ lớp khác.
+230. Từ khóa super() trong kế thừa dùng để làm gì?
+231. Đa hình (Polymorphism) trong OOP là gì?
+232. Ví dụ về đa hình trong Python.
+233. Trừu tượng hóa (Abstraction) trong OOP là gì?
+234. Giao diện (Interface) trong Python là gì? (Cách mô phỏng)
+235. Đóng gói (Encapsulation) trong OOP là gì?
+236. Các cấp độ truy cập (access modifiers) trong Python là gì? (Public, Protected, Private)
+237. Làm thế nào để biểu thị một thuộc tính "protected" trong Python? (Quy ước _)
+238. Làm thế nào để biểu thị một thuộc tính "private" trong Python? (Quy ước __)
+239. Getter và Setter trong OOP là gì?
+240. Decorator @property trong Python dùng để làm gì?
+241. Ví dụ về việc sử dụng @property để tạo getter.
+242. Ví dụ về việc sử dụng @property.setter để tạo setter.
+243. Kế thừa đa cấp (Multilevel inheritance) là gì?
+244. Kế thừa đa bội (Multiple inheritance) là gì?
+245. Diamond problem trong kế thừa đa bội là gì?
+246. Thứ tự phân giải phương thức (Method Resolution Order - MRO) là gì?
+247. Hàm issubclass() và isinstance() dùng để làm gì?
+248. Magic methods (Dunder methods) trong Python là gì?
+249. Mục đích của __str__ và __repr__ là gì?
+250. Sự khác biệt giữa __str__ và __repr__?
+251. Magic method __len__ dùng để làm gì?
+252. Magic method __add__ dùng để làm gì?
+253. Magic method __call__ dùng để làm gì?
+254. Decorator là gì?
+255. Làm thế nào để tạo một decorator đơn giản?
+256. Iterator trong Python là gì?
+257. Iterable trong Python là gì?
+258. Protocol iterator trong Python yêu cầu những method nào? (__iter__ và __next__)
+259. Generator trong Python là gì?
+260. Từ khóa yield trong generator dùng để làm gì?
+
+D. Xử Lý File và Dữ Liệu (40 câu)
+261. Các chế độ mở file trong Python là gì? (read, write, append, binary, text)
+262. Làm thế nào để mở một file để đọc?
+263. Làm thế nào để mở một file để ghi (ghi đè)?
+264. Làm thế nào để mở một file để ghi (ghi thêm vào cuối)?
+265. Cách đọc toàn bộ nội dung của một file vào một chuỗi.
+266. Cách đọc từng dòng của một file.
+267. Làm thế nào để ghi một chuỗi vào file?
+268. Làm thế nào để ghi nhiều dòng vào file?
+269. Quan trọng của việc đóng file là gì?
+270. Tại sao nên sử dụng with open(...) khi làm việc với file?
+271. CSV (Comma Separated Values) là gì?
+272. Module csv trong Python dùng để làm gì?
+273. Làm thế nào để đọc dữ liệu từ file CSV?
+274. Làm thế nào để ghi dữ liệu vào file CSV?
+275. JSON (JavaScript Object Notation) là gì?
+276. Module json trong Python dùng để làm gì?
+277. Làm thế nào để chuyển đổi một đối tượng Python sang chuỗi JSON? (json.dumps())
+278. Làm thế nào để chuyển đổi một chuỗi JSON sang đối tượng Python? (json.loads())
+279. Làm thế nào để ghi đối tượng Python vào file JSON? (json.dump())
+280. Làm thế nào để đọc đối tượng Python từ file JSON? (json.load())
+281. YAML (YAML Ain't Markup Language) là gì?
+282. Làm thế nào để xử lý file YAML trong Python? (Thư viện pyyaml)
+283. Pickle trong Python là gì?
+284. Khi nào thì nên sử dụng Pickle?
+285. Làm thế nào để serialize một đối tượng Python bằng Pickle? (pickle.dumps())
+286. Làm thế nào để deserialize một đối tượng Python bằng Pickle? (pickle.loads())
+287. Sự khác biệt giữa JSON và Pickle?
+288. Các chế độ nhị phân (binary mode) khi mở file là gì? (ví dụ: rb, wb)
+289. Làm thế nào để đọc/ghi dữ liệu nhị phân?
+290. Module os.path dùng để làm gì?
+291. Làm thế nào để kiểm tra một đường dẫn có phải là file hay thư mục không?
+292. Làm thế nào để tạo một thư mục mới?
+293. Làm thế nào để xóa một file?
+294. Làm thế nào để liệt kê nội dung của một thư mục?
+295. Làm thế nào để đổi tên file hoặc thư mục?
+296. Khái niệm relative path và absolute path là gì?
+297. Pipe (|) trong Linux/macOS là gì?
+298. Redirect (>, >>) trong Linux/macOS là gì?
+299. Làm thế nào để thực thi một lệnh shell từ Python? (Module subprocess)
+300. f.seek() trong xử lý file dùng để làm gì?
+
+E. Lập Trình Nâng Cao & Thư Viện (50 câu)
+301. List Comprehension là gì?
+302. Ví dụ về List Comprehension để tạo một List các số chẵn.
+303. Dictionary Comprehension là gì?
+304. Ví dụ về Dictionary Comprehension.
+305. Set Comprehension là gì?
+306. Ví dụ về Set Comprehension.
+307. Generator Expression là gì?
+308. Sự khác biệt giữa List Comprehension và Generator Expression?
+309. Decorator @functools.wraps dùng để làm gì?
+310. Hàm zip() trong Python dùng để làm gì?
+311. Hàm enumerate() trong Python dùng để làm gì?
+312. Hàm any() và all() trong Python dùng để làm gì?
+313. Collections Counter dùng để làm gì?
+314. Collections defaultdict dùng để làm gì?
+315. Collections namedtuple dùng để làm gì?
+316. Threading trong Python là gì?
+317. Process trong Python là gì?
+318. Sự khác biệt giữa Threading và Multiprocessing?
+319. GIL (Global Interpreter Lock) trong Python là gì?
+320. GIL ảnh hưởng đến hiệu suất đa luồng như thế nào?
+321. Khi nào nên sử dụng Threading, khi nào nên sử dụng Multiprocessing?
+322. Thread safety là gì?
+323. Race condition là gì?
+324. Lock trong Threading dùng để làm gì?
+325. Hàm concurrent.futures.ThreadPoolExecutor dùng để làm gì?
+326. Hàm concurrent.futures.ProcessPoolExecutor dùng để làm gì?
+327. Regular expressions (biểu thức chính quy) trong Python là gì?
+328. Module re cung cấp những chức năng gì?
+329. Ký tự . trong regex có ý nghĩa gì?
+330. Ký tự * trong regex có ý nghĩa gì?
+331. Ký tự + trong regex có ý nghĩa gì?
+332. Ký tự ? trong regex có ý nghĩa gì?
+333. Ký tự [] trong regex có ý nghĩa gì?
+334. Ký tự () trong regex có ý nghĩa gì?
+335. Hàm re.search() dùng để làm gì?
+336. Hàm re.match() dùng để làm gì?
+337. Hàm re.findall() dùng để làm gì?
+338. Hàm re.sub() dùng để làm gì?
+339. Thư viện NumPy dùng để làm gì?
+340. Array trong NumPy là gì?
+341. Thư viện Pandas dùng để làm gì?
+342. DataFrame trong Pandas là gì?
+343. Thư viện Matplotlib dùng để làm gì?
+344. Làm thế nào để vẽ biểu đồ đường bằng Matplotlib?
+345. Thư viện Requests dùng để làm gì?
+346. Làm thế nào để gửi HTTP GET request bằng Requests?
+347. Làm thế nào để gửi HTTP POST request bằng Requests?
+348. Web scraping là gì?
+349. Thư viện BeautifulSoup dùng để làm gì?
+350. Làm thế nào để phân tích cú pháp HTML bằng BeautifulSoup?
+
+III. Cấp Độ Nâng Cao & Ứng Dụng (150 câu)
+
+A. Thiết Kế & Kiến Trúc Phần Mềm (40 câu)
+351. Các nguyên tắc SOLID trong lập trình là gì?
+352. Giải thích nguyên tắc Single Responsibility Principle (SRP).
+353. Giải thích nguyên tắc Open/Closed Principle (OCP).
+354. Giải thích nguyên tắc Liskov Substitution Principle (LSP).
+355. Giải thích nguyên tắc Interface Segregation Principle (ISP).
+356. Giải thích nguyên tắc Dependency Inversion Principle (DIP).
+357. Các mẫu thiết kế (Design Patterns) phổ biến trong Python là gì? Kể tên 3 mẫu.
+358. Mẫu Singleton là gì? Khi nào nên sử dụng?
+359. Mẫu Factory Method là gì?
+360. Mẫu Observer là gì?
+361. MVC (Model-View-Controller) trong phát triển web là gì?
+362. RESTful API là gì?
+363. Các động từ HTTP (HTTP verbs) chính là gì?
+364. State machine là gì?
+365. Event-driven programming là gì?
+366. Callback function trong Python là gì?
+367. Asynchronous programming (lập trình bất đồng bộ) trong Python là gì?
+368. Từ khóa async và await trong Python dùng để làm gì?
+369. Module asyncio trong Python là gì?
+370. Sự khác biệt giữa concurrent và parallel execution?
+371. Generator coroutine là gì?
+372. Các phương pháp kiểm thử (testing) trong Python là gì? (Unit, Integration, End-to-end)
+373. Unit testing là gì?
+374. Thư viện unittest trong Python dùng để làm gì?
+375. Thư viện pytest trong Python dùng để làm gì?
+376. Test-Driven Development (TDD) là gì?
+377. Continuous Integration (CI) là gì?
+378. Continuous Deployment (CD) là gì?
+379. Docker là gì và tại sao nó quan trọng trong triển khai ứng dụng Python?
+380. Thư viện SQLAlchemy dùng để làm gì?
+381. ORM (Object-Relational Mapping) là gì?
+382. Database migration là gì?
+383. Caching trong ứng dụng Python là gì?
+384. CDN (Content Delivery Network) là gì?
+385. Load balancing là gì?
+386. Message queue là gì? (ví dụ: RabbitMQ, Kafka)
+387. Microservices architecture là gì?
+388. Monolithic architecture là gì?
+389. Ưu điểm và nhược điểm của Microservices so với Monolithic.
+390. Containerization là gì?
+
+B. Thư Viện và Framework Nâng Cao (50 câu)
+391. Django là gì?
+392. Các thành phần chính của Django là gì? (Models, Views, Templates, URLs)
+393. Flask là gì?
+394. Sự khác biệt chính giữa Django và Flask?
+395. Khi nào nên chọn Django, khi nào nên chọn Flask?
+396. FastAPI là gì? Ưu điểm của nó so với Flask/Django?
+397. Thư viện requests dùng để làm gì trong phát triển web?
+398. Thư viện celery dùng để làm gì?
+399. WebSocket là gì?
+400. Làm thế nào để xử lý WebSocket trong Python? (Thư viện websockets)
+401. PyTorch là gì?
+402. TensorFlow là gì?
+403. Sự khác biệt chính giữa PyTorch và TensorFlow?
+404. Keras là gì?
+405. Scikit-learn là gì?
+406. Các thuật toán học máy (Machine Learning) cơ bản mà Scikit-learn hỗ trợ.
+407. NLTK (Natural Language Toolkit) là gì?
+408. SpaCy là gì?
+409. OpenCV là gì?
+410. Plotly là gì?
+411. Dash là gì?
+412. Streamlit là gì?
+413. Airflow là gì?
+414. Celery Beat là gì?
+415. Redis là gì?
+416. PostgreSQL là gì?
+417. MongoDB là gì?
+418. Docker Compose là gì?
+419. Kubernetes là gì?
+420. AWS Lambda là gì?
+421. Google Cloud Functions là gì?
+422. Azure Functions là gì?
+423. CI/CD pipelines là gì?
+424. GitHub Actions là gì?
+425. Jenkins là gì?
+426. Apache Spark là gì?
+427. Dask là gì?
+428. Apache Flink là gì?
+429. Data Lake là gì?
+430. Data Warehouse là gì?
+431. ETL (Extract, Transform, Load) là gì?
+432. Data governance là gì?
+433. Privacy-preserving AI là gì?
+434. Explainable AI (XAI) là gì?
+435. Bias trong AI là gì?
+436. MLOps là gì?
+437. Model deployment là gì?
+438. Model monitoring là gì?
+439. Feature store là gì?
+440. Reinforcement Learning (Học tăng cường) là gì?
+
+C. Các Chủ Đề Chuyên Sâu & Tối Ưu Hóa (60 câu)
+441. Cấu trúc dữ liệu và thuật toán trong Python là gì?
+442. Độ phức tạp thời gian (Time complexity) và độ phức tạp không gian (Space complexity) là gì?
+443. Giải thích ký hiệu Big O notation.
+444. Ví dụ về thuật toán tìm kiếm nhị phân (Binary Search).
+445. Ví dụ về thuật toán sắp xếp nổi bọt (Bubble Sort).
+446. Khái niệm Hash Table trong Python là gì? (Dictionary là một ví dụ)
+447. Collision resolution trong Hash Table là gì?
+448. Tree data structure là gì?
+449. Graph data structure là gì?
+450. Thuật toán duyệt đồ thị BFS (Breadth-First Search).
+451. Thuật toán duyệt đồ thị DFS (Depth-First Search).
+452. Dynamic Programming là gì?
+453. Greedy algorithm là gì?
+454. Backtracking algorithm là gì?
+455. Memoization là gì?
+456. Tối ưu hóa mã Python như thế nào?
+457. Hồ sơ hiệu suất (Profiling) trong Python là gì? (Module cProfile)
+458. dis module trong Python dùng để làm gì?
+459. C Extension trong Python là gì?
+460. Cython là gì?
+461. Numba là gì?
+462. PyPy là gì?
+463. JIT compiler (Just-In-Time compiler) là gì?
+464. Garbage Collection trong Python hoạt động như thế nào?
+465. Reference counting là gì?
+466. Cyclic references là gì?
+467. Weak references trong Python là gì?
+468. Metaclass trong Python là gì?
+469. Khi nào nên sử dụng Metaclass?
+470. Descriptor trong Python là gì?
+471. Monkey patching trong Python là gì?
+472. Khi nào nên tránh Monkey patching?
+473. Abstract Base Classes (ABCs) trong Python là gì? (Module abc)
+474. Type hints (kiểu gợi ý) trong Python là gì?
+475. Module typing trong Python dùng để làm gì?
+476. Lợi ích của việc sử dụng type hints.
+477. MyPy là gì?
+478. Unit test mock objects là gì?
+479. Thư viện unittest.mock dùng để làm gì?
+480. Dependency Injection (DI) là gì?
+481. IoC (Inversion of Control) là gì?
+482. Thư viện Click dùng để làm gì?
+483. Thư viện Typer dùng để làm gì?
+484. Thư viện Rich dùng để làm gì?
+485. Thư viện Pydantic dùng để làm gì?
+486. Black là gì?
+487. Flake8 là gì?
+488. Ruff là gì?
+489. Pre-commit hooks là gì?
+490. Semantic Versioning là gì?
+491. PEP (Python Enhancement Proposal) là gì?
+492. PEP 8 là gì?
+493. Tầm quan trọng của cộng đồng Python.
+494. Làm thế nào để đóng góp vào mã nguồn mở Python?
+495. Zen of Python là gì?
+496. Tuple unpacking là gì?
+497. Context manager với @contextlib.contextmanager là gì?
+498. Coroutine là gì?
+499. Event loop trong asyncio là gì?
+500. uvloop là gì và tại sao nó được sử dụng?
