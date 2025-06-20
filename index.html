@@ -39,23 +39,14 @@
 		rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
 	<style>
-		/* --- Single-property selectors --- */
 		body::-webkit-scrollbar, #chat-container::-webkit-scrollbar, #user-input::-webkit-scrollbar { display: none; }
-		#chat-container, .input-group, .function, .accessibility { display: flex; }
+		#chat-container, .input-group, .function, .accessibility, .chat-container { display: flex; }
 		#user-input:focus { outline: none; }
-		.accessibility:hover { background: #414141; }
-		.input-group:has(#user-input:focus) { box-shadow: 0 0 5px 0.001px rgb(145, 145, 145);	}
+		.input-group:has(#user-input:focus) { box-shadow: 0 0 5px 0.001px rgb(145, 145, 145); }
 		#user-input::placeholder { color: rgb(160, 160, 160); }
-
-		/* --- Multi-property selectors --- */
-		*, *::before, *::after {
-			box-sizing: border-box;
-			transition: all 0.5s ease;
-		}
+		#chatbot-title, #chat-container-title, #user-input { color: white;	}
 
 		body {
-			background: #1b1b1b;
-			color: #fff;
 			font-family: 'Montserrat', sans-serif;
 			margin: 0;
 			padding: 20px;
@@ -63,7 +54,6 @@
 
 		#chatbot-title {
 			animation: titleMov 3s ease-in-out infinite;
-			color: white;
 			font-family: 'Montserrat', sans-serif;
 			font-size: 3em;
 			font-weight: 700;
@@ -72,18 +62,16 @@
 		}
 
 		#chat-container {
-			background: #121212;
-			border: 1px solid #333;
 			border-radius: 8px;
 			flex-direction: column;
 			gap: 10px;
 			height: 27.7em;
 			overflow-y: auto;
 			padding: 10px;
+			justify-content: center;
 		}
 
 		#chat-container-title {
-			color: white;
 			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 			font-size: 1.5em;
 			text-align: center;
@@ -96,13 +84,11 @@
 		}
 
 		#user-input {
-			background: #292929;
 			border: none;
 			border-radius: 0.25em;
-			color: white;
 			font-family: 'Montserrat', sans-serif;
 			font-size: 1em;
-			height: 2em;
+			height: 0;
 			line-height: 1.4em;
 			overflow: auto;
 			padding: 1.25em 1em;
@@ -118,7 +104,6 @@
 
 		.accessibility {
 			align-items: center;
-			background: #292929;
 			justify-content: center;
 			padding: 0.4em;
 		}
@@ -135,7 +120,6 @@
 
 		.user-message {
 			align-self: flex-end;
-			background: #292929;
 			max-width: 70%;
 			text-align: right;
 		}
@@ -155,7 +139,6 @@
 
 		.dot-typing div {
 			animation: dotTypingAnim 1s infinite ease-in-out;
-			background: #ccc;
 			border-radius: 50%;
 			height: 5px;
 			position: absolute;
@@ -176,9 +159,12 @@
 			animation-delay: 0.4s;
 			left: 16px;
 		}
-		/* --- Keyframes --- */
+
 		@keyframes dotTypingAnim {
-			0%,	80%, 100% {
+
+			0%,
+			80%,
+			100% {
 				opacity: 0.5;
 				transform: scale(0.8);
 			}
@@ -190,14 +176,135 @@
 		}
 
 		@keyframes titleMov {
-			0%,	100% { transform: translateY(0%); }
-			50% { transform: translateY(-8%); }
+
+			0%,
+			100% {
+				transform: translateY(0%);
+			}
+
+			50% {
+				transform: translateY(-8%);
+			}
 		}
 
+		html,
+		body {
+			max-width: 100vw;
+			overflow-x: hidden;
+		}
+
+
+		/* THEME STYLING */
+		*, *::after, *::before {
+			transition: all 0.5s ease;
+			box-sizing: border-box;
+		}
+
+		/* Light Theme Styles */
+		body.light-theme {
+			background: #f4f4f4;
+			color: #222;
+		}
+
+		body.light-theme #chatbot-title,
+		body.light-theme #chat-container-title,
+		body.light-theme #user-input {
+			color: #222;
+		}
+
+		body.light-theme #chat-container {
+			background: #e9e9ee;
+			border: 1px solid #ccc;
+		}
+
+		body.light-theme .user-message {
+			background: #e0e0e0;
+			color: #222;
+		}
+
+		body.light-theme .bot-message {
+			background: transparent;
+			color: #222;
+		}
+
+		body.light-theme .input-group {
+			background: none;
+		}
+
+		body.light-theme #user-input {
+			background: #e6e6e6;
+			color: #222;
+		}
+
+		body.light-theme #user-input::placeholder {
+			color: #888;
+		}
+
+		body.light-theme .accessibility {
+			background: #e0e0e0;
+		}
+
+		body.light-theme .accessibility:hover {
+			background: #bfc6e0;
+			color: #222;
+		}
+
+		body.light-theme .dot-typing div {
+			background: #888;
+		}
+
+		/* Dark Theme Styles */
+		body.dark-theme {
+			background: #1b1b1b;
+			color: #fff;
+		}
+
+		body.dark-theme #chatbot-title,
+		body.dark-theme #chat-container-title,
+		body.dark-theme #user-input {
+			color: #fff;
+		}
+
+		body.dark-theme #chat-container {
+			background: #121212;
+			border: 1px solid #333;
+		}
+
+		body.dark-theme .user-message {
+			background: #292929;
+			color: #fff;
+		}
+
+		body.dark-theme .bot-message {
+			background: transparent;
+			color: #fff;
+		}
+
+		body.dark-theme .input-group {
+			background: none;
+		}
+
+		body.dark-theme #user-input {
+			background: #292929;
+			border: none;
+			color: #fff;
+		}
+
+		body.dark-theme .accessibility {
+			background: #292929;
+		}
+
+		body.dark-theme .accessibility:hover {
+			background: #414141;
+		}
+
+		body.dark-theme .dot-typing div {
+			background: #ccc;
+		}
 	</style>
 </head>
 
-<body>
+<body class="dark-theme">
 	<h1 id="chatbot-title">PHIXAH</h1>
 	<div id="chat-container">
 		<p id="chat-container-title">How can I help you today?</p>
@@ -237,42 +344,49 @@
 			this.responses = [];
 			this.wordIDF = {};
 		}
-		ManageChatbotSystem.prototype.addData = function(question, response) {
+		ManageChatbotSystem.prototype.addData = function (question, response) {
 			this.documents.push(question.toLowerCase());
 			this.responses.push(response);
 		}
-		ManageChatbotSystem.prototype.calculateTF = function(word, document) {
+		ManageChatbotSystem.prototype.calculateTF = function (word, document) {
 			const words = document.split(/\s+/);
 			let count = 0;
-			for (let w of words) if (w === word) count++;
+			for (var w in words) if (words[w] === word) count++;
 			return count / words.length;
 		}
-		ManageChatbotSystem.prototype.calculateIDF = function(word) {
+		ManageChatbotSystem.prototype.calculateIDF = function (word) {
 			if (this.wordIDF[word] !== undefined) return this.wordIDF[word];
 			let count = 0;
-			for (let doc of this.documents) {
+			for (var i in this.documents) {
+				var doc = this.documents[i];
 				if (doc.split(/\s+/).indexOf(word) !== -1) count++;
 			}
 			const idf = Math.log(this.documents.length / (1 + count)) + 1;
 			this.wordIDF[word] = idf;
 			return idf;
 		}
-		ManageChatbotSystem.prototype.computeVector = function(doc) {
+		ManageChatbotSystem.prototype.computeVector = function (doc) {
 			const words = doc.split(/\s+/);
 			const tfidf = {};
-			for (let word of words) {
+			for (var i in words) {
+				var word = words[i];
 				if (!tfidf[word]) {
 					tfidf[word] = this.calculateTF(word, doc) * this.calculateIDF(word);
 				}
 			}
 			return tfidf;
 		}
-		ManageChatbotSystem.prototype.cosineSimilarity = function(v1, v2) {
-			let sum = 0, mag1 = 0, mag2 = 0;
-			const keys = new Set([...Object.keys(v1), ...Object.keys(v2)]);
-			for (let key of keys) {
-				const a = v1[key] || 0;
-				const b = v2[key] || 0;
+		ManageChatbotSystem.prototype.cosineSimilarity = function (v1, v2) {
+			var sum = 0;
+			var mag1 = 0;
+			var mag2 = 0;
+			var key;
+			var keysObj = {};
+			for (key in v1) { keysObj[key] = true; }
+			for (key in v2) { keysObj[key] = true; }
+			for (key in keysObj) {
+				var a = v1[key] || 0;
+				var b = v2[key] || 0;
 				sum += a * b;
 				mag1 += a * a;
 				mag2 += b * b;
@@ -280,7 +394,7 @@
 			if (mag1 === 0 || mag2 === 0) return 0;
 			return sum / (Math.sqrt(mag1) * Math.sqrt(mag2));
 		}
-		ManageChatbotSystem.prototype.findAnswer = function(userInput) {
+		ManageChatbotSystem.prototype.findAnswer = function (userInput) {
 			const inputVector = this.computeVector(userInput.toLowerCase());
 			let maxScore = 0;
 			let answer = "Sorry, I can't understand";
@@ -307,7 +421,22 @@
 			chatContainer.style.justifyContent = 'normal';
 		}
 		function switchTheme() {
-			// Placeholder for theme switching logic
+			if (document.body.classList.contains('light-theme')) {
+				document.body.classList.remove('light-theme');
+				document.body.classList.add('dark-theme');
+				document.querySelectorAll('svg').forEach(function (i) {
+					i.setAttribute('stroke', 'white')
+				});
+			} else if (document.body.classList.contains('dark-theme')) {
+				document.body.classList.remove('dark-theme');
+				document.body.classList.add('light-theme');
+				document.querySelectorAll('svg').forEach(function (i) {
+					i.setAttribute('stroke', 'black')
+				});
+			} else {
+				// Default: switch to light-theme from no theme
+				document.body.classList.add('dark-theme');
+			}
 		}
 		function addMessage(message, isUser) {
 			const msg = document.createElement("div");
@@ -345,7 +474,7 @@
 		// --- DATA --- //
 		const chatbot = new ManageChatbotSystem();
 		const dataTesting = { "Hello": "Hello, how can I assist you today?" };
-		for (const question in dataTesting) {
+		for (var question in dataTesting) {
 			chatbot.addData(question, dataTesting[question]);
 		}
 		styleIfMessageNotExist();
