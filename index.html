@@ -127,65 +127,7 @@
             justify-content: flex-end;
             padding-right: 0.5em;
         }
-
-        .title-bar {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            width: 100%;
-        }
-
-        .title-bar h1 {
-            flex: 1 1 auto;
-            text-align: center;
-            margin: 0;
-        }
-
-        .dropdown {
-            align-self: flex-end;
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 70%;
-            min-width: 160px;
-            background: inherit;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            border-radius: 6px;
-            z-index: 10;
-            padding: 0.5em 0;
-        }
-
-        .dropdown:hover .dropdown-content,
-        .dropdown:focus-within .dropdown-content {
-            display: block;
-        }
-
-        .dropdown-content a {
-            display: block;
-            padding: 0.5em 1.2em;
-            text-decoration: none;
-            border: none;
-            background: none;
-            font-family: inherit;
-            font-size: 1em;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-
-        .dropdown-content a:hover {
-            background: #e0e0e0;
-        }
-
+        
         .accessibility {
             align-items: center;
             justify-content: center;
@@ -206,6 +148,10 @@
             align-self: flex-end;
             max-width: 70%;
             text-align: right;
+            opacity: 1;
+            transform: translateY(0%);
+            animation: fadeIn 1s ease 0s;
+
         }
 
         .bot-message {
@@ -268,6 +214,19 @@
 
             50% {
                 transform: translateY(-8%);
+            }
+        }
+
+        @keyframes fadeIn {
+
+            0% {
+                opacity: 0;
+                transform: translateY(100%);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0%);
             }
         }
 
@@ -383,32 +342,15 @@
         body.dark-theme .accessibility:hover {
             background: #414141;
         }
-        body.dark-theme .dropdown-content a:hover {
-            background: #444444;
-        }
 
         body.dark-theme .dot-typing div {
-            background: #ccc;
+            background: #888;
         }
     </style>
 </head>
 
 <body class="dark-theme">
-    <div class="title-bar">
-        <h1 id="chatbot-title">PHIXAH</h1>
-        <div class="dropdown">
-            <p id="dropdownbtn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M6 9l6 6 6-6" />
-                </svg>
-            </p>
-            <div class="dropdown-content">
-                <a onclick="nlpChatbot()">Standard chatbot</a>
-                <a onclick="mathChatbot()">Math chatbot</a>
-            </div>
-        </div>
-    </div>
-
+    <h1 id="chatbot-title">PHIXAH</h1>
     <div id="chat-container">
         <p id="chat-container-title">How can I help you today?</p>
     </div>
@@ -442,22 +384,22 @@
         const userInput = document.getElementById("user-input");
 
         // --- OOP: Chatbot System (TF-IDF + Cosine Similarity) --- //
-        function ManageChatbotSystem() {
+        function ChatbotSystemNLP() {
             this.documents = [];
             this.responses = [];
             this.wordIDF = {};
         }
-        ManageChatbotSystem.prototype.addData = function (question, response) {
+        ChatbotSystemNLP.prototype.addData = function (question, response) {
             this.documents.push(question.toLowerCase());
             this.responses.push(response);
         }
-        ManageChatbotSystem.prototype.calculateTF = function (word, document) {
+        ChatbotSystemNLP.prototype.calculateTF = function (word, document) {
             const words = document.split(/\s+/);
             let count = 0;
             for (var w in words) if (words[w] === word) count++;
             return count / words.length;
         }
-        ManageChatbotSystem.prototype.calculateIDF = function (word) {
+        ChatbotSystemNLP.prototype.calculateIDF = function (word) {
             if (this.wordIDF[word] !== undefined) return this.wordIDF[word];
             let count = 0;
             for (var i in this.documents) {
@@ -468,7 +410,7 @@
             this.wordIDF[word] = idf;
             return idf;
         }
-        ManageChatbotSystem.prototype.computeVector = function (doc) {
+        ChatbotSystemNLP.prototype.computeVector = function (doc) {
             const words = doc.split(/\s+/);
             const tfidf = {};
             for (var i in words) {
@@ -479,7 +421,7 @@
             }
             return tfidf;
         }
-        ManageChatbotSystem.prototype.cosineSimilarity = function (v1, v2) {
+        ChatbotSystemNLP.prototype.cosineSimilarity = function (v1, v2) {
             var sum = 0;
             var mag1 = 0;
             var mag2 = 0;
@@ -497,7 +439,7 @@
             if (mag1 === 0 || mag2 === 0) return 0;
             return sum / (Math.sqrt(mag1) * Math.sqrt(mag2));
         }
-        ManageChatbotSystem.prototype.findAnswer = function (userInput) {
+        ChatbotSystemNLP.prototype.findAnswer = function (userInput) {
             const inputVector = this.computeVector(userInput.toLowerCase());
             let maxScore = 0;
             let answer = "Sorry, I can't understand";
@@ -560,14 +502,13 @@
         }
 
         function addMessage(message, isUser) {
+            const msgContainer = document.createElement("div");
             const msg = document.createElement("div");
-            msg.className = isUser ? "user-message" : "bot-message";
-
+            const msgIMG = document.createElement("img")
             const escaped = removeHTML(message);
+            msg.className = isUser ? "user-message" : "bot-message";
             msg.innerHTML = escaped;
-
             chatContainer.appendChild(msg);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
             styleIfMessageExist();
         }
 
@@ -575,9 +516,11 @@
             const message = userInput.value.trim();
             if (message) {
                 addMessage(message, true);
+
                 const loadingMsg = document.createElement("div");
                 loadingMsg.className = "bot-message loading";
-                loadingMsg.innerHTML = '<div class="dot-typing"><div></div><div></div><div></div></div>';
+                loadingMsg.innerHTML = '<div class="dot-typing"><div></div><div></div><div></div>';
+
                 chatContainer.appendChild(loadingMsg);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
                 userInput.value = "";
@@ -589,11 +532,13 @@
             }
         }
 
-
-
         // --- DATA --- //
-        const chatbot = new ManageChatbotSystem();
-        const dataTesting = { "Hello": "Hello, how can I assist you today?" };
+        const chatbot = new ChatbotSystemNLP();
+        const dataTesting = {
+            "Hello !": "Hello, how can I assist you today?",
+            "Hi !": "Hi! How are you?",
+            "I'm good, thanks": ""
+        };
         for (var question in dataTesting) {
             chatbot.addData(question, dataTesting[question]);
         }
@@ -601,9 +546,12 @@
 
         // --- Event Listeners --- //
         userInput.addEventListener("keydown", function (e) {
-            if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleUserMessage();
+            // Only allow if there is no loading message
+            if (!document.querySelector('.loading')) {
+                if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleUserMessage();
+                }
             }
         });
     </script>
