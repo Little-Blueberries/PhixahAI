@@ -7,7 +7,7 @@
 					for 25 months.
 	
 		  I would prefer to be placed in the
-					[Intermediate]
+					Intermediate
 					   bracket
 					   
 		In creating this entry, I focused on make an AI chatbot that can chat with the user.
@@ -27,6 +27,9 @@
 	 - Save your entry as a spin-off of this program (Done)
 	 - Have fun! (Done)
 -->
+<!--
+    Credit awesomeorion for the ka img and the thumbnail script
+-->
 <html lang="en">
 
 <head>
@@ -39,6 +42,33 @@
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --color-bg: #1b1b1b;
+            --color-bg-alt: #121212;
+            --color-text: #fff;
+            --color-border: #333;
+            --color-user-msg-bg: #292929;
+            --color-bot-msg-bg: #292929;
+            --color-input-bg: #292929;
+            --color-accessibility-bg: #292929;
+            --color-accessibility-hover: #414141;
+            --color-dot: #888;
+            --color-title: #fff;
+            --color-placeholder: #888;
+            --color-light-bg: #f4f4f4;
+            --color-light-bg-alt: #e9e9ee;
+            --color-light-text: #222;
+            --color-light-border: #ccc;
+            --color-light-user-msg-bg: #e0e0e0;
+            --color-light-bot-msg-bg: #e0e0e0;
+            --color-light-input-bg: #e6e6e6;
+            --color-light-accessibility-bg: #e0e0e0;
+            --color-light-accessibility-hover: #bfc6e0;
+            --color-light-dot: #888;
+            --color-light-title: #222;
+            --color-light-placeholder: #888;
+        }
+
         body::-webkit-scrollbar,
         #chat-container::-webkit-scrollbar,
         #user-input::-webkit-scrollbar {
@@ -76,6 +106,8 @@
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 20px;
+            background: var(--color-bg);
+            color: var(--color-text);
         }
 
         #chatbot-title {
@@ -85,6 +117,7 @@
             font-weight: 700;
             margin: 0 0 10px;
             text-align: center;
+            color: var(--color-title);
         }
 
         #chat-container {
@@ -95,6 +128,8 @@
             overflow-y: auto;
             padding: 10px;
             justify-content: center;
+            background: var(--color-bg-alt);
+            border: 1px solid var(--color-border);
         }
 
         #chat-container-title {
@@ -120,6 +155,8 @@
             padding: 1.25em 1em;
             resize: none;
             width: 100%;
+            background: var(--color-input-bg);
+            color: var(--color-text);
         }
 
         .function {
@@ -132,6 +169,7 @@
             align-items: center;
             justify-content: center;
             padding: 0.4em;
+            background: var(--color-accessibility-bg);
         }
 
         .user-message,
@@ -139,9 +177,9 @@
             border-radius: 10px;
             font-family: 'Segoe UI', Ubuntu, sans-serif;
             overflow-wrap: break-word;
-            padding: 10px 20px;
             white-space: pre-wrap;
             word-wrap: break-word;
+            animation: fadeIn 1s ease 0s;
         }
 
         .user-message {
@@ -150,14 +188,21 @@
             text-align: right;
             opacity: 1;
             transform: translateY(0%);
-            animation: fadeIn 1s ease 0s;
-
         }
 
         .bot-message {
             align-self: flex-start;
             line-height: 1.5em;
             text-align: left;
+        }
+
+        .user-message .message, .bot-message .message {
+            padding: 10px 20px;
+        }
+
+        .user-message img, .bot-message img {
+            border-radius: 50%;
+            margin: 0 10px;
         }
 
         .dot-typing {
@@ -173,6 +218,7 @@
             height: 5px;
             position: absolute;
             width: 5px;
+            background: var(--color-dot);
         }
 
         .dot-typing div:nth-child(1) {
@@ -247,82 +293,72 @@
 
         /* Light Theme Styles */
         body.light-theme {
-            background: #f4f4f4;
-            color: #222;
+            background: var(--color-light-bg);
+            color: var(--color-light-text);
         }
 
         body.light-theme #chatbot-title,
         body.light-theme #chat-container-title,
         body.light-theme #user-input {
-            color: #222;
+            color: var(--color-light-title);
         }
 
         body.light-theme #chat-container {
-            background: #e9e9ee;
-            border: 1px solid #ccc;
+            background: var(--color-light-bg-alt);
+            border: 1px solid var(--color-light-border);
         }
 
-        body.light-theme .user-message {
-            background: #e0e0e0;
-            color: #222;
+        body.light-theme .user-message .message, body.light-theme .bot-message .message {
+            background: var(--color-light-user-msg-bg);
+            color: var(--color-light-text);
         }
-
-        body.light-theme .bot-message {
-            background: transparent;
-            color: #222;
-        }
-
+        
         body.light-theme .input-group {
             background: none;
         }
 
         body.light-theme #user-input {
-            background: #e6e6e6;
-            color: #222;
+            background: var(--color-light-input-bg);
+            color: var(--color-light-text);
         }
 
         body.light-theme #user-input::placeholder {
-            color: #888;
+            color: var(--color-light-placeholder);
         }
 
         body.light-theme .accessibility {
-            background: #e0e0e0;
+            background: var(--color-light-accessibility-bg);
         }
 
         body.light-theme .accessibility:hover {
-            background: #bfc6e0;
-            color: #222;
+            background: var(--color-light-accessibility-hover);
+            color: var(--color-light-text);
         }
 
         body.light-theme .dot-typing div {
-            background: #888;
+            background: var(--color-light-dot);
         }
 
         /* Dark Theme Styles */
         body.dark-theme {
-            background: #1b1b1b;
-            color: #fff;
+            background: var(--color-bg);
+            color: var(--color-text);
         }
 
         body.dark-theme #chatbot-title,
         body.dark-theme #chat-container-title,
         body.dark-theme #user-input {
-            color: #fff;
+            color: var(--color-title);
         }
 
         body.dark-theme #chat-container {
-            background: #121212;
-            border: 1px solid #333;
+            background: var(--color-bg-alt);
+            border: 1px solid var(--color-border);
         }
 
-        body.dark-theme .user-message {
-            background: #292929;
-            color: #fff;
-        }
-
-        body.dark-theme .bot-message {
-            background: transparent;
-            color: #fff;
+        body.dark-theme .user-message .message, body.dark-theme .bot-message .message {
+            background: var(--color-user-msg-bg);
+            color: var(--color-text);
         }
 
         body.dark-theme .input-group {
@@ -330,21 +366,21 @@
         }
 
         body.dark-theme #user-input {
-            background: #292929;
+            background: var(--color-input-bg);
             border: none;
-            color: #fff;
+            color: var(--color-text);
         }
 
         body.dark-theme .accessibility {
-            background: #292929;
+            background: var(--color-accessibility-bg);
         }
 
         body.dark-theme .accessibility:hover {
-            background: #414141;
+            background: var(--color-accessibility-hover);
         }
 
         body.dark-theme .dot-typing div {
-            background: #888;
+            background: var(--color-dot);
         }
     </style>
 </head>
@@ -357,7 +393,7 @@
     <div class="input-group">
         <input type="text" id="user-input" placeholder="Enter your question...">
         <div class="function">
-            <div id="clear-button" class="accessibility" onclick="clearChat()" title="Clear chat history">
+            <div id="clear-button" class="accessibility" onclick="clearChatBtn()" title="Clear chat history">
                 <!-- SVG icon -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                     stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -454,6 +490,95 @@
             return answer;
         }
 
+        // --- OOP: POP UP FUNCTION --- //
+        function cancel() {
+            const popup = document.querySelector('.popup');
+            if (popup) popup.remove();
+        }
+
+        function popupWidget(optsOrText, btn1Text, btn2Text, btn1Func, btn2Func) {
+            // Support both object and legacy argument style
+            if (typeof optsOrText === 'object' && optsOrText !== null) {
+                this.text = optsOrText.text || '';
+                this.btn1Text = optsOrText.btn1Text || 'Cancel';
+                this.btn1Func = optsOrText.btn1Func || cancel;
+                this.btn2Text = optsOrText.btn2Text || null;
+                this.btn2Func = optsOrText.btn2Func || null;
+            } else {
+                this.text = optsOrText || '';
+                this.btn1Text = btn1Text || 'Cancel';
+                this.btn1Func = btn1Func || cancel;
+                this.btn2Text = btn2Text || null;
+                this.btn2Func = btn2Func || null;
+            }
+        }
+        popupWidget.prototype.draw = function() {
+            // Remove any existing popup first
+            const oldPopup = document.querySelector('.popup');
+            if (oldPopup) oldPopup.remove();
+
+            var popup = document.createElement('div');
+            popup.className = 'popup';
+            popup.style.border = '1px solid var(--color-border, #ccc)';
+            popup.style.padding = '20px';
+            popup.style.backgroundColor = 'var(--color-bg-alt, #f9f9f9)';
+            popup.style.color = 'var(--color-text, #222)';
+            popup.style.width = '260px';
+            popup.style.position = 'fixed';
+            popup.style.top = '50%';
+            popup.style.left = '50%';
+            popup.style.transform = 'translate(-50%, -50%)';
+            popup.style.zIndex = '9999';
+            popup.style.borderRadius = '10px';
+            popup.style.boxShadow = '0 2px 16px rgba(0,0,0,0.15)';
+            popup.style.display = 'flex';
+            popup.style.flexDirection = 'column';
+            popup.style.alignItems = 'center';
+
+            var message = document.createElement('p');
+            message.textContent = this.text;
+            message.style.marginBottom = '18px';
+            message.style.textAlign = 'center';
+            popup.appendChild(message);
+
+            var btnRow = document.createElement('div');
+            btnRow.style.display = 'flex';
+            btnRow.style.gap = '10px';
+            btnRow.style.justifyContent = 'center';
+            btnRow.style.width = '100%';
+
+            var btn1 = document.createElement('button');
+            btn1.textContent = this.btn1Text || 'Cancel';
+            btn1.onclick = function() {
+                if (typeof this.btn1Func === 'function') this.btn1Func();
+                popup.remove();
+            }.bind(this);
+            btn1.style.padding = '8px 18px';
+            btn1.style.borderRadius = '5px';
+            btn1.style.border = 'none';
+            btn1.style.background = 'var(--color-accessibility-bg, #e0e0e0)';
+            btn1.style.color = 'var(--color-text, #222)';
+            btn1.style.cursor = 'pointer';
+            btnRow.appendChild(btn1);
+
+            if (this.btn2Func) {
+                var btn2 = document.createElement('button');
+                btn2.textContent = this.btn2Text || 'Confirm';
+                btn2.onclick = function() {
+                    if (typeof this.btn2Func === 'function') this.btn2Func();
+                    popup.remove();
+                }.bind(this);
+                btn2.style.padding = '8px 18px';
+                btn2.style.borderRadius = '5px';
+                btn2.style.border = 'none';
+                btn2.style.background = 'var(--color-accessibility-hover, #bfc6e0)';
+                btn2.style.color = 'var(--color-text, #222)';
+                btn2.style.cursor = 'pointer';
+                btnRow.appendChild(btn2);
+            }
+            popup.appendChild(btnRow);
+            document.body.appendChild(popup);
+        }
         // --- Functions --- //
         function styleIfMessageNotExist() {
             document.getElementById('chat-container-title').style.display = 'block';
@@ -488,7 +613,6 @@
                 if (n.id !== 'chat-container-title') n.remove();
             });
             styleIfMessageNotExist();
-            alert("Chat cleared successfully");
         }
 
         function removeHTML(str) {
@@ -502,21 +626,43 @@
         }
 
         function addMessage(message, isUser) {
+            // Create message container and message elements
             const msgContainer = document.createElement("div");
             const msg = document.createElement("div");
-            const msgIMG = document.createElement("img")
+            const msgIMG = document.createElement("img");
+            
+            msgContainer.style.display = 'flex';
+            msgContainer.style.alignItems = 'center';
+
+            // Escape HTML to prevent XSS
             const escaped = removeHTML(message);
-            msg.className = isUser ? "user-message" : "bot-message";
+            msgContainer.className = isUser ? "user-message" : "bot-message";
+            msg.className = "message";
             msg.innerHTML = escaped;
-            chatContainer.appendChild(msg);
+
+            // Set avatar image based on user/bot
+            msgIMG.setAttribute('src', isUser ? 'https://www.khanacademy.org/computer-programming/ka-img/5819110027018240/4850698350084096.png' : 'https://www.khanacademy.org/computer-programming/phixah-ico/6442661011963904/5033284292689920.png');
+            msgIMG.style.display = 'flex';
+            msgIMG.style.justifyContent = 'center';
+            
+            msgIMG.style.width = '2em';
+            msgIMG.style.height = '2em';
+
+            // Order: user = [msg, img], bot = [img, msg]
+            msgContainer.appendChild(isUser ? msg : msgIMG);
+            msgContainer.appendChild(!isUser ? msg : msgIMG);
+
+            chatContainer.appendChild(msgContainer);
             styleIfMessageExist();
         }
 
         function handleUserMessage() {
+            // Get and trim user input
             const message = userInput.value.trim();
             if (message) {
                 addMessage(message, true);
 
+                // Show loading animation for bot response
                 const loadingMsg = document.createElement("div");
                 loadingMsg.className = "bot-message loading";
                 loadingMsg.innerHTML = '<div class="dot-typing"><div></div><div></div><div></div>';
@@ -525,6 +671,7 @@
                 chatContainer.scrollTop = chatContainer.scrollHeight;
                 userInput.value = "";
                 setTimeout(function () {
+                    // Find and display bot response after delay
                     const response = chatbot.findAnswer(message);
                     chatContainer.removeChild(loadingMsg);
                     addMessage(response, false);
@@ -534,15 +681,28 @@
 
         // --- DATA --- //
         const chatbot = new ChatbotSystemNLP();
+        // Example data for chatbot to match against
         const dataTesting = {
             "Hello !": "Hello, how can I assist you today?",
             "Hi !": "Hi! How are you?",
             "I'm good, thanks": ""
         };
+        // Add each question/response pair to the chatbot
         for (var question in dataTesting) {
             chatbot.addData(question, dataTesting[question]);
         }
         styleIfMessageNotExist();
+
+        function clearChatBtn() {
+            const warningRemove = new popupWidget({
+                text: "Are you sure? All things can't be undone!",
+                btn1Text: "Cancel",
+                btn1Func: cancel,
+                btn2Text: "Confirm",
+                btn2Func: clearChat
+            });
+            warningRemove.draw();
+        }
 
         // --- Event Listeners --- //
         userInput.addEventListener("keydown", function (e) {
@@ -554,7 +714,11 @@
                 }
             }
         });
-    </script>
+    
+        </script>
+
+        <!--The Thumbnail Script 2.1.0 12/18/2023 by Bluebird@kaid_157624541333313939750668-->
+        <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script type>var r=600,s=document.documentElement.clientWidth;window.parent.html2canvas=t=>{try{html2canvas(document.body,{width:s,height:s,useCORS:!0,onclone:t=>t.getAnimations().forEach((t=>{try{t.finish()}catch{}}))}).then((t=>{var e=document.createElement("canvas");e.width=r,e.height=r,e.getContext("2d").drawImage(t,0,0,t.width,t.height,0,0,r,r),window.top.postMessage(e.toDataURL(),"*")})).catch((t=>{alert("Thumbnail Script Error: "+t)}))}catch{window.top.postMessage(document.createElement("canvas").toDataURL(),"*")}};</script>
 </body>
 
 </html>
