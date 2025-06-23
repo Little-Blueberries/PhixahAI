@@ -17,18 +17,17 @@
 				   I would like to highlight
 		This chatbot use a TF-IDF and Consine Similarity to
 		understand the user question if it is not at true
-		grammer or it's at the same meaning but different way 
+		grammar or it's at the same meaning but different way 
 		to express, so it's use for the check the best match.
 						for the judges.
 					   
-	
 	TODO:
 	 - Fill out statements above (Done)
 	 - Save your entry as a spin-off of this program (Done)
 	 - Have fun! (Done)
 -->
 <!--
-    Credit awesomeorion for the ka img and the thumbnail script
+    Credit @awesomeorion for the ka img and the thumbnail script
 -->
 <html lang="en">
 
@@ -43,18 +42,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --color-bg: #1b1b1b;
-            --color-bg-alt: #121212;
-            --color-text: #fff;
-            --color-border: #333;
-            --color-user-msg-bg: #292929;
-            --color-bot-msg-bg: #292929;
-            --color-input-bg: #292929;
-            --color-accessibility-bg: #292929;
-            --color-accessibility-hover: #414141;
-            --color-dot: #888;
-            --color-title: #fff;
-            --color-placeholder: #888;
+            --color-dark-bg: #1b1b1b;
+            --color-dark-bg-alt: #121212;
+            --color-dark-text: #fff;
+            --color-dark-border: #333;
+            --color-dark-user-msg-bg: #292929;
+            --color-dark-bot-msg-bg: #292929;
+            --color-dark-input-bg: #292929;
+            --color-dark-accessibility-bg: #292929;
+            --color-dark-accessibility-hover: #414141;
+            --color-dark-dot: #888;
+            --color-dark-title: #fff;
+            --color-dark-placeholder: #888;
             --color-light-bg: #f4f4f4;
             --color-light-bg-alt: #e9e9ee;
             --color-light-text: #222;
@@ -106,8 +105,8 @@
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 20px;
-            background: var(--color-bg);
-            color: var(--color-text);
+            background: var(--color-dark-bg);
+            color: var(--color-dark-text);
         }
 
         #chatbot-title {
@@ -117,7 +116,7 @@
             font-weight: 700;
             margin: 0 0 10px;
             text-align: center;
-            color: var(--color-title);
+            color: var(--color-dark-title);
         }
 
         #chat-container {
@@ -128,8 +127,8 @@
             overflow-y: auto;
             padding: 10px;
             justify-content: center;
-            background: var(--color-bg-alt);
-            border: 1px solid var(--color-border);
+            background: var(--color-dark-bg-alt);
+            border: 1px solid var(--color-dark-border);
         }
 
         #chat-container-title {
@@ -155,8 +154,8 @@
             padding: 1.25em 1em;
             resize: none;
             width: 100%;
-            background: var(--color-input-bg);
-            color: var(--color-text);
+            background: var(--color-dark-input-bg);
+            color: var(--color-dark-text);
         }
 
         .function {
@@ -169,12 +168,13 @@
             align-items: center;
             justify-content: center;
             padding: 0.4em;
-            background: var(--color-accessibility-bg);
+            background: var(--color-dark-accessibility-bg);
         }
 
         .user-message,
         .bot-message {
             border-radius: 10px;
+            max-width: 70%;
             font-family: 'Segoe UI', Ubuntu, sans-serif;
             overflow-wrap: break-word;
             white-space: pre-wrap;
@@ -184,7 +184,6 @@
 
         .user-message {
             align-self: flex-end;
-            max-width: 70%;
             text-align: right;
             opacity: 1;
             transform: translateY(0%);
@@ -204,6 +203,63 @@
             border-radius: 50%;
             margin: 0 10px;
         }
+        
+        .block {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.45);
+            z-index: 9998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: popupBgFadeIn 0.35s ease;
+        }
+        
+        .popup {
+            border: none;
+            padding: 28px 28px 20px 28px;
+            width: 50vw;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: popupMoveFadeIn 1s ease;
+        }
+
+        .popup p {
+            margin-bottom: 22px;
+            text-align: center;
+            font-size: 1.15em;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+        .popup .popup-btn-row {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            width: 100%;
+        }
+        .popup button {
+            padding: 10px 28px;
+            border-radius: 7px;
+            border: none;
+            background: var(--color-dark-accessibility-bg, #e0e0e0);
+            color: var(--color-dark-text, #222);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            box-shadow: 0 1px 4px 0 rgba(0,0,0,0.08);
+            transition: all 0.2s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
         .dot-typing {
             display: inline-block;
@@ -211,14 +267,14 @@
             position: relative;
             width: 24px;
         }
-
+        
         .dot-typing div {
             animation: dotTypingAnim 1s infinite ease-in-out;
             border-radius: 50%;
             height: 5px;
             position: absolute;
             width: 5px;
-            background: var(--color-dot);
+            background: var(--color-dark-dot);
         }
 
         .dot-typing div:nth-child(1) {
@@ -273,6 +329,45 @@
             100% {
                 opacity: 1;
                 transform: translateY(0%);
+            }
+        }
+
+        @keyframes popupMoveFadeIn {
+            0% {
+                opacity: 0;
+                top: -10em;
+            }
+            100% {
+                opacity: 1;
+                top: 20%;
+            }
+        }
+        @keyframes popupMoveFadeOut {
+            0% {
+                opacity: 1;
+                top: 20%;
+            }
+            100% {
+                opacity: 0;
+                top: -10em;
+            }
+        }
+
+        
+        @keyframes popupBgFadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        @keyframes popupBgFadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
             }
         }
 
@@ -339,26 +434,46 @@
             background: var(--color-light-dot);
         }
 
+        body.light-theme .popup {
+            background: var(--color-light-bg-alt);
+            color: var(--color-light-text);
+        }
+        body.light-theme .popup button {
+            background: var(--color-light-accessibility-bg);
+            color: var(--color-light-text);
+        }
+        body.light-theme .popup button:hover {
+            background: var(--color-light-dot);
+            color: #fff;
+        }
+        body.light-theme .popup button.confirm {
+            background: var(--color-light-accessibility-hover);
+        }
+        body.light-theme .popup button.confirm:hover {
+            background: var(--color-light-dot);
+            color: #fff;
+        }
+
         /* Dark Theme Styles */
         body.dark-theme {
-            background: var(--color-bg);
-            color: var(--color-text);
+            background: var(--color-dark-bg);
+            color: var(--color-dark-text);
         }
 
         body.dark-theme #chatbot-title,
         body.dark-theme #chat-container-title,
         body.dark-theme #user-input {
-            color: var(--color-title);
+            color: var(--color-dark-title);
         }
 
         body.dark-theme #chat-container {
-            background: var(--color-bg-alt);
-            border: 1px solid var(--color-border);
+            background: var(--color-dark-bg-alt);
+            border: 1px solid var(--color-dark-border);
         }
 
         body.dark-theme .user-message .message, body.dark-theme .bot-message .message {
-            background: var(--color-user-msg-bg);
-            color: var(--color-text);
+            background: var(--color-dark-user-msg-bg);
+            color: var(--color-dark-text);
         }
 
         body.dark-theme .input-group {
@@ -366,22 +481,44 @@
         }
 
         body.dark-theme #user-input {
-            background: var(--color-input-bg);
+            background: var(--color-dark-input-bg);
             border: none;
-            color: var(--color-text);
+            color: var(--color-dark-text);
         }
 
         body.dark-theme .accessibility {
-            background: var(--color-accessibility-bg);
+            background: var(--color-dark-accessibility-bg);
         }
 
         body.dark-theme .accessibility:hover {
-            background: var(--color-accessibility-hover);
+            background: var(--color-dark-accessibility-hover);
         }
 
         body.dark-theme .dot-typing div {
-            background: var(--color-dot);
+            background: var(--color-dark-dot);
         }
+
+        body.dark-theme .popup {
+            background: var(--color-dark-bg-alt);
+            color: var(--color-dark-text);
+            box-shadow: 0px 0px 10px 1px white;
+        }
+        body.dark-theme .popup button {
+            background: var(--color-dark-accessibility-bg);
+            color: var(--color-dark-text);
+        }
+        body.dark-theme .popup button:hover {
+            background: var(--color-dark-dot);
+            color: var(--color-dark-text);
+        }
+        body.dark-theme .popup button.confirm {
+            background: var(--color-dark-accessibility-hover);
+        }
+        body.dark-theme .popup button.confirm:hover {
+            background: var(--color-dark-dot);
+            color: #fff;
+        }
+        
     </style>
 </head>
 
@@ -391,7 +528,7 @@
         <p id="chat-container-title">How can I help you today?</p>
     </div>
     <div class="input-group">
-        <input type="text" id="user-input" placeholder="Enter your question...">
+        <input type="text" id="user-input" placeholder="Enter your question or a math expression..." autocomplete="off" autocorrect="off">
         <div class="function">
             <div id="clear-button" class="accessibility" onclick="clearChatBtn()" title="Clear chat history">
                 <!-- SVG icon -->
@@ -424,6 +561,62 @@
             this.documents = [];
             this.responses = [];
             this.wordIDF = {};
+        }
+        ChatbotSystemNLP.prototype.checkIsMath = function(userInput) {
+            var mathPattern = /\d+\s*[\+\-\*\/]\s*\d+([\s*[\+\-\*\/]\s*\d+]*)*|\(?\d+\.?\d*\)?[\s*[\+\-\*\/]\s*\(?\d+\.?\d*\)?]*/;
+            return mathPattern.test(userInput);
+        }
+        ChatbotSystemNLP.prototype.solveMath = function(userInput) {
+            var mathExpression = '';
+            var match = null;
+
+            match = userInput.match(/(\d+\s*[\+\-\*\/]\s*\d+([\s*[\+\-\*\/]\s*\d+]*)*)/);
+
+            if (!match) {
+                match = userInput.match(/[\d\s\+\-\*\/\(\)\.]+/);
+            }
+
+            if (match) {
+                mathExpression = match[0].trim();
+                mathExpression = mathExpression.replace(/[^\d\s\+\-\*\/\(\)\.]+$/, '').trim();
+
+                if (userInput.indexOf("value of") !== -1) {
+                    var parts = userInput.split("value of");
+                    if (parts.length > 1) {
+                        var potentialMath = parts[1].trim();
+                        var matchAfterPhrase = potentialMath.match(/([\d\s\+\-\*\/\(\)\.]+)/);
+                        if (matchAfterPhrase) {
+                            mathExpression = matchAfterPhrase[0].trim().replace(/\?$/, ''); // Remove trailing '?'
+                        } else {
+                            mathExpression = ""; // No valid math after "value of"
+                        }
+                    }
+                }
+
+                if (mathExpression) {
+                    try {
+                        var result = eval(mathExpression);
+                        var customOutput = {
+                            0: "The value of " + mathExpression + " is " + result + ".",
+                            1: "The answer to that math expression is " + result + ".",
+                            2: "The result of that calculation is " + result + ".",
+                            3: "Calculating " + mathExpression + " gives us " + result + ".",
+                            4: "You asked for " + mathExpression + ", and the answer is " + result + ".",
+                            5: "The solution to " + mathExpression + " is " + result + ".",
+                        }
+                        // Randomly select one of the custom output messages
+                        const keys = Object.keys(customOutput);
+                        const randomIndex = Math.floor(Math.random() * keys.length);
+                        return customOutput[keys[randomIndex]];
+                    } catch (e) {
+                        return "Could not solve the expression '" + mathExpression + "': " + e.message;
+                    }
+                } else {
+                    return "Could not find a clear mathematical expression in the string.";
+                }
+            } else {
+                return "Could not find any potential mathematical expression in the string.";
+            }
         }
         ChatbotSystemNLP.prototype.addData = function (question, response) {
             this.documents.push(question.toLowerCase());
@@ -476,26 +669,47 @@
             return sum / (Math.sqrt(mag1) * Math.sqrt(mag2));
         }
         ChatbotSystemNLP.prototype.findAnswer = function (userInput) {
-            const inputVector = this.computeVector(userInput.toLowerCase());
-            let maxScore = 0;
             let answer = "Sorry, I can't understand";
-            for (let i = 0; i < this.documents.length; i++) {
-                const docVector = this.computeVector(this.documents[i]);
-                const score = this.cosineSimilarity(inputVector, docVector);
-                if (score > maxScore) {
-                    maxScore = score;
-                    answer = this.responses[i];
+            if (this.checkIsMath(userInput)) {
+                answer = this.solveMath(userInput);
+            }
+            else {
+                const inputVector = this.computeVector(userInput.toLowerCase());
+                let maxScore = 0;
+                for (let i = 0; i < this.documents.length; i++) {
+                    const docVector = this.computeVector(this.documents[i]);
+                    const score = this.cosineSimilarity(inputVector, docVector);
+                    if (score > maxScore) {
+                        maxScore = score;
+                        answer = this.responses[i];
+                    }
                 }
             }
-            return answer;
+            return answer
         }
 
         // --- OOP: POP UP FUNCTION --- //
-        function cancel() {
-            const popup = document.querySelector('.popup');
-            if (popup) popup.remove();
+        function popupClose() {
+            var block = document.querySelector('.block');
+            var popup = document.querySelector('.popup');
+            if (block && popup) {
+                // Apply fade-out animations
+                block.style.animation = 'popupBgFadeOut 0.5s ease forwards';
+                popup.style.animation = 'popupMoveFadeOut 0.5s ease forwards';
+                
+                // Remove elements after animation completes
+                setTimeout(function() {
+                    if (block.parentNode) block.parentNode.removeChild(block);
+                    
+                    // Re-enable all inputs
+                    var disabled = document.querySelectorAll('[data-popup-disabled]');
+                    for (var i = 0; i < disabled.length; i++) {
+                        disabled[i].disabled = false;
+                        disabled[i].removeAttribute('data-popup-disabled');
+                    }
+                }, 500);
+            }
         }
-
         function popupWidget(optsOrText, btn1Text, btn2Text, btn1Func, btn2Func) {
             // Support both object and legacy argument style
             if (typeof optsOrText === 'object' && optsOrText !== null) {
@@ -514,71 +728,86 @@
         }
         popupWidget.prototype.draw = function() {
             // Remove any existing popup first
-            const oldPopup = document.querySelector('.popup');
-            if (oldPopup) oldPopup.remove();
+            var oldBlock = document.querySelector('.block');
+            if (oldBlock) oldBlock.remove();
 
+            // Disable all inputs and buttons except popup
+            var allInputs = document.querySelectorAll('input, button, textarea, select');
+            for (var i = 0; i < allInputs.length; i++) {
+                if (!allInputs[i].closest('.popup')) {
+                    allInputs[i].setAttribute('data-popup-disabled', 'true');
+                    allInputs[i].disabled = true;
+                }
+            }
+
+            var blockElementBg = document.createElement('div');
+            blockElementBg.className = 'block';
+            
             var popup = document.createElement('div');
             popup.className = 'popup';
-            popup.style.border = '1px solid var(--color-border, #ccc)';
-            popup.style.padding = '20px';
-            popup.style.backgroundColor = 'var(--color-bg-alt, #f9f9f9)';
-            popup.style.color = 'var(--color-text, #222)';
-            popup.style.width = '260px';
-            popup.style.position = 'fixed';
-            popup.style.top = '50%';
-            popup.style.left = '50%';
-            popup.style.transform = 'translate(-50%, -50%)';
-            popup.style.zIndex = '9999';
-            popup.style.borderRadius = '10px';
-            popup.style.boxShadow = '0 2px 16px rgba(0,0,0,0.15)';
-            popup.style.display = 'flex';
-            popup.style.flexDirection = 'column';
-            popup.style.alignItems = 'center';
 
             var message = document.createElement('p');
             message.textContent = this.text;
             message.style.marginBottom = '18px';
             message.style.textAlign = 'center';
             popup.appendChild(message);
-
+            
             var btnRow = document.createElement('div');
-            btnRow.style.display = 'flex';
-            btnRow.style.gap = '10px';
-            btnRow.style.justifyContent = 'center';
-            btnRow.style.width = '100%';
+            btnRow.className = 'popup-btn-row';
 
             var btn1 = document.createElement('button');
             btn1.textContent = this.btn1Text || 'Cancel';
             btn1.onclick = function() {
                 if (typeof this.btn1Func === 'function') this.btn1Func();
-                popup.remove();
+                var block = document.querySelector('.block');
+                var popup = document.querySelector('.popup');
+                if (block && popup) {
+                    block.style.animation = 'popupBgFadeOut 0.5s ease forwards';
+                    popup.style.animation = 'popupMoveFadeOut 0.5s ease forwards';
+                    setTimeout(function() {
+                        if (block.parentNode) block.parentNode.removeChild(block);
+                        // Re-enable all previously disabled inputs/buttons
+                        var disabled = document.querySelectorAll('[data-popup-disabled]');
+                        for (var i = 0; i < disabled.length; i++) {
+                            disabled[i].disabled = false;
+                            disabled[i].removeAttribute('data-popup-disabled');
+                        }
+                    }, 500);
+                }
             }.bind(this);
-            btn1.style.padding = '8px 18px';
-            btn1.style.borderRadius = '5px';
-            btn1.style.border = 'none';
-            btn1.style.background = 'var(--color-accessibility-bg, #e0e0e0)';
-            btn1.style.color = 'var(--color-text, #222)';
-            btn1.style.cursor = 'pointer';
-            btnRow.appendChild(btn1);
+            btn1.className = 'cancel';
 
             if (this.btn2Func) {
                 var btn2 = document.createElement('button');
                 btn2.textContent = this.btn2Text || 'Confirm';
                 btn2.onclick = function() {
                     if (typeof this.btn2Func === 'function') this.btn2Func();
-                    popup.remove();
+                    var block = document.querySelector('.block');
+                    var popup = document.querySelector('.popup');
+                    if (block && popup) {
+                        block.style.animation = 'popupBgFadeOut 0.5s ease forwards';
+                        popup.style.animation = 'popupMoveFadeOut 0.5s ease forwards';
+                        setTimeout(function() {
+                            if (block.parentNode) block.parentNode.removeChild(block);
+                            // Re-enable all previously disabled inputs/buttons
+                            var disabled = document.querySelectorAll('[data-popup-disabled]');
+                            for (var i = 0; i < disabled.length; i++) {
+                                disabled[i].disabled = false;
+                                disabled[i].removeAttribute('data-popup-disabled');
+                            }
+                        }, 500);
+                    }
                 }.bind(this);
-                btn2.style.padding = '8px 18px';
-                btn2.style.borderRadius = '5px';
-                btn2.style.border = 'none';
-                btn2.style.background = 'var(--color-accessibility-hover, #bfc6e0)';
-                btn2.style.color = 'var(--color-text, #222)';
-                btn2.style.cursor = 'pointer';
+                btn2.className = 'confirm';
                 btnRow.appendChild(btn2);
             }
+            btnRow.appendChild(btn1);
             popup.appendChild(btnRow);
-            document.body.appendChild(popup);
+            blockElementBg.appendChild(popup);
+
+            document.body.appendChild(blockElementBg);
         }
+        
         // --- Functions --- //
         function styleIfMessageNotExist() {
             document.getElementById('chat-container-title').style.display = 'block';
@@ -697,7 +926,7 @@
             const warningRemove = new popupWidget({
                 text: "Are you sure? All things can't be undone!",
                 btn1Text: "Cancel",
-                btn1Func: cancel,
+                btn1Func: popupClose,
                 btn2Text: "Confirm",
                 btn2Func: clearChat
             });
