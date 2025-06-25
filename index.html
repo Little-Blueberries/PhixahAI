@@ -66,8 +66,6 @@
             --color-light-dot: #888;
             --color-light-title: #222;
             --color-light-placeholder: #888;
-            --segoeUI-font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            --montserrat-font: 'Montserrat', sans-serif;
         }
 
         body::-webkit-scrollbar,
@@ -107,7 +105,7 @@
         }
 
         body {
-            font-family: var(--montserrat-font);
+            font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 20px;
             background: var(--color-dark-bg);
@@ -116,7 +114,7 @@
 
         #chatbot-title {
             animation: titleMov 3s ease-in-out infinite;
-            font-family: var(--montserrat-font);
+            font-family: 'Montserrat', sans-serif;
             font-size: 3em;
             font-weight: 700;
             margin: 0 0 10px;
@@ -137,7 +135,7 @@
         }
 
         #chat-container-title {
-            font-family: var(--segoeUI-font);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 1.5em;
             text-align: center;
         }
@@ -151,7 +149,7 @@
         #user-input {
             border: none;
             border-radius: 0.25em;
-            font-family: var(--montserrat-font);
+            font-family: 'Montserrat', sans-serif;
             font-size: 1em;
             height: 0;
             line-height: 1.4em;
@@ -180,7 +178,7 @@
         .bot-message {
             border-radius: 10px;
             max-width: 70%;
-            font-family: var(--segoeUI-font);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-wrap: break-word;
             white-space: pre-wrap;
             word-wrap: break-word;
@@ -260,7 +258,7 @@
             font-size: 1em;
             box-shadow: 0 1px 4px 0 rgba(0,0,0,0.08);
             transition: all 0.2s;
-            font-family: var(--segoeUI-font);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .dot-typing {
@@ -670,10 +668,20 @@
             if (mag1 === 0 || mag2 === 0) return 0;
             return sum / (Math.sqrt(mag1) * Math.sqrt(mag2));
         }
+        ChatbotSystemNLP.prototype.absoluteSame = function(userInput) {
+            for (var i = 0; i < this.documents.length; i++) {
+                if (userInput === this.documents[i].toLowerCase()) {
+                    return this.responses[i];
+                }
+            }
+        }
         ChatbotSystemNLP.prototype.findAnswer = function (userInput) {
             let answer = "Sorry, I can't understand";
             if (this.checkIsMath(userInput)) {
                 answer = this.solveMath(userInput);
+            }
+            else if (this.absoluteSame(userInput)) {
+                answer = this.absoluteSame(userInput);
             }
             else {
                 const inputVector = this.computeVector(userInput.toLowerCase());
@@ -687,7 +695,7 @@
                     }
                 }
             }
-            return answer
+            return answer;
         }
 
         // --- OOP: POP UP FUNCTION --- //
@@ -952,6 +960,6 @@
 
         <!--The Thumbnail Script 2.1.0 12/18/2023 by Bluebird@kaid_157624541333313939750668-->
         <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script type>var r=600,s=document.documentElement.clientWidth;window.parent.html2canvas=t=>{try{html2canvas(document.body,{width:s,height:s,useCORS:!0,onclone:t=>t.getAnimations().forEach((t=>{try{t.finish()}catch{}}))}).then((t=>{var e=document.createElement("canvas");e.width=r,e.height=r,e.getContext("2d").drawImage(t,0,0,t.width,t.height,0,0,r,r),window.top.postMessage(e.toDataURL(),"*")})).catch((t=>{alert("Thumbnail Script Error: "+t)}))}catch{window.top.postMessage(document.createElement("canvas").toDataURL(),"*")}};</script>
-</body>l
+</body>
 
 </html>
