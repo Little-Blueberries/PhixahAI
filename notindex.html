@@ -33,7 +33,7 @@
 <!--
     ! WARNING: Don't change any line from this code, even a character, or else the Javascript in this program won't work.
     * If you accidentally do that, the only solution is to restart all the khan academy page.
-    ? Why reload the Khan Academy Sandbox is not work: Reload will not work in this case, because some function depend on Khan Academy website instead of Khan Academy sandbox.
+    ? Reload will not work in this case.
 -->
 <html lang="en">
 
@@ -43,8 +43,9 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=error" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
     <style>
         :root {
             --color-dark-bg: #1b1b1b;
@@ -73,11 +74,21 @@
             --color-light-placeholder: #888;
         }
 
-        body::-webkit-scrollbar, #chat-container::-webkit-scrollbar, #user-input::-webkit-scrollbar {
+        body::-webkit-scrollbar,
+        #chat-container::-webkit-scrollbar,
+        #user-input::-webkit-scrollbar {
             display: none;
         }
 
-        #chat-container, .input-group, .function, .accessibility, .chat-container, .title-bar, .block, .popup, .popup .popup-btn-row {
+        #chat-container,
+        .input-group,
+        .function,
+        .accessibility,
+        .chat-container,
+        .title-bar,
+        .block,
+        .popup,
+        .popup .popup-btn-row {
             display: flex;
         }
 
@@ -91,6 +102,12 @@
 
         #user-input::placeholder {
             color: rgb(160, 160, 160);
+        }
+
+        #chatbot-title,
+        #chat-container-title,
+        #user-input {
+            color: white;
         }
 
         body {
@@ -164,8 +181,7 @@
             border-radius: 10px;
             max-width: 70%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow-wrap: anywhere;
-            word-break: break-all;
+            overflow-wrap: break-word;
             white-space: pre-wrap;
             word-wrap: break-word;
             animation: fadeIn 1s ease 0s;
@@ -173,8 +189,8 @@
 
         .user-message {
             align-self: flex-end;
+            text-align: right;
             opacity: 1;
-            transform: translateY(0%);
         }
 
         .bot-message {
@@ -191,7 +207,59 @@
             border-radius: 50%;
             margin: 0 10px;
         }
-    
+        
+        .block {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.45);
+            z-index: 9998;
+            align-items: center;
+            justify-content: center;
+            animation: popupBgFadeIn 0.35s ease;
+        }
+        
+        .popup {
+            border: none;
+            padding: 28px 28px 20px 28px;
+            width: 50vw;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            border-radius: 18px;
+            flex-direction: column;
+            align-items: center;
+            animation: popupMoveFadeIn 1s ease;
+        }
+
+        .popup p {
+            margin-bottom: 22px;
+            text-align: center;
+            font-size: 1.15em;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+        .popup .popup-btn-row {
+            gap: 16px;
+            justify-content: center;
+            width: 100%;
+        }
+        .popup button {
+            padding: 10px 28px;
+            border-radius: 7px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            box-shadow: 0 1px 4px 0 rgba(0,0,0,0.08);
+            transition: all 0.2s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         .dot-typing {
             display: inline-block;
             height: 8px;
@@ -222,66 +290,11 @@
             left: 16px;
         }
 
-        #accessibility-screen {
-            display: flex;
-            position: absolute;
-            background-color: #000000c5;
-            width: 100vw;
-            height: 100vh;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            justify-content: center;
-            align-items: center;
-            display: none;
-        }
-
-        #accessibility-screen div:not(.button-row *) {
-            width: fit-content;
-            height: fit-content;
-            padding: 4vh 3vw;
-            border-radius: 1vmin;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-
-            margin: 3em;
-            text-align: center;
-        }
-
-        #accessibility-screen div *:not(.button-row *) {
-            margin: 1em;
-        }
-
-        #accessibility-screen div .description {
-            margin-top: 3em;
-            margin-bottom: -1em;
-        }
-
-        #accessibility-screen div .button-row {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            width: 20%;
-            height: 20%;
-            margin-bottom: 0;
-        }
-
-        #accessibility-screen div .button-row .button {
-            padding: 10px 20px;
-            cursor: pointer;
-            margin: 0 1em;
-        }
-
-        #accessibility-screen div .icon {
-            transform: scale(5);
-        }
-
         @keyframes dotTypingAnim {
-            0%, 80%, 100% {
+
+            0%,
+            80%,
+            100% {
                 opacity: 0.5;
                 transform: scale(0.8);
             }
@@ -293,7 +306,9 @@
         }
 
         @keyframes titleMov {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0%);
             }
 
@@ -303,6 +318,7 @@
         }
 
         @keyframes fadeIn {
+
             0% {
                 opacity: 0;
                 transform: translateY(100%);
@@ -314,14 +330,28 @@
             }
         }
 
-        @keyframes popupBgFadeOut {
+        @keyframes popupMoveFadeIn {
             0% {
-                opacity: 1;
-            }
-            100% { 
                 opacity: 0;
+                top: -10em;
+            }
+            100% {
+                opacity: 1;
+                top: 20%;
             }
         }
+        @keyframes popupMoveFadeOut {
+            0% {
+                opacity: 1;
+                top: 20%;
+            }
+            100% {
+                opacity: 0;
+                top: -10em;
+            }
+        }
+
+        
         @keyframes popupBgFadeIn {
             0% {
                 opacity: 0;
@@ -330,36 +360,26 @@
                 opacity: 1;
             }
         }
-        @keyframes popupFadeOut {
+        @keyframes popupBgFadeOut {
             0% {
                 opacity: 1;
-                transform: translateY(0%);
-            }
-            100% { 
-                opacity: 0;
-                transform: translateY(-100%);
-            }
-        }
-        @keyframes popupFadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(-100%);
             }
             100% {
-                opacity: 1;
-                transform: translateY(0%);
+                opacity: 0;
             }
         }
-        
 
-
-        html, body {
+        html,
+        body {
             max-width: 100vw;
             overflow-x: hidden;
         }
 
+
         /* THEME STYLING */
-        *, *::after, *::before {
+        *,
+        *::after,
+        *::before {
             transition: all 0.5s ease;
             box-sizing: border-box;
         }
@@ -370,7 +390,9 @@
             color: var(--color-light-text);
         }
 
-        body.light-theme #chatbot-title, body.light-theme #chat-container-title, body.light-theme #user-input {
+        body.light-theme #chatbot-title,
+        body.light-theme #chat-container-title,
+        body.light-theme #user-input {
             color: var(--color-light-title);
         }
 
@@ -410,21 +432,24 @@
             background: var(--color-light-dot);
         }
 
-        body.light-theme #accessibility-screen div:not(.button-row *) {
-            background-color: var(--color-light-bg-alt);
+        body.light-theme .popup {
+            background: var(--color-light-bg-alt);
+            color: var(--color-light-text);
         }
-
-        body.light-theme #accessibility-screen div .button-row .button {
-            background-color: var(--color-light-accessibility-bg);
+        body.light-theme .popup button {
+            background: var(--color-light-accessibility-bg);
+            color: var(--color-light-text);
         }
-
-        body.light-theme #accessibility-screen div .button-row .button:hover {
-            background-color: var(--color-light-dot);
-            color: white;
+        body.light-theme .popup button:hover {
+            background: var(--color-light-dot);
+            color: #fff;
         }
-
-        body.light-theme #accessibility-screen div .button-row .btn-confirm {
-            background-color: var(--color-light-accessibility-hover);
+        body.light-theme .popup button.confirm {
+            background: var(--color-light-accessibility-hover);
+        }
+        body.light-theme .popup button.confirm:hover {
+            background: var(--color-light-dot);
+            color: #fff;
         }
 
         /* Dark Theme Styles */
@@ -433,7 +458,9 @@
             color: var(--color-dark-text);
         }
 
-        body.dark-theme #chatbot-title, body.dark-theme #chat-container-title, body.dark-theme #user-input {
+        body.dark-theme #chatbot-title,
+        body.dark-theme #chat-container-title,
+        body.dark-theme #user-input {
             color: var(--color-dark-title);
         }
 
@@ -469,49 +496,31 @@
             background: var(--color-dark-dot);
         }
 
-        body.dark-theme #accessibility-screen div:not(.button-row *) {
-            background-color: var(--color-dark-bg-alt);
+        body.dark-theme .popup {
+            background: var(--color-dark-bg-alt);
+            color: var(--color-dark-text);
+            box-shadow: 0px 0px 10px 1px white;
         }
-
-        body.dark-theme #accessibility-screen div .button-row .button {
-            background-color: var(--color-dark-accessibility-bg);
+        body.dark-theme .popup button {
+            background: var(--color-dark-accessibility-bg);
+            color: var(--color-dark-text);
         }
-
-        body.dark-theme #accessibility-screen div .button-row .button:hover {
-            background-color: var(--color-dark-dot);
-            color: white;
+        body.dark-theme .popup button:hover {
+            background: var(--color-dark-dot);
+            color: var(--color-dark-text);
         }
-
-        body.dark-theme #accessibility-screen div .button-row .btn-confirm {
-            background-color: var(--color-dark-accessibility-hover);
+        body.dark-theme .popup button.confirm {
+            background: var(--color-dark-accessibility-hover);
         }
-
+        body.dark-theme .popup button.confirm:hover {
+            background: var(--color-dark-dot);
+            color: #fff;
+        }
+        
     </style>
 </head>
 
 <body class="dark-theme">
-    <div id="accessibility-screen">
-        <div id="deleteChat">
-            <h1 class="title">Delete chat</h1>
-            <p class="material-symbols-outlined icon">error</p>
-            <p class="description">Are you sure? This action can't be undone!</p>
-            <div class="button-row">
-                <div class="btn-confirm button" onclick="popupFunction.DeletePopup_clearChat()">Confirm</div>
-                <div class="btn-exit button" onclick="popupFunction.disappear(document.getElementById('deleteChat'))">Cancel</div>
-            </div>
-        </div>
-        <!--
-        <div id="dataManager">
-            <h1 class="title">Data Manager</h1>
-            <p class="description">What do you want to do on your data now?</p>
-            <div class="button-row">
-                <div class="btn-confirm button">Add data</div>
-                <div class="btn-confirm button">Remove data</div>
-                <div class="btn-confirm button">Clear all data</div>
-            </div>
-        </div>
-        -->
-    </div>
     <h1 id="chatbot-title">PHIXAH</h1>
     <div id="chat-container">
         <p id="chat-container-title">How can I help you today?</p>
@@ -519,7 +528,7 @@
     <div class="input-group">
         <input type="text" id="user-input" placeholder="Enter your question or a math expression..." autocomplete="off" autocorrect="off">
         <div class="function">
-            <div id="clear-button" class="accessibility" onclick="popupFunction.appear(document.getElementById('deleteChat'))" title="Clear chat history">
+            <div id="clear-button" class="accessibility" onclick="clearChatBtn()" title="Clear chat history">
                 <!-- SVG icon -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                     stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -538,22 +547,12 @@
                         d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
                 </svg>
             </div>
-            <div id="data-manager" class="accessibility" onclick="dataManager()" title="Data Manager">
-                <!-- SVG icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 11.08V8l-6-6H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h6" />
-                    <path d="M14 3v5h5M18 21v-6M15 18h6"/>
-                </svg>
-            </div>
         </div>
     </div>
     <script>
         // --- Variables --- //
         const chatContainer = document.getElementById("chat-container");
         const userInput = document.getElementById("user-input");
-
-        const accessibilityScreen = document.getElementById('accessibility-screen');
-        const deleteChatPopup = document.getElementById('deleteChat');
 
         // --- OOP: Chatbot System (TF-IDF + Cosine Similarity) --- //
         function ChatbotSystemNLP() {
@@ -697,38 +696,126 @@
             return answer;
         }
 
-        // --- OOP: POPUP FUNCTION - Make for fast purpose --- //
-        function PopupFunction() {
-            // --- NOTHING here :)))) --- //
+        // --- OOP: POP UP FUNCTION --- //
+        function popupClose() {
+            var block = document.querySelector('.block');
+            var popup = document.querySelector('.popup');
+            if (block && popup) {
+                // Apply fade-out animations
+                block.style.animation = 'popupBgFadeOut 0.5s ease forwards';
+                popup.style.animation = 'popupMoveFadeOut 0.5s ease forwards';
+                
+                // Remove elements after animation completes
+                setTimeout(function() {
+                    if (block.parentNode) block.parentNode.removeChild(block);
+                    
+                    // Re-enable all inputs
+                    var disabled = document.querySelectorAll('[data-popup-disabled]');
+                    for (var i = 0; i < disabled.length; i++) {
+                        disabled[i].disabled = false;
+                        disabled[i].removeAttribute('data-popup-disabled');
+                    }
+                }, 500);
+            }
         }
-        PopupFunction.prototype.disappear = function(divElement) {
-            accessibilityScreen.style.animation = "popupBgFadeOut 0.5s ease";
-            divElement.style.animation = "popupFadeOut 0.5s ease";
-            setTimeout(function() {
-                accessibilityScreen.style.display = 'none';
-                accessibilityScreen.style.animation = '';
-            }, 500);
-            styleIfMessageNotExist();
+        function popupWidget(optsOrText, btn1Text, btn2Text, btn1Func, btn2Func) {
+            // Support both object and legacy argument style
+            if (typeof optsOrText === 'object' && optsOrText !== null) {
+                this.text = optsOrText.text || '';
+                this.btn1Text = optsOrText.btn1Text || 'Cancel';
+                this.btn1Func = optsOrText.btn1Func || cancel;
+                this.btn2Text = optsOrText.btn2Text || null;
+                this.btn2Func = optsOrText.btn2Func || null;
+            } else {
+                this.text = optsOrText || '';
+                this.btn1Text = btn1Text || 'Cancel';
+                this.btn1Func = btn1Func || cancel;
+                this.btn2Text = btn2Text || null;
+                this.btn2Func = btn2Func || null;
+            }
         }
-        PopupFunction.prototype.DeletePopup_clearChat = function() {
-            chatContainer.querySelectorAll('*').forEach(function (n) {
-                if (n.id !== 'chat-container-title') n.remove();
-            });
-            this.disappear(document.getElementById('deleteChat'));
+        popupWidget.prototype.draw = function() {
+            // Remove any existing popup first
+            var oldBlock = document.querySelector('.block');
+            if (oldBlock) oldBlock.remove();
+
+            // Disable all inputs and buttons except popup
+            var allInputs = document.querySelectorAll('input, button, textarea, select');
+            for (var i = 0; i < allInputs.length; i++) {
+                if (!allInputs[i].closest('.popup')) {
+                    allInputs[i].setAttribute('data-popup-disabled', 'true');
+                    allInputs[i].disabled = true;
+                }
+            }
+
+            var blockElementBg = document.createElement('div');
+            blockElementBg.className = 'block';
+            
+            var popup = document.createElement('div');
+            popup.className = 'popup';
+
+            var message = document.createElement('p');
+            message.textContent = this.text;
+            message.style.marginBottom = '18px';
+            message.style.textAlign = 'center';
+            popup.appendChild(message);
+            
+            var btnRow = document.createElement('div');
+            btnRow.className = 'popup-btn-row';
+
+            var btn1 = document.createElement('button');
+            btn1.textContent = this.btn1Text || 'Cancel';
+            btn1.onclick = function() {
+                if (typeof this.btn1Func === 'function') this.btn1Func();
+                var block = document.querySelector('.block');
+                var popup = document.querySelector('.popup');
+                if (block && popup) {
+                    block.style.animation = 'popupBgFadeOut 0.5s ease forwards';
+                    popup.style.animation = 'popupMoveFadeOut 0.5s ease forwards';
+                    setTimeout(function() {
+                        if (block.parentNode) block.parentNode.removeChild(block);
+                        // Re-enable all previously disabled inputs/buttons
+                        var disabled = document.querySelectorAll('[data-popup-disabled]');
+                        for (var i = 0; i < disabled.length; i++) {
+                            disabled[i].disabled = false;
+                            disabled[i].removeAttribute('data-popup-disabled');
+                        }
+                    }, 500);
+                }
+            }.bind(this);
+            btn1.className = 'cancel';
+
+            if (this.btn2Func) {
+                var btn2 = document.createElement('button');
+                btn2.textContent = this.btn2Text || 'Confirm';
+                btn2.onclick = function() {
+                    if (typeof this.btn2Func === 'function') this.btn2Func();
+                    var block = document.querySelector('.block');
+                    var popup = document.querySelector('.popup');
+                    if (block && popup) {
+                        block.style.animation = 'popupBgFadeOut 0.5s ease forwards';
+                        popup.style.animation = 'popupMoveFadeOut 0.5s ease forwards';
+                        setTimeout(function() {
+                            if (block.parentNode) block.parentNode.removeChild(block);
+                            // Re-enable all previously disabled inputs/buttons
+                            var disabled = document.querySelectorAll('[data-popup-disabled]');
+                            for (var i = 0; i < disabled.length; i++) {
+                                disabled[i].disabled = false;
+                                disabled[i].removeAttribute('data-popup-disabled');
+                            }
+                        }, 500);
+                    }
+                }.bind(this);
+                btn2.className = 'confirm';
+                btnRow.appendChild(btn2);
+            }
+            btnRow.appendChild(btn1);
+            popup.appendChild(btnRow);
+            blockElementBg.appendChild(popup);
+
+            document.body.appendChild(blockElementBg);
         }
-        PopupFunction.prototype.appear = function(divElement) {
-            accessibilityScreen.style.display = 'flex';
-            divElement.style.display = 'flex';
-
-            void accessibilityScreen.offsetWidth;
-
-            accessibilityScreen.style.animation = "popupBgFadeIn 0.5s ease";
-            divElement.style.animation = "popupFadeIn 0.5s ease";
-        }
-
-        var popupFunction = new PopupFunction();
-
-
+        
         // --- Functions --- //
         function styleIfMessageNotExist() {
             document.getElementById('chat-container-title').style.display = 'block';
@@ -758,15 +845,11 @@
                 document.body.classList.add('dark-theme');
             }
         }
-        
-        function clearChatBtn() {
-            accessibilityScreen.style.display = 'flex';
-            deleteChatPopup.style.display = 'flex';
-
-            void accessibilityScreen.offsetWidth;
-
-            accessibilityScreen.style.animation = "popupBgFadeIn 0.5s ease";
-            deleteChatPopup.style.animation = "popupFadeIn 0.5s ease";
+        function clearChat() {
+            chatContainer.querySelectorAll('*').forEach(function (n) {
+                if (n.id !== 'chat-container-title') n.remove();
+            });
+            styleIfMessageNotExist();
         }
 
         function removeHTML(str) {
@@ -809,6 +892,7 @@
             chatContainer.appendChild(msgContainer);
             styleIfMessageExist();
         }
+
         function handleUserMessage() {
             // Get and trim user input
             const message = userInput.value.trim();
@@ -834,7 +918,6 @@
 
         // --- DATA --- //
         const chatbot = new ChatbotSystemNLP();
-        
         // Example data for chatbot to match against
         const dataTesting = {
             "Hello!": "Hello, how can I assist you today?",
@@ -843,14 +926,22 @@
             "Hello": "Hello! What do you need me to help?",
             "What is Python?": "Python is a high level programming language which is begginer-friendly"
         };
-        
         // Add each question/response pair to the chatbot
         for (var question in dataTesting) {
             chatbot.addData(question, dataTesting[question]);
         }
         styleIfMessageNotExist();
 
-       
+        function clearChatBtn() {
+            const warningRemove = new popupWidget({
+                text: "Are you sure? All things can't be undone!",
+                btn1Text: "Cancel",
+                btn1Func: popupClose,
+                btn2Text: "Confirm",
+                btn2Func: clearChat
+            });
+            warningRemove.draw();
+        }
 
         // --- Event Listeners --- //
         userInput.addEventListener("keydown", function (e) {
