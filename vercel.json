@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "https://phixah-ai.vercel.app",
+      "permanent": true
+    }
+  ]
+}
