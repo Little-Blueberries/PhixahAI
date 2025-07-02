@@ -10,21 +10,31 @@
 					Intermediate
 					   bracket
 					   
-		In creating this entry, I focused on make an AI chatbot that can chat with the user.
+		In creating this entry, I focused on building an AI 
+        chatbot capable of engaging in meaningful conversations with users.
+        I also focused in user customize experience. So i didn't added any data
+        into this chatbot.
 								
-  One aspect I found challenging was to make the chatbot can understand the user question in case right syntax or wrong syntax.
+    One aspect I found challenging was enabling the chatbot to understand user
+     questions regardless of whether they were written with correct or incorrect syntax.
 								
 				   I would like to highlight
-		This chatbot use a TF-IDF and Consine Similarity to
-		understand the user question if it is not at true
-		grammar or it's at the same meaning but different way 
-		to express, so it's use for the check the best match.
+		This chatbot uses TF-IDF and cosine similarity to interpret
+        user questions—even when they contain grammatical errors or
+        are phrased differently but share the same meaning. This
+        approach allows the system to find the most relevant 
+        response by checking for the best semantic match. It also 
+        have math input checking to solve basic math
 						for the judges.
 					   
 	TODO:
 	 - Fill out statements above (Done)
 	 - Save your entry as a spin-off of this program (Done)
 	 - Have fun! (Done)
+-->
+<!--
+    * This chatbot won't have any data inside, you can add data to it by press an icon look like file exploreer icon in windows, then drag the range input to the lowest and you can find the add data tab.
+    * This feature makes for user cumtomization
 -->
 <!--
     Credit @awesomeorion for the ka img and the thumbnail script
@@ -370,7 +380,7 @@
             cursor: pointer;
         }
 
-        #deleteChat .icon {
+        .icon {
             transform: scale(5);
         }
 
@@ -380,16 +390,21 @@
             flex-direction: column;
             box-shadow: 0px 0px 10px 1px gray;
             padding: 1em;
+            width: 25em;
         }
 
-        #addData {
-            width: 20em;
+        .slider {
+            margin-top: 1em;
+            flex-direction: column;
+            box-shadow: 0px 0px 10px 1px gray;
+            padding: 1em;
+            width: 25em;
         }
 
         #dataManager {
             width: fit-content;
             height: fit-content;
-            padding: 4vh 15vw;
+            padding: 4vh 10vw;
             border-radius: 1vmin;
 
             display: flex;
@@ -405,18 +420,21 @@
             margin-bottom: 0;
         }
 
-        #dataManager input {
+        #dataManager input[type='text'] {
             font-family: inherit;
             border: none;
             outline: none;
             width: 100%;
             height: 25%;
             padding: 5px;
-            background-color: var(--dark-placeholder);
+            background-color: var(--dark-input-bg);
+            box-shadow: 0px 0px 2px 2px #1b1b1b25;
+            color: white;
         }
 
         body.light-theme #dataManager input {
-            background-color: var(--light-placeholder);
+            background-color: var(--light-input-bg);
+            color: black;
         }
 
         #dataManager label {
@@ -456,13 +474,62 @@
             background-color: #575757;
         }
 
-        #dataManager, #deleteChat {
+        #dataManager,
+        #deleteChat {
             background: var(--dark-bg-alt);
         }
-        body.light-theme #dataManager, body.light-theme #deleteChat {
+
+        body.light-theme #dataManager,
+        body.light-theme #deleteChat {
             background: var(--light-bg-alt);
         }
 
+        #dataManager .btn-exit {
+            margin-top: 1em;
+        }
+
+        #data-table {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid gray;
+            overflow-y: auto;
+            margin-top: 1em;
+            max-height: 10em;
+        }
+
+        #data-table::-webkit-scrollbar {
+            display: none;
+        }
+
+        .data-table-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            background-color: #ffffff3a;
+        }
+
+        .data-table-header * {
+            flex: 1 0 calc(100% / 3);
+            margin: 0;
+            padding: 10px 5px;
+        }
+
+        .data-content {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .data-content * {
+            flex: 1 0 calc(100% / 3);
+            overflow-wrap: anywhere;
+            word-break: break-all;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px solid gray;
+            margin: 0;
+            padding: 5px 2.5px;
+            border-collapse: collapse;
+        }
 
         @keyframes dotTypingAnim {
 
@@ -598,6 +665,29 @@
             background: var(--light-access-hover);
             color: #fff;
         }
+
+        /* Remove Data Button Styles */
+        .remove-data-btn {
+            cursor: pointer;
+            color: rgb(255, 255, 255);
+            background: var(--dark-access-bg);
+            padding: 0.2em 0.5em;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .remove-data-btn:hover {
+            background: var(--dark-access-hover);
+        }
+
+        body.light-theme .remove-data-btn {
+            background: var(--light-access-bg);
+            color: var(--light-text);
+        }
+
+        body.light-theme .remove-data-btn:hover {
+            background: var(--light-access-hover);
+            color: #fff;
+        }
     </style>
 </head>
 
@@ -615,8 +705,8 @@
         </div>
         <div id="dataManager">
             <h1 class="title">Data Manager</h1>
-            <div id="addData" style="display:flex;">
-                <h2 id="section-title">Add data</h2>
+            <div id="addData" style="display:none;">
+                <h2 class="section-title">Add Data</h2>
                 <label for="question-key">
                     Question:
                     <input type="text" name="question" id="question-key" autocomplete="off" autocorrect="off">
@@ -625,19 +715,38 @@
                     Answer:
                     <input type="text" name="answer" id="answer-key" autocomplete="off" autocorrect="off">
                 </label>
-                <div class="btn-submit button">Add data</div>
+                <div class="btn-submit button"
+                    onclick="popupFunction.DataManager_addData(document.getElementById('question-key').value, document.getElementById('answer-key').value); document.getElementById('question-key').value = ''; document.getElementById('answer-key').value = '';">
+                    Add data</div>
             </div>
-            <div id="removeData" style="display:none;">
+            <div id="removeData" style="display:flex;">
+                <h2 class="section-title">Remove Data</h2>
+                <div id="data-table">
+                    <div class="data-table-header">
+                        <h4 class="table-header">Question</h4>
+                        <h4 class="table-header">Answer </h4>
+                        <h4 class="table-header"> </h4>
+                    </div>
+                    <div id="data-content-box">
 
+                    </div>
+                </div>
             </div>
             <div id="clearAllData" style="display:none;">
-
+                <h2 class="section-title" style="margin-bottom: 1.25em;">Clear All Data</h2>
+                <p class="material-symbols-outlined icon">error</p>
+                <p class="description" style="margin-top: 2em;">Are you sure to delete all data? This action can't be
+                    undone!</p>
+                <div class="btn-confirm button" onclick="popupFunction.clearData(); location.reload();">Confirm</div>
             </div>
-            <p class="description">Drag this slider to control tab</p>
-            <div class="button-row">
-                <input type="range" min="1" max="3" id="rangeSliderData" onchange="">
-                <div class="btn-exit button" onclick="popupFunction.disappear(document.getElementById('dataManager'))">
-                    Exit</div>
+            <div class="slider">
+                <p class="description">Drag this slider to control tab</p>
+                <div class="button-row">
+                    <input type="range" min="0" max="2" id="rangeSliderData"
+                        onchange="popupFunction.handleSliderChange(this.value)">
+                </div>
+            </div>
+            <div class="btn-exit button" onclick="popupFunction.disappear(document.getElementById('dataManager'))">Exit
             </div>
         </div>
     </div>
@@ -660,7 +769,8 @@
                     <line x1="14" y1="11" x2="14" y2="17" />
                 </svg>
             </div>
-            <div id="switch-dark-light" class="accessibility" onclick="switchTheme()" title="Switch Dark/Light theme">
+            <div id="switch-dark-light" class="accessibility" onclick="extension.switchTheme()"
+                title="Switch Dark/Light theme">
                 <!-- SVG icon -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                     stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -674,21 +784,22 @@
                 <!-- SVG icon -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                     stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 11.08V8l-6-6H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h6" />
-                    <path d="M14 3v5h5M18 21v-6M15 18h6" />
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
                 </svg>
             </div>
         </div>
     </div>
     <script>
         // --- Variables --- //
-        const chatContainer = document.getElementById("chat-container");
-        const userInput = document.getElementById("user-input");
+        var chatContainer = document.getElementById("chat-container");
+        var userInput = document.getElementById("user-input");
 
-        const accessibilityScreen = document.getElementById('accessibility-screen');
-        const deleteChatPopup = document.getElementById('deleteChat');
+        var accessibilityScreen = document.getElementById('accessibility-screen');
+        var deleteChatPopup = document.getElementById('deleteChat');
 
-        // --- OOP: Chatbot System (TF-IDF + Cosine Similarity) --- //
+        var userData = {};
+
+        // --- OOP: Chatbot System - Chatbot System to analyze user input and return the best answer it can be (TF-IDF + Cosine Similarity) --- //
         function ChatbotSystemNLP() {
             this.documents = [];
             this.responses = [];
@@ -737,8 +848,8 @@
                             5: "The solution to " + mathExpression + " is " + result + ".",
                         }
                         // Randomly select one of the custom output messages
-                        const keys = Object.keys(customOutput);
-                        const randomIndex = Math.floor(Math.random() * keys.length);
+                        var keys = Object.keys(customOutput);
+                        var randomIndex = Math.floor(Math.random() * keys.length);
                         return customOutput[keys[randomIndex]];
                     } catch (e) {
                         return "Could not solve the expression '" + mathExpression + "': " + e.message;
@@ -755,25 +866,25 @@
             this.responses.push(response);
         }
         ChatbotSystemNLP.prototype.calculateTF = function (word, document) {
-            const words = document.split(/\s+/);
-            let count = 0;
+            var words = document.split(/\s+/);
+            var count = 0;
             for (var w in words) if (words[w] === word) count++;
             return count / words.length;
         }
         ChatbotSystemNLP.prototype.calculateIDF = function (word) {
             if (this.wordIDF[word] !== undefined) return this.wordIDF[word];
-            let count = 0;
+            var count = 0;
             for (var i in this.documents) {
                 var doc = this.documents[i];
                 if (doc.split(/\s+/).indexOf(word) !== -1) count++;
             }
-            const idf = Math.log(this.documents.length / (1 + count)) + 1;
+            var idf = Math.log(this.documents.length / (1 + count)) + 1;
             this.wordIDF[word] = idf;
             return idf;
         }
         ChatbotSystemNLP.prototype.computeVector = function (doc) {
-            const words = doc.split(/\s+/);
-            const tfidf = {};
+            var words = doc.split(/\s+/);
+            var tfidf = {};
             for (var i in words) {
                 var word = words[i];
                 if (!tfidf[word]) {
@@ -808,7 +919,7 @@
             }
         }
         ChatbotSystemNLP.prototype.findAnswer = function (userInput) {
-            let answer = "Sorry, I can't understand";
+            var answer = "Sorry, I can't understand";
             if (this.checkIsMath(userInput)) {
                 answer = this.solveMath(userInput);
             }
@@ -816,11 +927,11 @@
                 answer = this.absoluteSame(userInput);
             }
             else {
-                const inputVector = this.computeVector(userInput.toLowerCase());
-                let maxScore = 0;
-                for (let i = 0; i < this.documents.length; i++) {
-                    const docVector = this.computeVector(this.documents[i]);
-                    const score = this.cosineSimilarity(inputVector, docVector);
+                var inputVector = this.computeVector(userInput.toLowerCase());
+                var maxScore = 0;
+                for (var i = 0; i < this.documents.length; i++) {
+                    var docVector = this.computeVector(this.documents[i]);
+                    var score = this.cosineSimilarity(inputVector, docVector);
                     if (score > maxScore) {
                         maxScore = score;
                         answer = this.responses[i];
@@ -829,8 +940,9 @@
             }
             return answer;
         }
+        var chatbot = new ChatbotSystemNLP();
 
-        // --- OOP: POPUP FUNCTION - Make for fast purpose --- //
+        // --- OOP: POPUP FUNCTION - Make for fast and easy acess purpose --- //
         function PopupFunction() {
             // --- NOTHING here :)))) --- //
         }
@@ -855,32 +967,87 @@
                 accessibilityScreen.style.display = 'none';
                 accessibilityScreen.style.animation = '';
             }, 500);
-            styleIfMessageNotExist();
+        }
+        PopupFunction.prototype.handleSliderChange = function (sliderValue) {
+            ['addData', 'removeData', 'clearAllData'].forEach(function (id, i) {
+                document.getElementById(id).style.display = (Number(i) === Number(sliderValue) ? 'flex' : 'none');
+            });
+            if (Number(sliderValue) === 1) {
+                popupFunction.DataManager_populateTable();
+            }
         }
         PopupFunction.prototype.DeletePopup_clearChat = function () {
             chatContainer.querySelectorAll('*').forEach(function (n) {
                 if (n.id !== 'chat-container-title') n.remove();
             });
             this.disappear(document.getElementById('deleteChat'));
+            extension.messageExistCondition(0);
         }
-
-
+        PopupFunction.prototype.DataManager_addData = function (question, answer) {
+            userData[question] = answer;
+            chatbot.addData(question, answer);
+            localStorage.setItem('userData', JSON.stringify(userData));
+            alert("DATA ADDED SUCCESSFULLY");
+        }
+        PopupFunction.prototype.DataManager_tableData = function (question, answer) {
+            var contentBox = document.getElementById('data-content-box');
+            var tableContent = document.createElement("div");
+            var questionKey = document.createElement("p");
+            var answerKey = document.createElement("p");
+            var removeButton = document.createElement("div");
+            removeButton.innerText = "Remove";
+            tableContent.className = 'data-content';
+            questionKey.innerText = question;
+            answerKey.innerText = answer;
+            tableContent.appendChild(questionKey);
+            tableContent.appendChild(answerKey);
+            tableContent.appendChild(removeButton);
+            contentBox.appendChild(tableContent);
+            removeButton.className = 'remove-data-btn';
+            removeButton.addEventListener('click', function () {
+                // Remove from userData
+                delete userData[question];
+                localStorage.setItem('userData', JSON.stringify(userData));
+                contentBox.removeChild(tableContent);
+                location.reload();
+            });
+        }
+        PopupFunction.prototype.DataManager_populateTable = function () {
+            var contentBox = document.getElementById('data-content-box');
+            contentBox.innerHTML = '';
+            for (var question in userData) {
+                this.DataManager_tableData(question, userData[question]);
+            }
+        }
+        PopupFunction.prototype.clearData = function () {
+            localStorage.removeItem('userData');
+            alert("Clear data successfully, restart page to take effect");
+        }
         var popupFunction = new PopupFunction();
 
-
-        // --- Functions --- //
-        function styleIfMessageNotExist() {
-            document.getElementById('chat-container-title').style.display = 'block';
-            chatContainer.style.alignItems = 'center';
-            chatContainer.style.justifyContent = 'center';
+        // --- OOP: EXTENSION - Make for fast and easy access purpose --- //
+        function Extension() {
+            // Nothing here :)))
         }
-        function styleIfMessageExist() {
-            document.getElementById('chat-container-title').style.display = 'none';
-            chatContainer.style.alignItems = 'normal';
-            chatContainer.style.justifyContent = 'normal';
+        Extension.prototype.messageExistCondition = function (id) {
+            if (id === 0) {
+                // Style if message not exist
+                document.getElementById('chat-container-title').style.display = 'block';
+                chatContainer.style.alignItems = 'center';
+                chatContainer.style.justifyContent = 'center';
+            }
+            else if (id === 1) {
+                // Style if message not exist
+                document.getElementById('chat-container-title').style.display = 'none';
+                chatContainer.style.alignItems = 'normal';
+                chatContainer.style.justifyContent = 'normal';
+            }
+            else {
+                // Prevent from someone edit this code but use an invalid id
+                alert('YOUR ID STYLE IS INVALID, USE 0 OR 1 ONLY, ELSE YOU CAN ADD CONDITION INTO MY CODE!');
+            }
         }
-
-        function switchTheme() {
+        Extension.prototype.switchTheme = function () {
             if (document.body.classList.contains('light-theme')) {
                 document.body.classList.remove('light-theme');
                 document.body.classList.add('dark-theme');
@@ -897,38 +1064,26 @@
                 document.body.classList.add('dark-theme');
             }
         }
-
-        function clearChatBtn() {
-            accessibilityScreen.style.display = 'flex';
-            deleteChatPopup.style.display = 'flex';
-
-            void accessibilityScreen.offsetWidth;
-
-            accessibilityScreen.style.animation = "popupBgFadeIn 0.5s ease";
-            deleteChatPopup.style.animation = "popupFadeIn 0.5s ease";
-        }
-
-        function removeHTML(str) {
-            if (typeof str !== "string") str = String(str);
-            return str
+        Extension.prototype.removeHTML = function (input) {
+            if (typeof input !== "string") input = String(input);
+            return input
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
         }
-
-        function addMessage(message, isUser) {
+        Extension.prototype.addMessage = function (message, isUser) {
             // Create message container and message elements
-            const msgContainer = document.createElement("div");
-            const msg = document.createElement("div");
-            const msgIMG = document.createElement("img");
+            var msgContainer = document.createElement("div");
+            var msg = document.createElement("div");
+            var msgIMG = document.createElement("img");
 
             msgContainer.style.display = 'flex';
             msgContainer.style.alignItems = 'center';
 
             // Escape HTML to prevent XSS
-            const escaped = removeHTML(message);
+            var escaped = this.removeHTML(message);
             msgContainer.className = isUser ? "user-message" : "bot-message";
             msg.className = "message";
             msg.innerHTML = escaped;
@@ -947,66 +1102,76 @@
             msgContainer.appendChild(!isUser ? msg : msgIMG);
 
             chatContainer.appendChild(msgContainer);
-            styleIfMessageExist();
+            this.messageExistCondition(1);
         }
-        function handleUserMessage() {
+        Extension.prototype.handleUserMessage = function () {
             // Get and trim user input
-            const message = userInput.value.trim();
+            var message = userInput.value.trim();
             if (message) {
-                addMessage(message, true);
+                this.addMessage(message, true);
 
                 // Show loading animation for bot response
-                const loadingMsg = document.createElement("div");
+                var loadingMsg = document.createElement("div");
                 loadingMsg.className = "bot-message loading";
                 loadingMsg.innerHTML = '<div class="dot-typing"><div></div><div></div><div></div>';
 
                 chatContainer.appendChild(loadingMsg);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
                 userInput.value = "";
+
+                var self = this; // Preserve 'this' context for setTimeout
+
                 setTimeout(function () {
                     // Find and display bot response after delay
-                    const response = chatbot.findAnswer(message);
+                    var response = chatbot.findAnswer(message);
                     chatContainer.removeChild(loadingMsg);
-                    addMessage(response, false);
+                    self.addMessage(response, false);
                 }, 2000);
             }
         }
+        var extension = new Extension();
 
         // --- DATA --- //
-        const chatbot = new ChatbotSystemNLP();
+        extension.messageExistCondition(0);
 
-        // Example data for chatbot to match against
-        const dataTesting = {
-            "Hello!": "Hello, how can I assist you today?",
-            "Hi!": "Hi! How are you?",
-            "Hi": "Hi! How can i help you today?",
-            "Hello": "Hello! What do you need me to help?",
-            "What is Python?": "Python is a high level programming language which is begginer-friendly"
-        };
-
-        // Add each question/response pair to the chatbot
-        for (var question in dataTesting) {
-            chatbot.addData(question, dataTesting[question]);
+        // Check if there is data in local storage
+        if (localStorage.getItem('userData')) {
+            try {
+                userData = JSON.parse(localStorage.getItem('userData'));
+                for (var question in userData) {
+                    chatbot.addData(question, userData[question]);
+                }
+            }
+            catch (e) {
+                userData = {};
+                localStorage.removeItem('userData');
+                alert('Your data is conrrupted, so I have to remove it for another data to be add');
+            }
         }
-        styleIfMessageNotExist();
-
-
+        popupFunction.DataManager_populateTable();
 
         // --- Event Listeners --- //
+        // Send message when user press 'Enter' key
         userInput.addEventListener("keydown", function (e) {
             // Only allow if there is no loading message
             if (!document.querySelector('.loading')) {
                 if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
-                    handleUserMessage();
+                    extension.handleUserMessage();
                 }
             }
         });
 
+        // Save all data into localStorage when user is exit
+        window.addEventListener('beforeunload', function (e) {
+            localStorage.setItem('userData', JSON.stringify(userData))
+        })
     </script>
 
     <!--The Thumbnail Script 2.1.0 12/18/2023 by Bluebird@kaid_157624541333313939750668-->
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script type>var r=600,s=document.documentElement.clientWidth;window.parent.html2canvas=t=>{try{html2canvas(document.body,{width:s,height:s,useCORS:!0,onclone:t=>t.getAnimations().forEach((t=>{try{t.finish()}catch{}}))}).then((t=>{var e=document.createElement("canvas");e.width=r,e.height=r,e.getContext("2d").drawImage(t,0,0,t.width,t.height,0,0,r,r),window.top.postMessage(e.toDataURL(),"*")})).catch((t=>{alert("Thumbnail Script Error: "+t)}))}catch{window.top.postMessage(document.createElement("canvas").toDataURL(),"*")}};</script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script
+        type>var r = 600, s = document.documentElement.clientWidth; window.parent.html2canvas = t => { try { html2canvas(document.body, { width: s, height: s, useCORS: !0, onclone: t => t.getAnimations().forEach((t => { try { t.finish() } catch { } })) }).then((t => { var e = document.createElement("canvas"); e.width = r, e.height = r, e.getContext("2d").drawImage(t, 0, 0, t.width, t.height, 0, 0, r, r), window.top.postMessage(e.toDataURL(), "*") })).catch((t => { alert("Thumbnail Script Error: " + t) })) } catch { window.top.postMessage(document.createElement("canvas").toDataURL(), "*") } };</script>
 </body>
 
 </html>
